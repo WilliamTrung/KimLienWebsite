@@ -19,6 +19,10 @@ services.AddCors(option =>
         builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
     });
 });
+services.AddControllers().AddNewtonsoftJson
+               (
+                   x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+               );
 services.AddDbContext<SqlContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 services.AddAutoMapper(typeof(Mapping));
 services.AddScoped<IUnitOfWork, UnitOfWork>();

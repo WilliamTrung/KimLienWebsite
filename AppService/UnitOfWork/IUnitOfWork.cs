@@ -13,5 +13,6 @@ namespace AppService.UnitOfWork
         IProductService ProductService { get; }
         IRoleService RoleService { get; }
         IUserService UserService { get; }
+        IProductCategoryService ProductCategoryService { get; }
     }
 }

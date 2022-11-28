@@ -17,15 +17,14 @@ namespace AppCore.Entities
         public string? Name { get; set; }
         [Required]
         public string? Description { get; set; }
-        [Required]
-        public Guid CategoryId { get; set; }
+
         [Required]
         public string? Pictures { get; set; }
         public bool IsDeleted { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime ModifiedDate { get; set; }
-
-        public virtual IList<Category>? Categories { get; set; }
+        
+        public virtual IList<ProductCategory>? ProductCategories { get; set; }
         [NotMapped]
         public IList<string>? DeserializedPictures { get; set; }
     }
