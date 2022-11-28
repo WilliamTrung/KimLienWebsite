@@ -1,4 +1,7 @@
-using KimLienAPI.StartupConfiguration;
+using AppCore;
+using AppService;
+using AppService.UnitOfWork;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,9 +11,17 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-AddService.Add(builder.Services);
-
+var services = builder.Services;
+services.AddCors(option =>
+{
+    option.AddPolicy("CorsPolicy", builder =>
+    {
+        builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+    });
+});
+services.AddDbContext<SqlContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+services.AddAutoMapper(typeof(Mapping));
+services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();
 

@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32825.248
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppCore", "AppCore\AppCore.csproj", "{C93E57C3-D0EC-46ED-A674-E52BD5FCA007}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppCore", "AppCore\AppCore.csproj", "{C93E57C3-D0EC-46ED-A674-E52BD5FCA007}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppRepository", "AppRepository\AppRepository.csproj", "{04D5BC98-3285-4E99-B5EF-62E3290A7AF3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppRepository", "AppRepository\AppRepository.csproj", "{04D5BC98-3285-4E99-B5EF-62E3290A7AF3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppService", "AppService\AppService.csproj", "{C6CBA621-9746-42A5-ADC9-56F8C52E7B29}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppService", "AppService\AppService.csproj", "{C6CBA621-9746-42A5-ADC9-56F8C52E7B29}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{F6850534-8158-4223-A308-216771E5B314}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "Test\Test.csproj", "{F6850534-8158-4223-A308-216771E5B314}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KimLienAPI", "KimLienAPI\KimLienAPI.csproj", "{3F520E7F-BC34-4A4E-BA06-FD2D051C03CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{F6850534-8158-4223-A308-216771E5B314}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F6850534-8158-4223-A308-216771E5B314}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F6850534-8158-4223-A308-216771E5B314}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F520E7F-BC34-4A4E-BA06-FD2D051C03CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F520E7F-BC34-4A4E-BA06-FD2D051C03CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F520E7F-BC34-4A4E-BA06-FD2D051C03CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F520E7F-BC34-4A4E-BA06-FD2D051C03CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
