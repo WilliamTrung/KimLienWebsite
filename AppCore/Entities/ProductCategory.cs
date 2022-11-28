@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace AppCore.Entities
 {
-    public class Category
+    public class ProductCategory
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; set; }
         [Required]
-        public string? Name { get; set; }
+        public Guid ProductId;
+        [Required]
+        public Guid CategoryId;
+        public virtual Product Product { get; set; } = null!;
+        public virtual Category Category { get; set; } = null!;
 
-        public virtual IList<ProductCategory>? ProductCategories { get; set; }
     }
 }

@@ -62,6 +62,17 @@ namespace AppService.UnitOfWork
             }
         }
 
+        public IProductCategoryService ProductCategoryService
+        {
+            private set { }
+            get
+            {
+                if (ProductCategoryService == null)
+                    ProductCategoryService = new ProductCategoryService(_context, _mapper);
+                return ProductCategoryService;
+            }
+        }
+
         public void Dispose()
         {
             _context.Dispose();

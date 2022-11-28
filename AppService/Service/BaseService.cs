@@ -82,11 +82,12 @@ namespace AppService.Service
             }
             return dto;
         }
-        public async Task<IEnumerable<TDto>> GetDTOs(Expression<Func<TEntity, bool>>? filter = null, string? includeProperties = null, PagingRequest? paging = null)
+        public virtual async Task<IEnumerable<TDto>> GetDTOs(Expression<Func<TEntity, bool>>? filter = null, string? includeProperties = null, PagingRequest? paging = null)
         {
+            IEnumerable<TEntity>? list_entities_raw;
             if (paging == null)
-                paging = new PagingRequest();
-            var list_entities_raw = (await _repository.Get(filter, includeProperties)).Skip((paging.PageIndex - 1) * paging.PageSize)
+                list_entities_raw = await _repository.Get(filter, includeProperties);
+            list_entities_raw = (await _repository.Get(filter, includeProperties)).Skip((paging.PageIndex - 1) * paging.PageSize)
                .Take(paging.PageSize);
 
             var list_entities = new List<TEntity>();
