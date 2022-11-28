@@ -11,10 +11,10 @@ namespace AppCore
 {
     public class SqlContext : DbContext
     {
-        DbSet<User> Users;
-        DbSet<Role> Roles;
-        DbSet<Category> Categories;
-        DbSet<Product> Products;
+        public virtual DbSet<User> Users { get; set; } = null!;
+        public virtual DbSet<Role> Roles { get; set; } = null!;
+        public virtual DbSet<Category> Categories { get; set; } = null!;
+        public virtual DbSet<Product> Products { get; set; } = null!;
 
         public SqlContext()
         {
