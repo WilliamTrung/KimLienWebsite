@@ -15,62 +15,30 @@ namespace AppService.UnitOfWork
         private SqlContext _context;
         private IMapper _mapper;
 
+        public ICategoryService CategoryService { get; private set; } = null!;
+
+        public IProductService ProductService { get; private set; } = null!;
+
+        public IRoleService RoleService { get; private set; } = null!;
+
+        public IUserService UserService { get; private set; } = null!;
+
+        public IProductCategoryService ProductCategoryService { get; private set; } = null!;
 
         public UnitOfWork(SqlContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;   
-        }
-        public ICategoryService CategoryService
-        {
-            private set { }
-            get
-            {
-                if (CategoryService == null)
-                    CategoryService = new CategoryService(_context,_mapper);
-                return CategoryService;
-            }
-        }
-        public IProductService ProductService
-        {
-            private set { }
-            get
-            {
-                if (ProductService == null)
-                    ProductService = new ProductService(_context, _mapper);
-                return ProductService;
-            }
-        }
-        public IRoleService RoleService
-        {
-            private set { }
-            get
-            {
-                if (RoleService == null)
-                    RoleService = new RoleService(_context, _mapper);
-                return RoleService;
-            }
-        }
-        public IUserService UserService
-        {
-            private set { }
-            get
-            {
-                if (UserService == null)
-                    UserService = new UserService(_context, _mapper);
-                return UserService;
-            }
+            InitServices();
         }
 
-        public IProductCategoryService ProductCategoryService
+        void InitServices()
         {
-            private set { }
-            get
-            {
-                if (ProductCategoryService == null)
-                    ProductCategoryService = new ProductCategoryService(_context, _mapper);
-                return ProductCategoryService;
-            }
+            CategoryService = new CategoryService(_context,_mapper);
+            ProductService = new ProductService(_context, _mapper);
+            ProductCategoryService = new ProductCategoryService(_context, _mapper);
+            RoleService = new RoleService(_context, _mapper);
+            UserService = new UserService(_context, _mapper);
         }
 
         public void Dispose()

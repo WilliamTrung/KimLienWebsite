@@ -23,7 +23,7 @@ namespace AppService.Service
         {
             _context = context;
             _mapper = mapper;
-            _repository = _repository;
+            _repository = new GenericRepository<TEntity>(_context);
         }
         public virtual async Task<TDto> Create(TDto dto)
         {
@@ -87,9 +87,11 @@ namespace AppService.Service
             IEnumerable<TEntity>? list_entities_raw;
             if (paging == null)
                 list_entities_raw = await _repository.Get(filter, includeProperties);
-            list_entities_raw = (await _repository.Get(filter, includeProperties)).Skip((paging.PageIndex - 1) * paging.PageSize)
+            else
+            {
+                list_entities_raw = (await _repository.Get(filter, includeProperties)).Skip((paging.PageIndex - 1) * paging.PageSize)
                .Take(paging.PageSize);
-
+            }
             var list_entities = new List<TEntity>();
             for (int i = 0; i < list_entities_raw.Count(); i++)
             {

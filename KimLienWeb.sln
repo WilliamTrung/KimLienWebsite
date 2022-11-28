@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "Test\Test.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KimLienAPI", "KimLienAPI\KimLienAPI.csproj", "{3F520E7F-BC34-4A4E-BA06-FD2D051C03CD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KimLienCustomerView", "KimLienCustomerView\KimLienCustomerView.csproj", "{B8681758-9A29-412F-A5A1-8FD4FB6A4AA4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{3F520E7F-BC34-4A4E-BA06-FD2D051C03CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F520E7F-BC34-4A4E-BA06-FD2D051C03CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F520E7F-BC34-4A4E-BA06-FD2D051C03CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8681758-9A29-412F-A5A1-8FD4FB6A4AA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8681758-9A29-412F-A5A1-8FD4FB6A4AA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8681758-9A29-412F-A5A1-8FD4FB6A4AA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8681758-9A29-412F-A5A1-8FD4FB6A4AA4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
