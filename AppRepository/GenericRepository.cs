@@ -1,4 +1,5 @@
 ﻿using AppCore;
+using AppCore.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -31,13 +32,19 @@ namespace ApplicationCore.Repository
             }
         }
 
-        public Task<bool> Delete(TEntity entity)
+        public async Task<bool> Delete(TEntity entity)
         {
             try
             {
                 if (entity == null) throw new ArgumentNullException("entity");
-                _context.Remove(entity);
-                return Task<bool>.FromResult(true);
+                if(entity.GetType() == typeof(IDeleteEntity))
+                {
+                    ((IDeleteEntity)entity).IsDeleted = true;
+                    _context.Update(entity);
+                    await _context.SaveChangesAsync();
+                    return true;
+                }
+                return false;
             }
             catch (Exception)
             {
