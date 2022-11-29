@@ -11,9 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppService", "AppService\Ap
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "Test\Test.csproj", "{F6850534-8158-4223-A308-216771E5B314}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KimLienAPI", "KimLienAPI\KimLienAPI.csproj", "{3F520E7F-BC34-4A4E-BA06-FD2D051C03CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KimLienAPI", "KimLienAPI\KimLienAPI.csproj", "{3F520E7F-BC34-4A4E-BA06-FD2D051C03CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KimLienCustomerView", "KimLienCustomerView\KimLienCustomerView.csproj", "{B8681758-9A29-412F-A5A1-8FD4FB6A4AA4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KimLienCustomerView", "KimLienCustomerView\KimLienCustomerView.csproj", "{B8681758-9A29-412F-A5A1-8FD4FB6A4AA4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KimLienAdministrator", "KimLienAdministrator\KimLienAdministrator.csproj", "{04DCC8D9-8507-4239-8A00-1C040EF9813F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{B8681758-9A29-412F-A5A1-8FD4FB6A4AA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8681758-9A29-412F-A5A1-8FD4FB6A4AA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B8681758-9A29-412F-A5A1-8FD4FB6A4AA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04DCC8D9-8507-4239-8A00-1C040EF9813F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04DCC8D9-8507-4239-8A00-1C040EF9813F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04DCC8D9-8507-4239-8A00-1C040EF9813F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04DCC8D9-8507-4239-8A00-1C040EF9813F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
