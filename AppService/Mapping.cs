@@ -16,6 +16,7 @@ namespace AppService
             CreateMap<Product, DTOs.Product>().ReverseMap();
             CreateMap<Role, DTOs.Role>().ReverseMap();
             CreateMap<User, DTOs.User>().ReverseMap();
+            CreateMap<ProductCategory, DTOs.ProductCategory>().ReverseMap();
         }
     }
 }
