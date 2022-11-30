@@ -1,6 +1,8 @@
 using AppCore;
 using AppService;
 using AppService.UnitOfWork;
+using KimLienAdministrator.Helper.Azure.Blob;
+using KimLienAdministrator.Helper.Azure.IBlob;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,6 +25,7 @@ services.AddControllers().AddNewtonsoftJson
 services.AddDbContext<SqlContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 services.AddAutoMapper(typeof(Mapping));
 services.AddScoped<IUnitOfWork, UnitOfWork>();
+services.AddScoped<IProductBlob, ProductBlob>();
 
 var app = builder.Build();
 

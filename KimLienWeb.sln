@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KimLienAPI", "KimLienAPI\Ki
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KimLienCustomerView", "KimLienCustomerView\KimLienCustomerView.csproj", "{B8681758-9A29-412F-A5A1-8FD4FB6A4AA4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KimLienAdministrator", "KimLienAdministrator\KimLienAdministrator.csproj", "{04DCC8D9-8507-4239-8A00-1C040EF9813F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KimLienAdministrator", "KimLienAdministrator\KimLienAdministrator.csproj", "{04DCC8D9-8507-4239-8A00-1C040EF9813F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
