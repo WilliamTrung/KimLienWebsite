@@ -18,6 +18,8 @@ namespace KimLienAdministrator.Pages.CategoryManagement
         public async Task OnGetAsync()
         {
             await GetCategoriesAsync();
+
+            
         }
         private async Task GetCategoriesAsync()
         {
@@ -31,24 +33,46 @@ namespace KimLienAdministrator.Pages.CategoryManagement
 
         public async Task<IActionResult> OnPostAsync(Guid id, string name, string action)
         {
-            var find = await _unitOfWork.CategoryService.GetDTOs(c => c.Id == id);
-            var found = find.FirstOrDefault();
-            if(found != null && found.Name != name)
+            if(action == "update")
             {
-                found.Name = name;
-                if (TryValidateModel(found))
+                var find = await _unitOfWork.CategoryService.GetDTOs(c => c.Id == id);
+                var found = find.FirstOrDefault();
+                if (found != null && found.Name != name)
                 {
-                    var result = await _unitOfWork.CategoryService.Update( filter: c => c.Id == found.Id, found);
-                } else
-                {
-                    if (Message == null)
+                    found.Name = name;
+                    if (TryValidateModel(found))
                     {
-                        Message = new CategoryMessage();
+                        var result = await _unitOfWork.CategoryService.Update(filter: c => c.Id == found.Id, found);
                     }
-                    Message.Id = found.Id;
-                    Message.Message = Helper.Strings.CategoryFailMessage;
+                    else
+                    {
+                        if (Message == null)
+                        {
+                            Message = new CategoryMessage();
+                        }
+                        Message.Id = found.Id;
+                        Message.Message = Helper.Strings.CategoryUpdateFailMessage;
+                    }
                 }
+            } else if(action == "delete") {
+                var find = await _unitOfWork.CategoryService.GetDTOs(c => c.Id == id);
+                var found = find.FirstOrDefault();
+                if(found != null)
+                {
+                    var result = await _unitOfWork.CategoryService.Delete(found);
+                    if(result == false)
+                    {
+                        //delete failed
+                        if (Message == null)
+                        {
+                            Message = new CategoryMessage();
+                        }
+                        Message.Id = found.Id;
+                        Message.Message = Helper.Strings.CategoryDeleteFailMessage;
+                    }
+                } 
             }
+            
             await GetCategoriesAsync();
             return Page();
         }

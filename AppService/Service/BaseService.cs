@@ -56,7 +56,7 @@ namespace AppService.Service
                 return false;
             }
         }
-        public async Task<TDto> Update(Expression<Func<TEntity, bool>> filter, TDto dto)
+        public virtual async Task<TDto> Update(Expression<Func<TEntity, bool>> filter, TDto dto)
         {
             if (dto != null)
             {

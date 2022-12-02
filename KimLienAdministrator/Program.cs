@@ -1,9 +1,18 @@
 using AppCore;
 using AppService;
+using AppService.DTOs;
+using AppService.IService;
+using AppService.Service;
 using AppService.UnitOfWork;
+using Azure.Storage.Blobs;
 using KimLienAdministrator.Helper.Azure.Blob;
 using KimLienAdministrator.Helper.Azure.IBlob;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Azure;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,9 +32,18 @@ services.AddControllers().AddNewtonsoftJson
                    x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                );
 services.AddDbContext<SqlContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+services.AddSession();
 services.AddAutoMapper(typeof(Mapping));
 services.AddScoped<IUnitOfWork, UnitOfWork>();
 services.AddScoped<IProductBlob, ProductBlob>();
+
+services.AddTransient<IAuthService, AuthService>();
+using(var _config = builder.Configuration)
+{
+    var blobStorage = _config.GetSection("BlobStorage");
+    var connection = blobStorage["AzureWebJobsStorage"];
+}
 
 var app = builder.Build();
 
@@ -45,5 +63,6 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapRazorPages();
-
+//add session
+app.UseSession();
 app.Run();

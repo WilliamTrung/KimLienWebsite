@@ -7,5 +7,6 @@ namespace KimLienAdministrator.Helper.Azure.IBlob
     {
         public Task<bool> UploadAsync(List<IFormFile> files, Guid productId);
         public List<string>? GetURL(Product product);
+        Task<bool> DeleteAsync(Guid productId, string picture);
     }
 }
