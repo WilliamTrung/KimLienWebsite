@@ -27,7 +27,7 @@ namespace AppService.Service
         }
         public virtual async Task<TDto> Create(TDto dto)
         {
-            if(dto == null)
+            if(dto != null)
             {
                 var entity = _mapper.Map<TEntity>(dto);
                 try
@@ -42,7 +42,7 @@ namespace AppService.Service
             }
             return dto;
         }
-        public async Task<bool> Delete(TDto dto)
+        public virtual async Task<bool> Delete(TDto dto)
         {
             var entity = _mapper.Map<TEntity>(dto);
             if (entity != null)
@@ -56,7 +56,7 @@ namespace AppService.Service
                 return false;
             }
         }
-        public async Task<TDto> Update(Expression<Func<TEntity, bool>> filter, TDto dto)
+        public virtual async Task<TDto> Update(Expression<Func<TEntity, bool>> filter, TDto dto)
         {
             if (dto != null)
             {

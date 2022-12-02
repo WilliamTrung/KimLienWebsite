@@ -6,17 +6,18 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using AppCore;
-using AppCore.Entities;
+using AppService.UnitOfWork;
+using AppService.DTOs;
 
 namespace KimLienAdministrator.Pages.CategoryManagement
 {
     public class CreateModel : PageModel
     {
-        private readonly AppCore.SqlContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CreateModel(AppCore.SqlContext context)
+        public CreateModel(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
         }
 
         public IActionResult OnGet()
@@ -25,7 +26,7 @@ namespace KimLienAdministrator.Pages.CategoryManagement
         }
 
         [BindProperty]
-        public Category Category { get; set; }
+        public Category Category { get; set; } = null!;
         
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
@@ -35,9 +36,7 @@ namespace KimLienAdministrator.Pages.CategoryManagement
             {
                 return Page();
             }
-
-            _context.Categories.Add(Category);
-            await _context.SaveChangesAsync();
+            var result = await _unitOfWork.CategoryService.Create(Category);
 
             return RedirectToPage("./Index");
         }

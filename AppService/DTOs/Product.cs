@@ -24,5 +24,7 @@ namespace AppService.DTOs
         public virtual IList<Category>? Categories { get; set; }
         [NotMapped]
         public IList<string>? DeserializedPictures { get; set; }
+
+        
     }
 }

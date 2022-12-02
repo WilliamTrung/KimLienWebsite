@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -9,11 +9,22 @@
 
   <ItemGroup>
     <PackageReference Include="CloudinaryDotNet" Version="1.20.0" />
+    <PackageReference Include="MegaApiClient" Version="1.10.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\AppCore\AppCore.csproj" />
     <ProjectReference Include="..\AppService\AppService.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Images\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Images\20221118065829.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
