@@ -13,5 +13,8 @@ namespace AppService.DTOs
 		[Required(ErrorMessage = "Category name cannot be empty!")]
 		[MinLength(1, ErrorMessage = "Category name is too short!")]
 		public string? Name { get; set; }
-	}
+        public Guid? ParentId { get; set; }
+
+		public Category? Parent { get; set; }
+    }
 }

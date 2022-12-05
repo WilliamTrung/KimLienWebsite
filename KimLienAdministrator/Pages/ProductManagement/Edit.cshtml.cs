@@ -24,7 +24,9 @@ namespace KimLienAdministrator.Pages.ProductManagement
         [BindProperty]
         public Product Product { get; set; } = default!;
         public IList<ProductCategory> Categories { get; set; } = null!;
-        public MultiSelectList SelectListItems { get; set; } = null!;
+        public MultiSelectList MainCategories { get; set; } = null!;
+        public IList<MultiSelectList> SubCategories { get; set; } = null!;
+
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
@@ -51,6 +53,7 @@ namespace KimLienAdministrator.Pages.ProductManagement
         // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync(Guid[] CategoryId)
         {
+            
             var t = Categories;
             if (!ModelState.IsValid)
             {
@@ -65,7 +68,7 @@ namespace KimLienAdministrator.Pages.ProductManagement
         {
             Categories = new List<ProductCategory>();
             var categories = await _unitOfWork.CategoryService.GetDTOs();
-            SelectListItems = new MultiSelectList(categories, "Id", "Name");
+            MainCategories = new MultiSelectList(categories, "Id", "Name");
         }
         public void AddCategory()
         {

@@ -14,10 +14,15 @@
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
+                <label>Parent category</label>
+                <select name="CategoryId" asp-items="Model.MainCategories"></select>
+            </div>
+            <div class="form-group">
                 <label asp-for="Category.Name" class="control-label"></label>
                 <input asp-for="Category.Name" class="form-control" />
                 <span asp-validation-for="Category.Name" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

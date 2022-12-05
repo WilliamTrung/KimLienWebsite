@@ -17,7 +17,7 @@ namespace AppCore.Entities
         [Required]
         public string? Name { get; set; }
         [AllowNull]
-        public Guid ParentId { get; set; }
+        public Guid? ParentId { get; set; }
 
         public virtual IList<ProductCategory>? ProductCategories { get; set; }
     }
