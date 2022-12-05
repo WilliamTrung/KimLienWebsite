@@ -30,11 +30,6 @@ namespace KimLienAdministrator.Pages.ProductManagement
             if (_context.Products != null)
             {
                 Product = await _context.Products.ToListAsync();
-                var product = Product.FirstOrDefault();
-                if(product != null)
-                {
-                    var check = _productBlob.DeleteAsync(product.Id, product.Pictures.Split(",")[0]);
-                }
             }
         }
     }
