@@ -1,0 +1,66 @@
+﻿@page
+@using System.Text
+@model KimLienCustomerView.Pages.ProductView.ProductsModel
+@*@item.Product.DeserializedPictures[0]*@
+@{
+    ViewData["Title"] = "Products";
+}
+<div class="container">
+    <div class="product_detail_show_box">
+        <div class="row">
+            <div class="col-md-6">
+                <div>
+                    <img class="product_detail_main_image" src="@Model.Products.FirstOrDefault().Product.Pictures" alt="@Model.Products.FirstOrDefault().Product.Name">
+                </div>
+                <div class="product_detail_sub_gallery">
+                    @foreach(var item in Model.Products)
+                        {
+                    
+                    <div class="product_detail_sub_image">
+                        <img src="">
+                    </div>
+                    @}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="product_detail_text">
+                    <div class="product_detail_name">
+                        <p>
+                            @Model.Products.FirstOrDefault().Product.Name
+                        </p>
+                    </div>
+                    <div class="product_detail_description">
+                        <p>
+                            @Model.Products.FirstOrDefault().Product.Description
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<h1>Sản Phẩm Liên Quan</h1>
+<div class="container">
+    <div class="product_show_box">
+        <div class="product_row">
+            @foreach (var item in Model.Products)
+            {
+                <a class="product_card" asp-page="./ProductDetail" asp-route-id="@item.Product.Id">
+                    <div>
+                        <img class="product_image" src="@item.Product.Pictures" alt="@item.Product.Name">
+                    </div>
+                    <div class="product_name">
+                        <div class="card-header text-white bg-info text-lg-center">
+                            <p class="card-text">
+                                <h5>
+                                    @item.Product.Name
+                                </h5>
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            }
+        </div>
+    </div>
+</div>
