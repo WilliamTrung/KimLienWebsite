@@ -52,14 +52,20 @@ namespace AppService.Service
         {
             //IDK what to do here yet
         }
+        public IList<string> GetDeserializedPictures(DTOs.Product product)
+        {
+            IList<string> result = new List<string>();
+            if (product.Pictures != null)
+                result = product.Pictures.Split(",");
+            return result;
+        }
         public override Task<IEnumerable<DTOs.Product>> GetDTOs(Expression<Func<Product, bool>>? filter = null, string? includeProperties = null, PagingRequest? paging = null)
         {
             var result = base.GetDTOs(filter, includeProperties, paging);
             foreach(var item in result.Result)
             {
-                if(item.Pictures != null)
-                    item.DeserializedPictures = item.Pictures.Split(",");
-
+                if (item.Pictures != null)
+                    item.DeserializedPictures = GetDeserializedPictures(item);
             }
             return result;
         }
@@ -78,6 +84,62 @@ namespace AppService.Service
                 result.Add(productModel);
             }
             return result;
+        }
+        public override async Task<DTOs.Product> Update(Expression<Func<Product, bool>> filter, DTOs.Product dto)
+        {
+            var find = await GetDTOs(filter: filter);
+            var found = find.FirstOrDefault();
+            if(found != null)
+            {
+                //adjust pictures
+                if(dto.Pictures != null && dto.Pictures != found.Pictures)
+                {
+                    var preupdate = found.Pictures;
+                    if (preupdate != null)
+                    {
+                        var primary_pic = preupdate.Split(',')[0];
+                        IList<string> deserialized = new List<string>();
+                        bool isExist = false;
+                        foreach(var pic in dto.Pictures.Split(","))
+                        {
+                            if(pic != primary_pic)
+                            {
+                                deserialized.Add(pic);
+                            } else
+                            {
+                                isExist = true;
+                            }
+                        }
+                        if(isExist)
+                        {
+                            deserialized.Insert(0, primary_pic);
+                        }
+                        dto.Pictures = Extension.Helper.MergeListString(deserialized);
+                    }
+                }
+                
+            }
+            return await base.Update(filter, dto);
+        }
+
+        public async Task<DTOs.Product?> SetPrimaryPicture(Guid productId, string picture)
+        {
+            //throw new NotImplementedException();
+            var find = await GetDTOs(filter: p => p.Id == productId);
+            var found = find.FirstOrDefault();
+            if(found != null)
+            { 
+                var deserialized = found.DeserializedPictures;
+                if (deserialized != null)
+                {
+                    deserialized = deserialized.ToList();
+                    deserialized.Remove(picture);
+                    deserialized.Insert(0, picture);
+                    found.Pictures = Extension.Helper.MergeListString(deserialized);
+                }
+                found = await base.Update(p => p.Id == productId, found);
+            }
+            return found;
         }
     }
 }

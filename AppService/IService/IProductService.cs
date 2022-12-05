@@ -13,6 +13,8 @@ namespace AppService.IService
     public interface IProductService : IBaseService<Product, DTOs.Product>
     {
         public Task<IEnumerable<ProductModel>> GetProductModels(Expression<Func<Product, bool>>? filter = null, string? includeProperties = null, PagingRequest? paging = null);
-        public IEnumerable<ProductModel> CheckCategories(IEnumerable<ProductModel> productModels, List<string> categories);        
+        public IEnumerable<ProductModel> CheckCategories(IEnumerable<ProductModel> productModels, List<string> categories);
+        IList<string> GetDeserializedPictures(DTOs.Product product);
+        Task<DTOs.Product?> SetPrimaryPicture(Guid productId, string picture);
     }
 }

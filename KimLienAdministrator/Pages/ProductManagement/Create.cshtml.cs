@@ -21,25 +21,27 @@ namespace KimLienAdministrator.Pages.ProductManagement
 
         public IActionResult OnGet()
         {
+
             return Page();
         }
 
         [BindProperty]
         public Product Product { get; set; }
-        [BindProperty]
-        public List<string> Categories { get; set; }
+
+        public List<IFormFile> Files { get; set; }
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-          if (!ModelState.IsValid)
-            {
-                return Page();
-            }
+            //if (!ModelState.IsValid)
+            //  {
+            //      return Page();
+            //  }
 
-            _context.Products.Add(Product);
-            await _context.SaveChangesAsync();
+            //  _context.Products.Add(Product);
+            //  await _context.SaveChangesAsync();
 
+            var t = Files;
             return RedirectToPage("./Index");
         }
     }

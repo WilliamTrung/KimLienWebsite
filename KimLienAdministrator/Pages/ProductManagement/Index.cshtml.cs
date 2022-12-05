@@ -7,16 +7,20 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using AppCore;
 using AppCore.Entities;
+using KimLienAdministrator.Helper.Azure;
+using KimLienAdministrator.Helper.Azure.IBlob;
 
 namespace KimLienAdministrator.Pages.ProductManagement
 {
     public class IndexModel : PageModel
     {
         private readonly AppCore.SqlContext _context;
+        private readonly IProductBlob _productBlob;
 
-        public IndexModel(AppCore.SqlContext context)
+        public IndexModel(AppCore.SqlContext context, IProductBlob productBlob)
         {
             _context = context;
+            _productBlob = productBlob;
         }
 
         public IList<Product> Product { get;set; } = default!;

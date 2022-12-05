@@ -43,8 +43,13 @@ namespace ApplicationCore.Repository
                     _context.Update(entity);
                     await _context.SaveChangesAsync();
                     return true;
+                } else
+                {
+                    _context.Remove(entity);
+                    await _context.SaveChangesAsync();
+                    return true;
                 }
-                return false;
+                
             }
             catch (Exception)
             {
@@ -81,6 +86,12 @@ namespace ApplicationCore.Repository
                 var found = find.First();
                 if(found != null)
                 {
+                    //_context.Entry<TEntity>(found).CurrentValues.SetValues(entity);
+
+                    if(entity is IAuditEntity)
+                    {
+                        ((IAuditEntity)entity).ModifiedDate = DateTime.UtcNow;
+                    }
                     _context.Entry<TEntity>(found).CurrentValues.SetValues(entity);
                     await _context.SaveChangesAsync();
                     return found;
