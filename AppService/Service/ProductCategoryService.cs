@@ -21,5 +21,35 @@ namespace AppService.Service
         {
             return base.GetDTOs(filter, includeProperties, paging);
         }
+
+        public async Task<IEnumerable<DTOs.ProductCategory>> Implement(DTOs.Product product, List<Guid> categoryId)
+        {
+            var result = new List<DTOs.ProductCategory>();
+            foreach(var id in categoryId)
+            {
+                var find = await GetDTOs(filter: p => p.ProductId == product.Id && p.CategoryId == id);
+                var check = find.FirstOrDefault();
+                if (check == null)
+                {
+                    //create
+                    var productCategory = new DTOs.ProductCategory()
+                    {
+                        ProductId = product.Id,
+                        CategoryId = id
+                    };
+                    var created = await Create(productCategory);
+                    result.Add(created);
+                }
+                else
+                {
+                    //update
+                    check.IsDeleted = true;
+                    var updated = await Update(filter: p => p.ProductId == check.ProductId && p.CategoryId == id, check);
+                    result.Add(updated);
+                }
+            }
+            return result;
+            
+        }
     }
 }
