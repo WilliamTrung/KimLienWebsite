@@ -18,23 +18,28 @@ body {
 }
 
 .product_detail_show_box {
-    height: 600px;
+    height: 650px;
     width: 1050px;
     margin-left: 123px;
     background-color: white;
     border: dashed 1px black;
 }
 .product_detail_main_image{
-    width: 500px;
+    width: 530px;
     height: 420px;
 }
 .product_detail_sub_gallery{
-    width: 360px;
+    width: 500px;
     height: 180px;
+    margin-left: 20px;
+    margin-top: 50px;
 }
-.product_detail_sub_image{
-    width: 100px;
+.product_detail_sub_image {
+    max-width: 100%;
+    max-height: 100%;
     margin-right: 10px;
+    border: 1px solid;
+    resize: both;
 }
 .product_detail_text {
     width: 530px;
@@ -42,7 +47,7 @@ body {
 }
 .product_detail_name {
     width: 530px;
-    height: 150px;
+    height: 100px;
     text-align: left;
     font-size: 23pt;
     font-weight: bold;
