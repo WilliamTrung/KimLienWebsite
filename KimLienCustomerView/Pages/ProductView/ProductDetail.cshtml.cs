@@ -25,15 +25,18 @@ namespace KimLienCustomerView.Pages.ProductView
         }
 
         public ProductModel Product { get; set; }
+        
         public IList<ProductModel> recommendProduct { get; set; } = default!;
 
         public async Task OnGetAsync(Guid? id)
         {
-            var result = await _unitOfWork.ProductService.GetProductModels();
-            if (result != null)
+            var find = await _unitOfWork.ProductService.GetProductModels();
+            var found = find.FirstOrDefault();
+            if (found != null)
             {
-                Product = result.FirstOrDefault();
+                Product = found;
             }
+
         }
         private void AdjustModels()
         {

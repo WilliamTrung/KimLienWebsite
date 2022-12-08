@@ -14,7 +14,7 @@
             <div class="product_card">
             <a class="product_card" asp-page="./ProductDetail" asp-route-id="@item.Product.Id">
                 <div>
-                    <img class="product_image" src="@item.Product.Pictures" alt="@item.Product.Name">
+                    <img class="product_image" src="@item.Product.DeserializedPictures.FirstOrDefault()" alt="@item.Product.Name">
                 </div>
                 <div class="product_name">
                     <div class="card-header text-white bg-info text-lg-center">
@@ -38,7 +38,7 @@
                 {
             <a class="product_card" asp-page="./ProductDetail" asp-route-id="@item.Product.Id">
                 <div>
-                    <img class="product_image"src="@item.Product.Pictures" alt="@item.Product.Name">
+                    <img class="product_image"src="@item.Product.DeserializedPictures.FirstOrDefault()" alt="@item.Product.Name">
                 </div>
                 <div class="product_name">
                     <div class="card-header text-white bg-info text-lg-center">
@@ -63,7 +63,7 @@
                 {
             <a class="product_card" asp-page="./ProductDetail" asp-route-id="@item.Product.Id">
                 <div >
-                    <img class="product_image" src="@item.Product.Pictures" alt="@item.Product.Name">
+                    <img class="product_image" src="@item.Product.DeserializedPictures.FirstOrDefault()" alt="@item.Product.Name">
                 </div>
                 <div class="product_name">
                     <div class="card-header text-white bg-info text-lg-center">
@@ -86,7 +86,7 @@
                 {
             <a class="product_card" asp-page="./ProductDetail" asp-route-id="@item.Product.Id">
                 <div>
-                    <img class="product_image" src="@item.Product.Pictures" alt="@item.Product.Name">
+                    <img class="product_image" src="@item.Product.DeserializedPictures.FirstOrDefault()" alt="@item.Product.Name">
                 </div>
                 <div class="product_name">
                     <div class="card-header text-white bg-info text-lg-center">
