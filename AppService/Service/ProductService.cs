@@ -83,7 +83,7 @@ namespace AppService.Service
                 var productModel = new ProductModel()
                 {
                     Product = product,
-                    ProductCategories = (await _productCategoryService.GetDTOs(includeProperties: "Product,Category")).ToList()
+                    ProductCategories = (await _productCategoryService.GetDTOs(includeProperties: "Product,Category", filter: o => o.IsDeleted == false)).ToList()
                 };
                 result.Add(productModel);
             }

@@ -21,33 +21,57 @@ namespace AppService.Service
         {
             return base.GetDTOs(filter, includeProperties, paging);
         }
-
+        /// <summary>
+        /// Get all Categories in DB -> [CategoriesDB]
+        /// For each in [CategoriesDB] -> [item]
+        ///     if [item] exists in [categoryId]
+        ///         if [item].IsDeleted == true
+        ///             [item].IsDeleted = false
+        ///             update [item] in DB
+        ///         [categoryId] remove [item]
+        /// For each in [categoryId] -> [item]
+        ///     add new [Category] to DB
+        ///     
+        /// </summary>
+        /// <param name="product"></param>
+        /// <param name="categoryId"></param>
+        /// <returns>List Categories in DB</returns>
         public async Task<IEnumerable<DTOs.ProductCategory>> Implement(DTOs.Product product, List<Guid> categoryId)
         {
-            var result = new List<DTOs.ProductCategory>();
-            foreach(var id in categoryId)
+            //get all
+            var categories_db = await GetDTOs(filter: p => p.ProductId == product.Id);
+            foreach(var item in categories_db)
             {
-                var find = await GetDTOs(filter: p => p.ProductId == product.Id && p.CategoryId == id);
-                var check = find.FirstOrDefault();
-                if (check == null)
+                if (categoryId.Contains(item.CategoryId))
                 {
-                    //create
-                    var productCategory = new DTOs.ProductCategory()
+                    if(item.IsDeleted == true)
                     {
-                        ProductId = product.Id,
-                        CategoryId = id
-                    };
-                    var created = await Create(productCategory);
-                    result.Add(created);
-                }
-                else
+                        item.IsDeleted= false;
+                        var check = await Update(p => p.CategoryId == item.CategoryId && p.ProductId == item.ProductId, item);
+
+                    }
+                    categoryId.Remove(item.CategoryId);
+                } else
                 {
-                    //update
-                    check.IsDeleted = true;
-                    var updated = await Update(filter: p => p.ProductId == check.ProductId && p.CategoryId == id, check);
-                    result.Add(updated);
+                    //set status to be inactive
+                    if(item.IsDeleted == false)
+                    {
+                        item.IsDeleted= true;
+                        var check = await Update(p => p.CategoryId == item.CategoryId && p.ProductId == item.ProductId, item);
+                    }
                 }
             }
+            foreach(var item in categoryId)
+            {
+                var category = new DTOs.ProductCategory()
+                {
+                    ProductId = product.Id,
+                    CategoryId = item,
+                    IsDeleted = false
+                };
+                var check = await Create(category);
+            }
+            var result = await GetDTOs(filter: p => p.ProductId == product.Id);
             return result;
             
         }
