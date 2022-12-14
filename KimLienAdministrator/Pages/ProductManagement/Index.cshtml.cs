@@ -6,31 +6,30 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using AppCore;
-using AppCore.Entities;
 using KimLienAdministrator.Helper.Azure;
 using KimLienAdministrator.Helper.Azure.IBlob;
+using AppService.UnitOfWork;
+using AppService.DTOs;
 
 namespace KimLienAdministrator.Pages.ProductManagement
 {
     public class IndexModel : PageModel
     {
-        private readonly AppCore.SqlContext _context;
         private readonly IProductBlob _productBlob;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public IndexModel(AppCore.SqlContext context, IProductBlob productBlob)
+        public IndexModel(IProductBlob productBlob, IUnitOfWork unitOfWork)
         {
-            _context = context;
             _productBlob = productBlob;
+            _unitOfWork = unitOfWork;
         }
 
         public IList<Product> Product { get;set; } = default!;
 
         public async Task OnGetAsync()
         {
-            if (_context.Products != null)
-            {
-                Product = await _context.Products.ToListAsync();
-            }
+            var products = await _unitOfWork.ProductService.GetDTOs();
+            Product = products.ToList();
         }
     }
 }

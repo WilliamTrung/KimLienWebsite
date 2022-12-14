@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using AppCore;
 using AppCore.Entities;
+using System.Linq.Expressions;
+using AppService.Paging;
 
 namespace AppService.Service
 {
@@ -31,6 +33,15 @@ namespace AppService.Service
                 await _productCategoryService.Delete(productcategory);
             }
             return await base.Delete(dto);
+        }
+        public override async Task<IEnumerable<DTOs.Category>> GetDTOs(Expression<Func<Category, bool>>? filter = null, string? includeProperties = null, PagingRequest? paging = null)
+        {
+            var list = await base.GetDTOs(filter, includeProperties, paging);
+            foreach (var item in list)
+            {
+                item.Parent = (await base.GetDTOs(filter: c => c.Id == item.ParentId)).FirstOrDefault();
+            }
+            return list;
         }
     }
 }

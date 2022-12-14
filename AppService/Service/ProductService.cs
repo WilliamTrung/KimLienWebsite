@@ -54,9 +54,13 @@ namespace AppService.Service
         }
         public IList<string> GetDeserializedPictures(DTOs.Product product)
         {
-            IList<string> result = new List<string>();
+            List<string> result = new List<string>();
             if (product.Pictures != null)
-                result = product.Pictures.Split(",");
+            {
+                result = product.Pictures.Split(",").ToList();
+                result.Remove("");
+            }
+                
             return result;
         }
         public override Task<IEnumerable<DTOs.Product>> GetDTOs(Expression<Func<Product, bool>>? filter = null, string? includeProperties = null, PagingRequest? paging = null)
@@ -79,7 +83,7 @@ namespace AppService.Service
                 var productModel = new ProductModel()
                 {
                     Product = product,
-                    ProductCategories = (await _productCategoryService.GetDTOs(includeProperties: "Product,Category")).ToList()
+                    ProductCategories = (await _productCategoryService.GetDTOs(includeProperties: "Product,Category", filter: o => o.IsDeleted == false)).ToList()
                 };
                 result.Add(productModel);
             }

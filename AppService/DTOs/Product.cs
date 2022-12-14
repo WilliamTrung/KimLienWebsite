@@ -11,17 +11,15 @@ namespace AppService.DTOs
         [MinLength(3, ErrorMessage = "Product name is too short!")]
         public string? Name { get; set; }
         [Required(ErrorMessage = "Product Description cannot be empty!")]
-        [MinLength(5, ErrorMessage = "Product Description is too short!")]
+        //[MinLength(5, ErrorMessage = "Product Description is too short!")]
         public string? Description { get; set; }
-        [Required(ErrorMessage = "Category cannot be empty!")]
-        public Guid CategoryId { get; set; }
         [Required(ErrorMessage = "Product must have pictures!")]
         public string? Pictures { get; set; }
         public bool IsDeleted { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime ModifiedDate { get; set; }
 
-        public virtual IList<Category>? Categories { get; set; }
+        public virtual IList<ProductCategory>? ProductCategories { get; set; }
         [NotMapped]
         public IList<string>? DeserializedPictures { get; set; }
 

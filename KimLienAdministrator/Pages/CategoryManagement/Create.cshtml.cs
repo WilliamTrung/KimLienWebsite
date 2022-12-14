@@ -20,22 +20,30 @@ namespace KimLienAdministrator.Pages.CategoryManagement
             _unitOfWork = unitOfWork;
         }
 
-        public IActionResult OnGet()
+        public async Task<IActionResult> OnGetAsync()
         {
+            await InitAsync();
             return Page();
         }
 
+        public async Task InitAsync()
+        {
+            var mainCategories = await _unitOfWork.CategoryService.GetDTOs(filter: c => c.ParentId == null);
+            MainCategories = new MultiSelectList(mainCategories, "Id", "Name");
+        }
         [BindProperty]
         public Category Category { get; set; } = null!;
-        
+        public MultiSelectList MainCategories { get; set; } = null!;
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(Guid? CategoryId)
         {
           if (!ModelState.IsValid)
             {
+                await InitAsync();
                 return Page();
             }
+            Category.ParentId = CategoryId;
             var result = await _unitOfWork.CategoryService.Create(Category);
 
             return RedirectToPage("./Index");
