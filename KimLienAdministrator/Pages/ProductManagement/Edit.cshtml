@@ -1,6 +1,7 @@
 ﻿@page
 @model KimLienAdministrator.Pages.ProductManagement.EditModel
 
+
 @{
     ViewData["Title"] = "Edit";
 }
@@ -9,30 +10,85 @@
 
 <h4>Product</h4>
 <hr />
+@if(Model.Messages.Count > 0)
+{
+    foreach(var message in Model.Messages)
+    {
+        <p class="alert-danger">@message</p>
+    }
+}
 <div class="row">
     <div class="col-md-4">
-        <form method="post">
+        <form method="post" asp-page-handler="Category">
+            <input type="hidden" asp-for="Product.Id" />
+            <div class="form-group">
+                <select asp-for="MainSelectedCategories" class="form-control" multiple="multiple" asp-items="Model.MainCategories"></select>
+                <button name="action" value="@Model.ACTION_CATEGORY_SELECT" class="btn btn-secondary">Category Select</button>
+            </div>
+            <div class="form-check-group">
+                @if (Model.SubCategories != null && Model.SubCategories.Count() > 0)
+                {
+                    @foreach (var sub in Model.SubCategories)
+                    {
+                        <label>@sub.Key</label>
+                        <select asp-for="SubSelectedCategories" class="form-control" multiple="multiple" asp-items="sub.Value"></select>
+                    }
+                }
+
+                <button name="action" value="@Model.ACTION_CATEGORY_SAVE" class="btn btn-primary">Save</button>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-4">
+        @if (Model.DeserializedPics != null)
+            {
+        <form method="post" asp-page-handler="SetPrimaryPicture">
+                <input type="hidden" asp-for="Product.Id" />
+                <div class="form-group">
+                    <select id="primary_pic" name="selected" class="form-control" asp-items="Model.Pictures" onchange="onSelectPrimaryPicture()"></select>
+                    <img id="show_selected" src="@Model.DeserializedPics.First()">
+                    <button class="btn btn-secondary">@Model.PIC_PRIMARY</button>
+                </div>
+        </form>
+        <form method="post" asp-page-handler="DeleteSelectedPicture">
+                <input type="hidden" asp-for="Product.Id" />
+                @foreach (var item in Model.DeserializedPics)
+                {
+                    <div class="form-group">
+                    <img src="@item"/>
+                    <input type="hidden" name="selected" value="@item"/>
+                    <button class="btn btn-primary">@Model.PIC_DELETE</button>
+                    </div>
+                }
+        </form>
+        }
+        <form method="post" asp-page-handler="UploadPictures" enctype="multipart/form-data">
+            <input type="hidden" asp-for="Product.Id" />
+            <div class="form-group">
+                <label asp-for="Files" class="control-label"></label>
+                <input asp-for="Files" class="form-control" />
+                <button class="btn btn-danger">@Model.PIC_UPLOAD</button>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-4">
+        <form method="post" asp-page-handler="Update">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Product.Id" />
             <div class="form-group">
-                <select multiple="multiple" name="CategoryId" asp-items="Model.MainCategories"></select>
-                <input type="submit" value="CategorySelect" class="btn btn-secondary" />
-            </div>
-            
-            <div class="form-group">
                 <label asp-for="Product.Name" class="control-label"></label>
                 <input asp-for="Product.Name" class="form-control" />
-                <span asp-validation-for="Product.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Category</label>
+                @foreach(var item in Model.ProductModel.ProductCategories)
+                {
+                    <label>@item.Category.Name</label>
+                }
             </div>
             <div class="form-group">
                 <label asp-for="Product.Description" class="control-label"></label>
                 <input asp-for="Product.Description" class="form-control" />
-                <span asp-validation-for="Product.Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Product.Pictures" class="control-label"></label>
-                <input asp-for="Product.Pictures" class="form-control" />
-                <span asp-validation-for="Product.Pictures" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
@@ -40,17 +96,7 @@
                 </label>
             </div>
             <div class="form-group">
-                <label asp-for="Product.CreatedDate" class="control-label"></label>
-                <input asp-for="Product.CreatedDate" class="form-control" />
-                <span asp-validation-for="Product.CreatedDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Product.ModifiedDate" class="control-label"></label>
-                <input asp-for="Product.ModifiedDate" class="form-control" />
-                <span asp-validation-for="Product.ModifiedDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <button name="action" value="@Model.ACTION_SAVE" class="btn btn-primary">Save</button>
             </div>
         </form>
     </div>
