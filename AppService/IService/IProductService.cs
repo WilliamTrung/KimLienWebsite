@@ -16,5 +16,7 @@ namespace AppService.IService
         public IEnumerable<ProductModel> CheckCategories(IEnumerable<ProductModel> productModels, List<string> categories);
         IList<string> GetDeserializedPictures(DTOs.Product product);
         Task<DTOs.Product?> SetPrimaryPicture(Guid productId, string picture);
+
+        Task<int> GetTotal();
     }
 }
