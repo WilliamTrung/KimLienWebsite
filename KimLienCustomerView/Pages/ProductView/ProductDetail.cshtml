@@ -34,13 +34,13 @@
                         <p>
                             @Model.Product.Product.Description.First()
                         </p>
-                        <h4>Categories that this product is in:</h4>
+                        @*<h4>Categories that this product is in:</h4>
                         @foreach (var item in Model.Product.ProductCategories)
                         {
                             <p>
-                                @item.Product.Categories
+                                @item.Product.
                             </p>
-                        }
+                        }*@
                     </div>
                 </div>
             </div>
@@ -52,7 +52,7 @@
 <div class="container">
     <div class="product_show_box">
         <div class="product_row">
-            @foreach (var item in Model.recommendProduct)
+            @foreach (var item in Model.recommendProducts)
                 {
             <div class="product_card">
             <a class="product_card" asp-page="./ProductDetail" asp-route-id="@item.Product.Id">
@@ -77,7 +77,7 @@
 <div class="container">
     <div class="product_show_box">
         <div class="product_row">
-            @foreach (var item in Model.recommendProduct)
+            @foreach (var item in Model.recommendProducts)
                 {
             <div class="product_card">
             <a class="product_card" asp-page="./ProductDetail" asp-route-id="@item.Product.Id">

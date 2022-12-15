@@ -5,100 +5,131 @@
 @{
     ViewData["Title"] = "Products";
 }
-<h1>Sản Phẩm Nổi Bật</h1>
-<div class="container">
-    <div class="product_show_box">
-        <div class="product_row">
-            @foreach (var item in Model.Products)
+<div class="container" style="border: 2px solid rgb(192,192,192);">
+    <h1>Sản Phẩm Nổi Bật</h1>
+    <div class="container">
+        <div class="product_show_box">
+            <div class="product_row">
+                @foreach (var item in Model.Products.Take(3))
                 {
-            <div class="product_card">
-            <a class="product_card" asp-page="./ProductDetail" asp-route-id="@item.Product.Id">
-                <div>
-                    <img class="product_image" src="@item.Product.DeserializedPictures.FirstOrDefault()" alt="@item.Product.Name">
-                </div>
-                <div class="product_name">
-                    <div class="card-header text-white bg-info text-lg-center">
-                        <p class="card-text">
-                            <h5>
-                                @item.Product.Name
-                            </h5>
-                        </p>
+                    <div class="product_card">
+                        <a class="product_card" asp-page="./ProductDetail" asp-route-id="@item.Product.Id">
+                            <div>
+                                <img class="product_image" src="@item.Product.DeserializedPictures.FirstOrDefault()" alt="@item.Product.Name">
+                            </div>
+                            <div class="product_name">
+                                <div class="card-header text-white bg-info text-lg-center">
+                                    <p class="card-text">
+                                        <h5>
+                                            @item.Product.Name
+                                        </h5>
+                                    </p>
+                                </div>
+                            </div>
+                        </a>
                     </div>
-                </div>   
-            </a>
+                }
             </div>
-            }
         </div>
     </div>
-</div>
-<div class="container">
-    <div class="product_show_box">
-        <div class="product_row">
-            @foreach (var item in Model.Products)
+    <div class="container">
+        <div class="product_show_box">
+            <div class="product_row">
+                @foreach (var item in Model.Products.Take(3))
                 {
-            <a class="product_card" asp-page="./ProductDetail" asp-route-id="@item.Product.Id">
-                <div>
-                    <img class="product_image"src="@item.Product.DeserializedPictures.FirstOrDefault()" alt="@item.Product.Name">
-                </div>
-                <div class="product_name">
-                    <div class="card-header text-white bg-info text-lg-center">
-                        <p class="card-text">
-                            <h5 >
-                                @item.Product.Name
-                            </h5>
-                        </p>
-                    </div>
-                </div>
-            </a>
-            }
+                    <a class="product_card" asp-page="./ProductDetail" asp-route-id="@item.Product.Id">
+                        <div>
+                            <img class="product_image" src="@item.Product.DeserializedPictures.FirstOrDefault()" alt="@item.Product.Name">
+                        </div>
+                        <div class="product_name">
+                            <div class="card-header text-white bg-info text-lg-center">
+                                <p class="card-text">
+                                    <h5>
+                                        @item.Product.Name
+                                    </h5>
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                }
+            </div>
         </div>
     </div>
-</div>
-<br />
-<h1>Sản Phẩm Mới</h1>
-<div class="container">
-    <div class="product_show_box">
-        <div class="product_row">
-            @foreach (var item in Model.Products)
+    <br />
+    <h1>Sản Phẩm Mới</h1>
+    <div class="container">
+        <div class="product_show_box">
+            <div class="product_row">
+                @foreach (var item in Model.Products.Take(3))
                 {
-            <a class="product_card" asp-page="./ProductDetail" asp-route-id="@item.Product.Id">
-                <div >
-                    <img class="product_image" src="@item.Product.DeserializedPictures.FirstOrDefault()" alt="@item.Product.Name">
-                </div>
-                <div class="product_name">
-                    <div class="card-header text-white bg-info text-lg-center">
-                        <p class="card-text">
-                            <h5 >
-                                @item.Product.Name
-                            </h5>
-                        </p>
-                    </div>
-                </div>
-            </a>
-            }
+                    <a class="product_card" asp-page="./ProductDetail" asp-route-id="@item.Product.Id">
+                        <div>
+                            <img class="product_image" src="@item.Product.DeserializedPictures.FirstOrDefault()" alt="@item.Product.Name">
+                        </div>
+                        <div class="product_name">
+                            <div class="card-header text-white bg-info text-lg-center">
+                                <p class="card-text">
+                                    <h5>
+                                        @item.Product.Name
+                                    </h5>
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                }
+            </div>
         </div>
     </div>
-</div>
-<div class="container">
-    <div class="product_show_box">
-        <div class="product_row">
-            @foreach (var item in Model.Products)
+    <div class="container">
+        <div class="product_show_box">
+            <div class="product_row">
+                @foreach (var item in Model.Products.Take(3))
                 {
-            <a class="product_card" asp-page="./ProductDetail" asp-route-id="@item.Product.Id">
-                <div>
-                    <img class="product_image" src="@item.Product.DeserializedPictures.FirstOrDefault()" alt="@item.Product.Name">
-                </div>
-                <div class="product_name">
-                    <div class="card-header text-white bg-info text-lg-center">
-                        <p class="card-text">
-                            <h5 >
-                                @item.Product.Name
-                            </h5>
-                        </p>
-                    </div>
-                </div>
-            </a>
-            }
+                    <a class="product_card" asp-page="./ProductDetail" asp-route-id="@item.Product.Id">
+                        <div>
+                            <img class="product_image" src="@item.Product.DeserializedPictures.FirstOrDefault()" alt="@item.Product.Name">
+                        </div>
+                        <div class="product_name">
+                            <div class="card-header text-white bg-info text-lg-center">
+                                <p class="card-text">
+                                    <h5>
+                                        @item.Product.Name
+                                    </h5>
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                }
+            </div>
         </div>
     </div>
+    <nav aria-label="Page navigation">
+        <form method="post">
+            <div class="pagination-box">
+                <ul class="pagination">
+                    <li class="page-item">
+                        <button class="page-link" value="@Model.PageIndex - 1" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">Previous</span>
+                        </button>
+                    </li>
+                    @for (int i = 1; i < @Model.MaxPages; i++)
+                    {
+                        <li class="page-item">
+                            <button class="page-link" value="@i" aria-label="@i">
+                                <span class="sr-only">@i</span>
+                            </button>
+                        </li>
+                    }
+                    <li class="page-item">
+                        <button class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Next</span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </form>
+
+    </nav>
 </div>

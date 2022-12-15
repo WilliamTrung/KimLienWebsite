@@ -26,7 +26,7 @@ namespace KimLienCustomerView.Pages.ProductView
 
         public ProductModel Product { get; set; }
         
-        public IList<ProductModel> recommendProduct { get; set; } = default!;
+        public IList<ProductModel> recommendProducts { get; set; } = default!;
 
         public async Task OnGetAsync(Guid? id)
         {
@@ -36,13 +36,14 @@ namespace KimLienCustomerView.Pages.ProductView
             {
                 Product = found;
             }
+            recommendProducts = find.ToList();
 
         }
         private void AdjustModels()
         {
-            if (recommendProduct != null)
+            if (recommendProducts != null)
             {
-                foreach (var product in recommendProduct)
+                foreach (var product in recommendProducts)
                 {
                     var productName = product.Product.Name;
                     int maxChars = 50;

@@ -9,6 +9,7 @@ using AppCore;
 using AppCore.Entities;
 using AppService.UnitOfWork;
 using AppService.Models;
+using AppService.Paging;
 
 namespace KimLienCustomerView.Pages.ProductView
 {
@@ -30,18 +31,29 @@ namespace KimLienCustomerView.Pages.ProductView
         }
 
         public IList<ProductModel> Products { get;set; } = default!;
-        
+        [BindProperty]
+        public int MaxPages { get; set; } = 10;
+        [BindProperty]
+        public int PageIndex { get; set; } = 0;
+        public async Task OnPostAsync()
+        {
+            
+        }
         public async Task OnGetAsync()
         {
-            var result = await _unitOfWork.ProductService.GetProductModels();          
+            var page = new PagingRequest()
+            {
+                PageSize = 10,
+                PageIndex = 0
+            };
+            var result = await _unitOfWork.ProductService.GetProductModels(paging: page);          
             Products = result.ToList();
-
             Products.Add(new ProductModel()
             {
                 Product = new AppService.DTOs.Product()
                 {
                     Name = "123",
-                    //Pictures = "https://images.unsplash.com/photo-1598449356475-b9f71db7d847?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8aG9yaXpvbnRhbHxlbnwwfHwwfHw%3D&w=1000&q=80",
+                    Pictures = "https://images.unsplash.com/photo-1598449356475-b9f71db7d847?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8aG9yaXpvbnRhbHxlbnwwfHwwfHw%3D&w=1000&q=80",
                     DeserializedPictures = new List<string>()
                     {
                         "https://static-cdn.jtvnw.net/ttv-boxart/513181-272x380.jpg",
@@ -52,12 +64,12 @@ namespace KimLienCustomerView.Pages.ProductView
                     Description = "blah blah blah boy i am god of war you mother fucker"
                 }
 
-            });Products.Add(new ProductModel()
+            }); Products.Add(new ProductModel()
             {
                 Product = new AppService.DTOs.Product()
                 {
                     Name = "123",
-                    //Pictures = "https://media.tenor.com/zGW3B-JOrNwAAAAC/klee-genshin.gif",
+                    Pictures = "https://media.tenor.com/zGW3B-JOrNwAAAAC/klee-genshin.gif",
                     DeserializedPictures = new List<string>()
                     {
                         "https://image.api.playstation.com/vulcan/img/rnd/202104/2507/Xdncb153Sz5UZMaF0X944NP5.png",
@@ -68,12 +80,172 @@ namespace KimLienCustomerView.Pages.ProductView
                     Description = "blah blah blah boy i am god of war you mother fucker"
                 }
 
+            }); Products.Add(new ProductModel()
+            {
+                Product = new AppService.DTOs.Product()
+                {
+                    Name = "123",
+                    Pictures = "https://media.tenor.com/zGW3B-JOrNwAAAAC/klee-genshin.gif",
+                    DeserializedPictures = new List<string>()
+                    {
+                        "https://i.ytimg.com/vi/dIQGI36BxDE/mqdefault.jpg",
+                        "https://i.pinimg.com/474x/68/aa/e4/68aae47bc6e440e1a53a088368466077.jpg",
+                        "https://api.duniagames.co.id/api/content/upload/file/7819734811580202820.JPG"
+                    },
+                    Id = Guid.NewGuid(),
+                    Description = "blah blah blah boy i am god of war you mother fucker"
+                }
+
             });Products.Add(new ProductModel()
             {
                 Product = new AppService.DTOs.Product()
                 {
                     Name = "123",
-                    //Pictures = "https://media.tenor.com/zGW3B-JOrNwAAAAC/klee-genshin.gif",
+                    Pictures = "https://media.tenor.com/zGW3B-JOrNwAAAAC/klee-genshin.gif",
+                    DeserializedPictures = new List<string>()
+                    {
+                        "https://i.ytimg.com/vi/dIQGI36BxDE/mqdefault.jpg",
+                        "https://i.pinimg.com/474x/68/aa/e4/68aae47bc6e440e1a53a088368466077.jpg",
+                        "https://api.duniagames.co.id/api/content/upload/file/7819734811580202820.JPG"
+                    },
+                    Id = Guid.NewGuid(),
+                    Description = "blah blah blah boy i am god of war you mother fucker"
+                }
+
+            });Products.Add(new ProductModel()
+            {
+                Product = new AppService.DTOs.Product()
+                {
+                    Name = "123",
+                    Pictures = "https://media.tenor.com/zGW3B-JOrNwAAAAC/klee-genshin.gif",
+                    DeserializedPictures = new List<string>()
+                    {
+                        "https://i.ytimg.com/vi/dIQGI36BxDE/mqdefault.jpg",
+                        "https://i.pinimg.com/474x/68/aa/e4/68aae47bc6e440e1a53a088368466077.jpg",
+                        "https://api.duniagames.co.id/api/content/upload/file/7819734811580202820.JPG"
+                    },
+                    Id = Guid.NewGuid(),
+                    Description = "blah blah blah boy i am god of war you mother fucker"
+                }
+
+            });Products.Add(new ProductModel()
+            {
+                Product = new AppService.DTOs.Product()
+                {
+                    Name = "123",
+                    Pictures = "https://media.tenor.com/zGW3B-JOrNwAAAAC/klee-genshin.gif",
+                    DeserializedPictures = new List<string>()
+                    {
+                        "https://i.ytimg.com/vi/dIQGI36BxDE/mqdefault.jpg",
+                        "https://i.pinimg.com/474x/68/aa/e4/68aae47bc6e440e1a53a088368466077.jpg",
+                        "https://api.duniagames.co.id/api/content/upload/file/7819734811580202820.JPG"
+                    },
+                    Id = Guid.NewGuid(),
+                    Description = "blah blah blah boy i am god of war you mother fucker"
+                }
+
+            });Products.Add(new ProductModel()
+            {
+                Product = new AppService.DTOs.Product()
+                {
+                    Name = "123",
+                    Pictures = "https://media.tenor.com/zGW3B-JOrNwAAAAC/klee-genshin.gif",
+                    DeserializedPictures = new List<string>()
+                    {
+                        "https://i.ytimg.com/vi/dIQGI36BxDE/mqdefault.jpg",
+                        "https://i.pinimg.com/474x/68/aa/e4/68aae47bc6e440e1a53a088368466077.jpg",
+                        "https://api.duniagames.co.id/api/content/upload/file/7819734811580202820.JPG"
+                    },
+                    Id = Guid.NewGuid(),
+                    Description = "blah blah blah boy i am god of war you mother fucker"
+                }
+
+            });Products.Add(new ProductModel()
+            {
+                Product = new AppService.DTOs.Product()
+                {
+                    Name = "123",
+                    Pictures = "https://media.tenor.com/zGW3B-JOrNwAAAAC/klee-genshin.gif",
+                    DeserializedPictures = new List<string>()
+                    {
+                        "https://i.ytimg.com/vi/dIQGI36BxDE/mqdefault.jpg",
+                        "https://i.pinimg.com/474x/68/aa/e4/68aae47bc6e440e1a53a088368466077.jpg",
+                        "https://api.duniagames.co.id/api/content/upload/file/7819734811580202820.JPG"
+                    },
+                    Id = Guid.NewGuid(),
+                    Description = "blah blah blah boy i am god of war you mother fucker"
+                }
+
+            });Products.Add(new ProductModel()
+            {
+                Product = new AppService.DTOs.Product()
+                {
+                    Name = "123",
+                    Pictures = "https://media.tenor.com/zGW3B-JOrNwAAAAC/klee-genshin.gif",
+                    DeserializedPictures = new List<string>()
+                    {
+                        "https://i.ytimg.com/vi/dIQGI36BxDE/mqdefault.jpg",
+                        "https://i.pinimg.com/474x/68/aa/e4/68aae47bc6e440e1a53a088368466077.jpg",
+                        "https://api.duniagames.co.id/api/content/upload/file/7819734811580202820.JPG"
+                    },
+                    Id = Guid.NewGuid(),
+                    Description = "blah blah blah boy i am god of war you mother fucker"
+                }
+
+            });Products.Add(new ProductModel()
+            {
+                Product = new AppService.DTOs.Product()
+                {
+                    Name = "123",
+                    Pictures = "https://media.tenor.com/zGW3B-JOrNwAAAAC/klee-genshin.gif",
+                    DeserializedPictures = new List<string>()
+                    {
+                        "https://i.ytimg.com/vi/dIQGI36BxDE/mqdefault.jpg",
+                        "https://i.pinimg.com/474x/68/aa/e4/68aae47bc6e440e1a53a088368466077.jpg",
+                        "https://api.duniagames.co.id/api/content/upload/file/7819734811580202820.JPG"
+                    },
+                    Id = Guid.NewGuid(),
+                    Description = "blah blah blah boy i am god of war you mother fucker"
+                }
+
+            });Products.Add(new ProductModel()
+            {
+                Product = new AppService.DTOs.Product()
+                {
+                    Name = "123",
+                    Pictures = "https://media.tenor.com/zGW3B-JOrNwAAAAC/klee-genshin.gif",
+                    DeserializedPictures = new List<string>()
+                    {
+                        "https://i.ytimg.com/vi/dIQGI36BxDE/mqdefault.jpg",
+                        "https://i.pinimg.com/474x/68/aa/e4/68aae47bc6e440e1a53a088368466077.jpg",
+                        "https://api.duniagames.co.id/api/content/upload/file/7819734811580202820.JPG"
+                    },
+                    Id = Guid.NewGuid(),
+                    Description = "blah blah blah boy i am god of war you mother fucker"
+                }
+
+            });Products.Add(new ProductModel()
+            {
+                Product = new AppService.DTOs.Product()
+                {
+                    Name = "123",
+                    Pictures = "https://media.tenor.com/zGW3B-JOrNwAAAAC/klee-genshin.gif",
+                    DeserializedPictures = new List<string>()
+                    {
+                        "https://i.ytimg.com/vi/dIQGI36BxDE/mqdefault.jpg",
+                        "https://i.pinimg.com/474x/68/aa/e4/68aae47bc6e440e1a53a088368466077.jpg",
+                        "https://api.duniagames.co.id/api/content/upload/file/7819734811580202820.JPG"
+                    },
+                    Id = Guid.NewGuid(),
+                    Description = "blah blah blah boy i am god of war you mother fucker"
+                }
+
+            });Products.Add(new ProductModel()
+            {
+                Product = new AppService.DTOs.Product()
+                {
+                    Name = "123",
+                    Pictures = "https://media.tenor.com/zGW3B-JOrNwAAAAC/klee-genshin.gif",
                     DeserializedPictures = new List<string>()
                     {
                         "https://i.ytimg.com/vi/dIQGI36BxDE/mqdefault.jpg",
@@ -85,6 +257,10 @@ namespace KimLienCustomerView.Pages.ProductView
                 }
 
             });
+            foreach (var product in Products)
+            {
+                var i = await _unitOfWork.ProductService.Create(product.Product);
+            }
         }
         private void AdjustModels()
         {
