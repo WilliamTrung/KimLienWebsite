@@ -145,5 +145,15 @@ namespace AppService.Service
             }
             return found;
         }
+
+        public async Task<int> GetTotal()
+        {
+            var products = await GetDTOs();
+            if(products == null)
+            {
+                return 0;
+            }
+            return products.Count();
+        }
     }
 }
