@@ -121,8 +121,13 @@ namespace AppService.Service
                         dto.Pictures = Extension.Helper.MergeListString(deserialized);
                     }
                 }
-                
-            }
+                else
+                {
+                    // == null
+                    //not interacting with picture
+                    dto.Pictures = found.Pictures;
+                }
+            } 
             return await base.Update(filter, dto);
         }
 
