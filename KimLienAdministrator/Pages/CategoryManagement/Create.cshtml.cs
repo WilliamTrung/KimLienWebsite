@@ -29,6 +29,11 @@ namespace KimLienAdministrator.Pages.CategoryManagement
         public async Task InitAsync()
         {
             var mainCategories = await _unitOfWork.CategoryService.GetDTOs(filter: c => c.ParentId == null);
+            mainCategories = mainCategories.Prepend(new Category()
+            {
+                Name= "None",
+                Id = Guid.Empty
+            });
             MainCategories = new MultiSelectList(mainCategories, "Id", "Name");
         }
         [BindProperty]
@@ -43,7 +48,10 @@ namespace KimLienAdministrator.Pages.CategoryManagement
                 await InitAsync();
                 return Page();
             }
-            Category.ParentId = CategoryId;
+          if(CategoryId != Guid.Empty)
+            {
+                Category.ParentId = CategoryId;
+            }
             var result = await _unitOfWork.CategoryService.Create(Category);
 
             return RedirectToPage("./Index");
