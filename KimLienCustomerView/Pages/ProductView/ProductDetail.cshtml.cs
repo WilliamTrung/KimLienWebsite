@@ -24,25 +24,32 @@ namespace KimLienCustomerView.Pages.ProductView
             _unitOfWork = unitOfWork;
         }
 
-        public ProductModel Product { get; set; }
+        public ProductModel Product { get; set; } = null!;
         
-        public IList<ProductModel> recommendProduct { get; set; } = default!;
+        public IList<ProductModel> recommendProducts { get; set; } = default!;
 
-        public async Task OnGetAsync(Guid? id)
+        public async Task<IActionResult> OnGetAsync(Guid? id)
         {
-            var find = await _unitOfWork.ProductService.GetProductModels();
+            var find = await _unitOfWork.ProductService.GetProductModels(filter: p => p.Id == id);
             var found = find.FirstOrDefault();
             if (found != null)
             {
                 Product = found;
+                var products = await _unitOfWork.ProductService.GetProductModels();
+                var relatives = products.Where(p => p.ProductCategories.Any(category => found.ProductCategories.Any(fCategory => fCategory.CategoryId == category.CategoryId)));
+                recommendProducts = relatives.ToList();
+                return Page();
+            } else
+            {
+                return RedirectToPage("MainPage");
             }
 
         }
         private void AdjustModels()
         {
-            if (recommendProduct != null)
+            if (recommendProducts != null)
             {
-                foreach (var product in recommendProduct)
+                foreach (var product in recommendProducts)
                 {
                     var productName = product.Product.Name;
                     int maxChars = 50;
