@@ -1,0 +1,72 @@
+﻿@page
+@using System.Text
+@model KimLienCustomerView.Pages.ProductView.ProductDetail
+@*@item.Product.DeserializedPictures[0]*@
+@{
+    ViewData["Title"] = "ProductDetail";
+}
+<div class="container">
+    <div class="product_detail_show_box">
+        <div class="col-md-6">
+            <div>
+                <img class="product_detail_main_image" src="@Model.Product.Product.DeserializedPictures.First()" alt="@Model.Product.Product.Name">
+            </div>
+            <div class="product_detail_sub_gallery">
+                <div class="owl-carousel owl-theme">
+                    @foreach (var item in Model.Product.Product.DeserializedPictures)
+                    {
+                        <div class="product_detail_sub_image">
+                            <img src="@item">
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="product_detail_text">
+                <div class="product_detail_name">
+                    <p>
+                        @Model.Product.Product.Name
+                    </p>
+                </div>
+                <div class="product_detail_description">
+                    @Html.Raw(@Model.Product.Product.Description)
+                </div>
+                <h4>Các Thể Loại sản phẩm nằm trong: </h4>
+                    @foreach (var item in Model.Product.ProductCategories)
+                    {
+                        <h5>
+                            @item.Category.Name
+                        </h5>
+                    }
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<br />
+<h1 style="margin-left:400px">Sản Phẩm Liên Quan</h1>
+<div class="container">
+    <div class="product_show_box">
+        <div class="product_row">
+            @foreach (var item in Model.recommendProducts.Take(6))
+            {
+                <div class="product_card">
+                    <a class="product_card" asp-page="./ProductDetail" asp-route-id="@item.Product.Id">
+                        <div>
+                            <img class="product_image" src="@item.Product.DeserializedPictures.FirstOrDefault()" alt="@item.Product.Name">
+                        </div>
+                        <div class="product_name">
+                            <div class="card-header text-white bg-info text-lg-center">
+                                <p class="card-text">
+                                    <h5>
+                                        @item.Product.Name
+                                    </h5>
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>

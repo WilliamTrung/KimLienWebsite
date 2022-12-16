@@ -121,8 +121,13 @@ namespace AppService.Service
                         dto.Pictures = Extension.Helper.MergeListString(deserialized);
                     }
                 }
-                
-            }
+                else
+                {
+                    // == null
+                    //not interacting with picture
+                    dto.Pictures = found.Pictures;
+                }
+            } 
             return await base.Update(filter, dto);
         }
 
@@ -144,6 +149,16 @@ namespace AppService.Service
                 found = await base.Update(p => p.Id == productId, found);
             }
             return found;
+        }
+
+        public async Task<int> GetTotal()
+        {
+            var products = await GetDTOs();
+            if(products == null)
+            {
+                return 0;
+            }
+            return products.Count();
         }
     }
 }

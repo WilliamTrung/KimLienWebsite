@@ -1,28 +1,61 @@
 ﻿@page
+@using System.Text
 @model KimLienCustomerView.Pages.ProductView.ProductsModel
-
+@*@item.Product.DeserializedPictures[0]*@
 @{
     ViewData["Title"] = "Products";
 }
-
-<h1>Products</h1>
-@foreach(var item in Model.Products){
-    <div class="col-md-4 col-xs-6 border-primary mb-3">
-        <div class="card mb-3" style="max-width: 540px;">
-            <div class="row g-0">
-                <div class="col-md-12">
-                    <div class="card-header text-white bg-info">
-                        <p class="card-text">
-                            <h5 class="card-title">
-                                @item.Product.Name
-                            </h5>
-                        </p>
+<div class="product-view" style="border: 2px solid rgb(192,192,192);">
+    <h1>Sản Phẩm Nổi Bật</h1>
+    <div class="sub-container">
+        <div class="product_show_box">
+            <div class="product_row">
+                @foreach (var item in Model.Products.Take(6))
+                {
+                    <div class="product_card">
+                        <a class="product_card" asp-page="./ProductDetail" asp-route-id="@item.Product.Id">
+                            <div>
+                                <img class="product_image" src="@item.Product.DeserializedPictures.FirstOrDefault()" alt="@item.Product.Name">
+                            </div>
+                            <div class="product_name">
+                                <div class="card-header text-white bg-info text-lg-center">
+                                    <p class="card-text">
+                                        <h5>
+                                            @item.Product.Name
+                                        </h5>
+                                    </p>
+                                </div>
+                            </div>
+                        </a>
                     </div>
-                </div>
-                <div class="col-md-6">
-                    <img src="@item.Product.DeserializedPictures[0]" width="100%" alt="@item.Product.Name">
-                </div>
+                }
             </div>
         </div>
     </div>
-}
+    <a asp-page="./ProductList">
+        <h1>Sản Phẩm Mới</h1>
+    </a>
+    <div class="sub-container">
+        <div class="product_show_box">
+            <div class="product_row">
+                @foreach (var item in Model.Products.Take(6))
+                {
+                    <a class="product_card" asp-page="./ProductDetail" asp-route-id="@item.Product.Id">
+                        <div>
+                            <img class="product_image" src="@item.Product.DeserializedPictures.FirstOrDefault()" alt="@item.Product.Name">
+                        </div>
+                        <div class="product_name">
+                            <div class="card-header text-white bg-info text-lg-center">
+                                <p class="card-text">
+                                    <h5>
+                                        @item.Product.Name
+                                    </h5>
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+</div>

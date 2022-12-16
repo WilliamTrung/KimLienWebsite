@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,7 +13,7 @@ using AppService.Paging;
 
 namespace KimLienCustomerView.Pages.ProductView
 {
-    public class ProductsModel : PageModel
+    public class ProductList : PageModel
     {
         private readonly IUnitOfWork _unitOfWork;
         public string Truncate(string proName, int maxChars, int maxCharShown)
@@ -25,26 +25,26 @@ namespace KimLienCustomerView.Pages.ProductView
             return proName;
         }
 
-        public ProductsModel(IUnitOfWork unitOfWork)
+        public ProductList(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        public IList<ProductModel> Products { get;set; } = default!;
+        public IList<ProductModel> Products { get; set; } = default!;
         [BindProperty]
         public int MaxPages { get; set; } = 0;
         [BindProperty]
         public int PageIndex { get; set; } = 0;
 
-        private int PageSize { get; set; } = 6;
+        private int PageSize { get; set; } = 12;
         public async Task OnPostAsync(int? index = 0)
         {
-            if(index != null)
+            if (index != null)
             {
                 PageIndex = (int)index;
             }
             await OnGetAsync();
-         }
+        }
         public async Task OnGetAsync()
         {
             int total = await _unitOfWork.ProductService.GetTotal();
@@ -54,12 +54,12 @@ namespace KimLienCustomerView.Pages.ProductView
                 PageSize = PageSize,
                 PageIndex = PageIndex
             };
-            var result = await _unitOfWork.ProductService.GetProductModels(paging: page);          
+            var result = await _unitOfWork.ProductService.GetProductModels(paging: page);
             Products = result.ToList();
         }
         private void AdjustModels()
         {
-            if(Products != null)
+            if (Products != null)
             {
                 foreach (var product in Products)
                 {
