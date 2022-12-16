@@ -89,7 +89,7 @@ namespace AppService.Service
                 list_entities_raw = await _repository.Get(filter, includeProperties);
             else
             {
-                list_entities_raw = (await _repository.Get(filter, includeProperties)).Skip((paging.PageIndex - 1) * paging.PageSize)
+                list_entities_raw = (await _repository.Get(filter, includeProperties)).Skip((paging.PageIndex) * paging.PageSize)
                .Take(paging.PageSize);
             }
             var list_entities = new List<TEntity>();
