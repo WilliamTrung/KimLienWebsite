@@ -27,7 +27,6 @@ namespace AppCore
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("server=WILLIAMTRUNG\\MYSQL;database=kimliendb;uid=sa;pwd=123;trusted_connection=true");
             base.OnConfiguring(optionsBuilder);
 
         }
