@@ -7,35 +7,38 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using AppCore;
 using AppCore.Entities;
+using AppService.UnitOfWork;
+using AppService.Models;
 
 namespace KimLienAdministrator.Pages.ProductManagement
 {
     public class DetailsModel : PageModel
     {
-        private readonly AppCore.SqlContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public DetailsModel(AppCore.SqlContext context)
+        public DetailsModel(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork= unitOfWork;
         }
 
-      public Product Product { get; set; }
+        public ProductModel Product { get; set; } = null!;
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
-            if (id == null || _context.Products == null)
+            if (id == null)
             {
-                return NotFound();
+                return RedirectToPage("/ProductManagement/Index");
             }
 
-            var product = await _context.Products.FirstOrDefaultAsync(m => m.Id == id);
-            if (product == null)
+            var find = await _unitOfWork.ProductService.GetProductModels(filter: p => p.Id == id);
+            var found = find.FirstOrDefault();
+            if (found == null)
             {
-                return NotFound();
+                return RedirectToPage("/ProductManagement/Index");
             }
             else 
             {
-                Product = product;
+                Product = found;
             }
             return Page();
         }

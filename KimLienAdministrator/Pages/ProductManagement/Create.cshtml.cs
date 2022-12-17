@@ -106,7 +106,8 @@ namespace KimLienAdministrator.Pages.ProductManagement
             var t = Files;
             if(action == ACTION_CATEGORY_SELECT)
             {
-                SetSelectedCategories();
+                //SetSelectedCategories();
+                //await for Initialize
             } else
             {
                 //Create
@@ -139,6 +140,8 @@ namespace KimLienAdministrator.Pages.ProductManagement
                 if(ModelState.IsValid)
                 {
                     var created = await _unitOfWork.ProductService.Create(Product);
+                    SetSelectedCategories();
+                    var check_categories = await _unitOfWork.ProductCategoryService.Implement(created, SelectedCategories);
                     var check = await _productBlob.UploadAsync(Files, created.Id);
                     if (check)
                     {
