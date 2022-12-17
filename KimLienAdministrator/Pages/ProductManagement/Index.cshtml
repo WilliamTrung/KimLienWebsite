@@ -5,10 +5,12 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Product Index</h1>
 
 <p>
-    <a asp-page="Create">Create New</a>
+    <a asp-page="Create">
+        <h3>Create New Product</h3>
+        </a>
 </p>
 <table class="table">
     <thead>
@@ -37,28 +39,27 @@
     <tbody>
 @foreach (var item in Model.Product) {
         <tr>
-            <td>
+            <td class="table-border" style="border-left:1px ridge #000">
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
-            <td>
+            <td class="table-border">
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Pictures)
+            <td class="table-border">
+                <img src="@item.DeserializedPictures.First()">
             </td>
-            <td>
+            <td class="table-border">
                 @Html.DisplayFor(modelItem => item.IsDeleted)
             </td>
-            <td>
+            <td class="table-border">
                 @Html.DisplayFor(modelItem => item.CreatedDate)
             </td>
-            <td>
+            <td class="table-border">
                 @Html.DisplayFor(modelItem => item.ModifiedDate)
             </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+            <td class="table-border">
+                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a>|
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a>|
             </td>
         </tr>
 }
