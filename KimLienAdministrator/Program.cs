@@ -9,6 +9,7 @@ using KimLienAdministrator;
 using KimLienAdministrator.Helper.Azure.Blob;
 using KimLienAdministrator.Helper.Azure.IBlob;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,7 +20,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-
+var configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory()) // This is the line you would change if your configuration files were somewhere else
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .Build();
 var services = builder.Services;
 services.AddCors(option =>
 {
@@ -32,7 +36,7 @@ services.AddControllers().AddNewtonsoftJson
                (
                    x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                );
-services.AddDbContext<SqlContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+services.AddDbContext<SqlContext>(option => option.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 services.AddSession();
 services.AddAutoMapper(typeof(Mapping));
@@ -41,11 +45,8 @@ services.AddScoped<IProductBlob, ProductBlob>();
 services.AddSession(option => option.IdleTimeout = TimeSpan.FromMinutes(30));
 services.AddTransient<IAuthService, AuthService>();
 
-using(var _config = builder.Configuration)
-{
-    var blobStorage = _config.GetSection("BlobStorage");
-    var connection = blobStorage["AzureWebJobsStorage"];
-}
+var blobStorage = configuration.GetSection("BlobStorage");
+var connection = blobStorage["AzureWebJobsStorage"];
 
 var app = builder.Build();
 
