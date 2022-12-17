@@ -51,7 +51,7 @@ namespace AppService.Extension
         {
             if(session != null)
             {
-                session.SetString("login-user", null);
+                session.SetString("login-user", "");
             }
         }
         public static User? GetLoginUser(this ISession session)

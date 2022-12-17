@@ -19,7 +19,7 @@ namespace AppService.Service
         public async Task<DTOs.User?> Login(DTOs.User user)
         {
             //User has no username or id = username? Ask tommorrow
-            var find = await GetDTOs(filter: a => a.Id == user.Id && a.Password == user.Password);
+            var find = await GetDTOs(filter: a => a.Id == user.Id && a.Password == user.Password, includeProperties: "Role");
             var found = find.FirstOrDefault();
             if (found != null)
             {

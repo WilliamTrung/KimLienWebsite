@@ -5,6 +5,7 @@ using AppService.IService;
 using AppService.Service;
 using AppService.UnitOfWork;
 using Azure.Storage.Blobs;
+using KimLienAdministrator;
 using KimLienAdministrator.Helper.Azure.Blob;
 using KimLienAdministrator.Helper.Azure.IBlob;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -37,8 +38,9 @@ services.AddSession();
 services.AddAutoMapper(typeof(Mapping));
 services.AddScoped<IUnitOfWork, UnitOfWork>();
 services.AddScoped<IProductBlob, ProductBlob>();
-
+services.AddSession(option => option.IdleTimeout = TimeSpan.FromMinutes(30));
 services.AddTransient<IAuthService, AuthService>();
+
 using(var _config = builder.Configuration)
 {
     var blobStorage = _config.GetSection("BlobStorage");
@@ -46,6 +48,8 @@ using(var _config = builder.Configuration)
 }
 
 var app = builder.Build();
+
+Startup.CreateDBAsync(app).Wait();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

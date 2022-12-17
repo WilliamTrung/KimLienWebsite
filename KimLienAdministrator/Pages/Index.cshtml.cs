@@ -1,4 +1,5 @@
 ﻿using AppService.DTOs;
+using AppService.Extension;
 using AppService.UnitOfWork;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -29,7 +30,10 @@ namespace KimLienAdministrator.Pages
                 return Page();
             } else
             {
-                return RedirectToPage("/ProductManagement");
+                //login successfully
+                var session = HttpContext.Session;
+                session.Login(login);
+                return RedirectToPage("/ProductManagement/Index");
             }
         }
     }
