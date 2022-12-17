@@ -20,3 +20,33 @@ img{
     height: 100px;
     width: 100%;
 }
+.button-align{
+    text-align: right;
+    width: 15%;
+}
+tr.child_row td {
+    padding-left: 20px;
+}   
+.child-row{
+    padding-left:10%;
+}
+.form-group-child{
+    padding-left:6.5%;
+}
+/*table {
+    border: none;
+    border-collapse: collapse;
+}
+
+    table td {
+        border-left: 1px ridge #000;
+        border-bottom: 1px ridge #000;
+    }
+
+        table td:first-child {
+            border-left: none;
+        }*/
+.table-border {
+    border-right: 1px ridge #000;
+    border-bottom: 1px ridge #000;
+}
