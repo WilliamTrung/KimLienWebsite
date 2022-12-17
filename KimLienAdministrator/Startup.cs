@@ -16,19 +16,29 @@ namespace KimLienAdministrator
                     var context = services.GetRequiredService<SqlContext>();
                     var unitOfWork = services.GetRequiredService<IUnitOfWork>();
                     context.Database.EnsureCreated();
-                    Role role = new Role()
+                    var find_role = await unitOfWork.RoleService.GetDTOs(filter: r => r.Name == "Administrator");
+                    var found_role = find_role.FirstOrDefault();
+                    if(found_role == null)
                     {
-                        Name = "Administrator"
-                    };
-                    role = await unitOfWork.RoleService.Create(role);
-                    User administrator = new User()
+                        Role role = new Role()
+                        {
+                            Name = "Administrator"
+                        };
+                        found_role = await unitOfWork.RoleService.Create(role);
+                    }
+                    var find_admin = await unitOfWork.UserService.GetDTOs(filter: u => u.RoleId == found_role.Id);
+                    var found_admin = find_admin.FirstOrDefault();
+                    if(found_admin == null)
                     {
-                        RoleId = role.Id,
-                        Password = "Kimlien$1966"
-                    };
-                    administrator = await unitOfWork.UserService.Create(administrator);
-                    Console.WriteLine(administrator.Id);
-                    Console.WriteLine(role.Name);
+                        User administrator = new User()
+                        {
+                            RoleId = found_role.Id,
+                            Password = "Kimlien$1966"
+                        };
+                        found_admin = await unitOfWork.UserService.Create(administrator);
+                    }
+                    Console.WriteLine(found_admin.Id);
+                    Console.WriteLine(found_role.Name);
                 }
                 catch (Exception ex)
                 {
