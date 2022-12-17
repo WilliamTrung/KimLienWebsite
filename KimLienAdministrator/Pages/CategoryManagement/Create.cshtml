@@ -5,25 +5,23 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>Category</h4>
+<h1>Create Category</h1>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label>Parent category</label>
-                <select name="CategoryId" asp-items="Model.MainCategories"></select>
+            <div class="form-group" style="margin-bottom:30px;">
+                <label class="category-parent-label">Parent category</label>
+                <select class="custom-select" name="CategoryId" asp-items="Model.MainCategories"></select>
             </div>
-            <div class="form-group">
-                <label asp-for="Category.Name" class="control-label"></label>
+            <div class="form-group" style="margin-bottom:30px;">
+                <label class="name-label" asp-for="Category.Name" class="control-label"></label>
                 <input asp-for="Category.Name" class="form-control" />
                 <span asp-validation-for="Category.Name" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
+            <div class="form-group" style="margin-bottom:15px;">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
@@ -31,7 +29,9 @@
 </div>
 
 <div>
-    <a asp-page="Index">Back to List</a>
+    <a asp-page="Index">
+       <h5>Back to List</h5>
+        </a>
 </div>
 
 @section Scripts {
