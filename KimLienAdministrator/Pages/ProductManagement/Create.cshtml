@@ -7,24 +7,24 @@
 
 <h1>Create Product</h1>
 <hr />
-@if(Model.Messages.Count > 0)
+@if (Model.Messages.Count > 0)
 {
-    foreach(var message in Model.Messages)
+    foreach (var message in Model.Messages)
     {
         <p class="alert-danger">@message</p>
     }
 }
 <div class="row">
-        <form method="post" enctype="multipart/form-data">     
-            
-            <div class="form-group" style="margin-bottom:30px;">
-                <label class="name-label" asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-            </div>
-        
-            <div class="form-group" style="margin-bottom:30px;">
-                <label class="name-label" asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
+    <form method="post" enctype="multipart/form-data">
+
+        <div class="form-group" style="margin-bottom:30px;">
+            <label class="name-label" asp-for="Name" class="control-label"></label>
+            <input asp-for="Name" class="form-control" />
+        </div>
+        <div class="form-group" style="margin-bottom:30px;">
+            <label class="name-label" asp-for="Description" class="control-label"></label>
+            @*<input asp-for="Description" class="form-control" />*@
+            <textarea class="" cols="20" rows="5" asp-for="Description"></textarea>
             </div>
         <div class="form-group" style="margin-bottom:30px;">
             <p class="name-label" style="margin-bottom:-2px">Parent Category</p>
@@ -46,17 +46,29 @@
             <input id="img-selector" asp-for="Files" class="form-control" />
             <div id="preview"></div>
         </div>
-            <div class="form-group" style="margin-bottom:15px;">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        <div class="form-group" style="margin-bottom:15px;">
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+    </form>
 </div>
 
 <div>
     <a asp-page="Index"><h5>Back to List</h5></a>
 </div>
-
+@*<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.0.20/tinymce.min.js"></script>*@
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.3.1/tinymce.min.js"></script>
+<script type="text/javascript">
+    tinymce.init({ selector: 'textarea',
+        max_height: 600,
+        max_width: 600,
+        min_height: 200,
+        min_width: 400,
+        content_style: "body {font-size: 15pt;}",
+    });
+</script>
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
 }
 

@@ -8,18 +8,31 @@
 <div class="container">
     <div class="product_detail_show_box">
         <div class="col-md-6">
-            <div>
-                <img class="product_detail_main_image" src="@Model.Product.Product.DeserializedPictures.First()" alt="@Model.Product.Product.Name">
-            </div>
-            <div class="product_detail_sub_gallery">
-                <div class="owl-carousel owl-theme">
-                    @foreach (var item in Model.Product.Product.DeserializedPictures)
+            <div id="slider" class="owl-carousel product-slider">
+                @*<img class="product_detail_main_image" src="@Model.Product.Product.DeserializedPictures.First()" alt="@Model.Product.Product.Name">*@
+                @foreach (var item in Model.Product.Product.DeserializedPictures)
                     {
-                        <div class="product_detail_sub_image">
-                            <img src="@item">
+                        <div class="item">
+                            @*<div class="product_detail_sub_image">*@
+                                <img class="product_detail_main_image" src="@item">
+                            @*</div>*@
                         </div>
                     }
-                </div>
+            </div>
+            <div id="thumb" class="owl-carousel product-thumb" style="margin-top: 40px;">
+                @*<div class="product_detail_sub_gallery">*@
+                    @*<div class="item">
+                            <img src="@Model.Product.Product.DeserializedPictures.First()" alt="@Model.Product.Product.Name">
+                    </div>*@
+                    @foreach (var item in Model.Product.Product.DeserializedPictures)
+                    {
+                        <div class="item">
+                            @*<div class="product_detail_sub_image">*@
+                                <img src="@item">
+                            @*</div>*@
+                        </div>
+                    }
+                @*</div>*@
             </div>
         </div>
         <div class="col-md-6">
@@ -33,13 +46,14 @@
                     @Html.Raw(@Model.Product.Product.Description)
                 </div>
                 <h4>Các loại hàng sản phẩm nằm trong: </h4>
+                <div class="product_detail_category">
                     @foreach (var item in Model.Product.ProductCategories)
                     {
-                        <h5>
+                        <label class="border border-dark p-1 m-1 rounded">
                             @item.Category.Name
-                        </h5>
+                        </label>
                     }
-            </div>
+                </div>
         </div>
     </div>
 </div>
@@ -70,3 +84,4 @@
             }
         </div>
     </div>
+</div>
