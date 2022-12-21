@@ -46,7 +46,7 @@ namespace KimLienCustomerView.Pages.ProductView
             }
             await OnGetAsync();
         }
-        public async Task OnGetAsync(string? name = null)
+        public async Task OnGetAsync(string? name = null, string? category = null)
         {
             int total = await _unitOfWork.ProductService.GetTotal();
             MaxPages = (int)Math.Ceiling((double)total / PageSize);
@@ -56,9 +56,13 @@ namespace KimLienCustomerView.Pages.ProductView
                 PageIndex = PageIndex
             };
             IEnumerable<ProductModel> result = await _unitOfWork.ProductService.GetProductModels(paging: page);
-            if (name != null)
+            if (category != null)
             {
-                result = result.Where(e => e.ProductCategories.Any(c => c.Category.Name == name));
+                result = result.Where(e => e.ProductCategories.Any(c => c.Category.Name == category));
+            }
+            if(name != null)
+            {
+                result = result.Where(e => e.Product.Name.ToLower().Contains(name.ToLower()));
             }
             Products = result.ToList();
         }

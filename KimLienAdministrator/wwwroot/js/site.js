@@ -10,13 +10,13 @@ function onSelectPrimaryPicture() {
     show.src = src;
 }
 function previewImages() {
-
+    refreshPreviewImages();
     var preview = document.querySelector('#preview');
 
     if (this.files) {
         [].forEach.call(this.files, readAndPreview);
     }
-
+    
     function readAndPreview(file) {
 
         // File type validator based on the extension 
@@ -28,15 +28,21 @@ function previewImages() {
 
         reader.addEventListener("load", function () {
             var image = new Image();
-            image.height = 100;
+            /*image.src = "http://localhost/image.jpg?" + new Date().getTime();*/
+            image.style = "height: auto; max-height: 300px; width:auto";
             image.title = file.name;
             image.src = this.result;
+            image.setAttribute("class", "preview-image");
             preview.appendChild(image);
         });
 
         reader.readAsDataURL(file);
-
     }
-
+    function refreshPreviewImages() {
+        var images = document.getElementsByClassName("preview-image");
+        while (images.length > 0) {
+            images[0].remove();
+        }
+    }
 }
 document.querySelector('#img-selector').addEventListener("change", previewImages);
