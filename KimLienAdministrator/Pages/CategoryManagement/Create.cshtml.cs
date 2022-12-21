@@ -8,9 +8,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using AppCore;
 using AppService.UnitOfWork;
 using AppService.DTOs;
+using Microsoft.AspNetCore.Authorization;
+using AppService;
 
 namespace KimLienAdministrator.Pages.CategoryManagement
 {
+    [Authorized("Administrator")]
     public class CreateModel : PageModel
     {
         private readonly IUnitOfWork _unitOfWork;
