@@ -10,9 +10,11 @@ using KimLienAdministrator.Helper.Azure;
 using KimLienAdministrator.Helper.Azure.IBlob;
 using AppService.UnitOfWork;
 using AppService.DTOs;
+using AppService;
 
 namespace KimLienAdministrator.Pages.ProductManagement
 {
+    [Authorized("Administrator")]
     public class IndexModel : PageModel
     {
         private readonly IProductBlob _productBlob;

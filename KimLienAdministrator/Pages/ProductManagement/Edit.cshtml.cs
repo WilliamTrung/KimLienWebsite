@@ -11,9 +11,11 @@ using AppService.UnitOfWork;
 using AppService.DTOs;
 using AppService.Models;
 using KimLienAdministrator.Helper.Azure.IBlob;
+using AppService;
 
 namespace KimLienAdministrator.Pages.ProductManagement
 {
+    [Authorized("Administrator")]
     public class EditModel : PageModel
     {
         public readonly string ACTION_CATEGORY_SELECT = "CategorySelect";

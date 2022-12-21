@@ -1,10 +1,12 @@
-﻿using AppService.DTOs;
+﻿using AppService;
+using AppService.DTOs;
 using AppService.UnitOfWork;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace KimLienAdministrator.Pages.CategoryManagement
 {
+    [Authorized("Administrator")]
     public class IndexModel : PageModel
     {
         private readonly IUnitOfWork _unitOfWork;
