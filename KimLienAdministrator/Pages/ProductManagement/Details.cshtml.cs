@@ -9,9 +9,11 @@ using AppCore;
 using AppCore.Entities;
 using AppService.UnitOfWork;
 using AppService.Models;
+using AppService;
 
 namespace KimLienAdministrator.Pages.ProductManagement
 {
+    [Authorized("Administrator")]
     public class DetailsModel : PageModel
     {
         private readonly IUnitOfWork _unitOfWork;

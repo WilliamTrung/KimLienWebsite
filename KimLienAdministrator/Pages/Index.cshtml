@@ -18,3 +18,7 @@
         <button class="text-center">Đăng nhập</button>
     </div>
 </form>
+@if(Model.Message != string.Empty)
+{
+    <p class="text-danger">@Model.Message</p>
+}
