@@ -5,24 +5,24 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create Category</h1>
+<h1>Tạo Thể Loại</h1>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group" style="margin-bottom:30px;">
-                <label class="category-parent-label">Parent category</label>
-                <select class="custom-select" name="CategoryId" asp-items="Model.MainCategories"></select>
+                <label class="fs-5">Thể Loại Chính</label>
+                <select class="form-select fs-5" name="CategoryId" asp-items="Model.MainCategories"></select>
             </div>
             <div class="form-group" style="margin-bottom:30px;">
-                <label class="name-label" asp-for="Category.Name" class="control-label"></label>
-                <input asp-for="Category.Name" class="form-control" />
+                <label class="fs-5" asp-for="Category.Name" class="control-label">Tên</label>
+                <input asp-for="Category.Name" class="form-control fs-5" />
                 <span asp-validation-for="Category.Name" class="text-danger"></span>
             </div>
 
             <div class="form-group" style="margin-bottom:15px;">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary fs-5" />
             </div>
         </form>
     </div>
@@ -30,7 +30,7 @@
 
 <div>
     <a asp-page="Index">
-       <h5>Back to List</h5>
+       <h5>Về danh sách</h5>
         </a>
 </div>
 

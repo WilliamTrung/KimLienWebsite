@@ -10,6 +10,7 @@ using AppCore.Entities;
 using AppService.UnitOfWork;
 using AppService.Models;
 using AppService.Paging;
+using AppService.DTOs;
 
 namespace KimLienCustomerView.Pages.ProductView
 {
@@ -45,7 +46,7 @@ namespace KimLienCustomerView.Pages.ProductView
             }
             await OnGetAsync();
         }
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(string? name = null)
         {
             int total = await _unitOfWork.ProductService.GetTotal();
             MaxPages = (int)Math.Ceiling((double)total / PageSize);
@@ -54,7 +55,11 @@ namespace KimLienCustomerView.Pages.ProductView
                 PageSize = PageSize,
                 PageIndex = PageIndex
             };
-            var result = await _unitOfWork.ProductService.GetProductModels(paging: page);
+            IEnumerable<ProductModel> result = await _unitOfWork.ProductService.GetProductModels(paging: page);
+            if (name != null)
+            {
+                result = result.Where(e => e.ProductCategories.Any(c => c.Category.Name == name));
+            }
             Products = result.ToList();
         }
         private void AdjustModels()

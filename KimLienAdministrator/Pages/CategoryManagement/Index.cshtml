@@ -5,11 +5,11 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Category Index</h1>
+<h1>Danh sách Thể Loại</h1>
 
 <p>
     <a asp-page="Create">
-        <h3>Create New Category</h3>
+        <h3>Tạo Thể Loại</h3>
     </a>
 </p>
 @*Table for Parent Categories*@
@@ -17,8 +17,7 @@
     <thead>
         <tr>
             <th>
-                @* @Html.DisplayNameFor(model => model.Category[0].Name)*@
-                Name
+                Tên
             </th>
             <th>
 
@@ -30,14 +29,14 @@
         {
             @if (item.Parent == null)
             {
-                
+
                 <tr>
                     <form method="post">
                     <td style="border-right: 1px ridge #000">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="form-group">
                             <input name="id" type="hidden" value="@item.Id" />
-                            <input name="name" asp-for="@item.Name" class="form-control" />
+                            <input name="name" asp-for="@item.Name" class="form-control fs-5" />
                                 @if (item.Id == Model.Message.Id)
                                 {
                                 <span value="@Model.Message.Message" class="text-danger"></span>
@@ -46,25 +45,25 @@
 
                     </td>
                     <td class="button-align">
-                        <button name="action" value="update" onclick="return confirm('Are you sure you want to update?');">Update</button>
-                        <button name="action" value="delete" onclick="return confirm('Are you sure you want to delete?');">Delete</button>
+                        <button class="btn btn-primary fs-6" name="action" value="update" onclick="return confirm('Bạn chắc muốn cập nhật?');">Cập Nhật</button>
+                        <button class="btn btn-danger fs-6" name="action" value="delete" onclick="return confirm('Bạn chắc muốn xóa?');">Xóa</button>
                     </td>
                     </form>
                 </tr>
-                
+
             }
             @foreach (var childItem in Model.Category)
             {
                 @if (childItem.ParentId.Equals(item.Id))
                 {
-                   
+
                     <tr class="child-row">
-                         <form method="post">
+                        <form method="post">
                         <td style="border-right: 1px ridge #000">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <div class="form-group-child">
                                 <input name="id" type="hidden" value="@childItem.Id" />
-                                <input name="name" asp-for="@childItem.Name" class="form-control" />
+                                <input name="name" asp-for="@childItem.Name" class="form-control fs-5" />
                                     @if (childItem.Id == Model.Message.Id)
                                     {
                                     <span value="@Model.Message.Message" class="text-danger"></span>
@@ -73,8 +72,8 @@
                             </div>
                         </td>
                         <td class="button-align">
-                            <button name="action" value="update" onclick="return confirm('Are you sure you want to update?');">Update</button>
-                            <button name="action" value="delete" onclick="return confirm('Are you sure you want to delete?');">Delete</button>
+                            <button class="btn btn-primary fs-6" name="action" value="update" onclick="return confirm('Bạn chắc muốn cập nhật?');">Cập Nhật</button>
+                            <button class="btn btn-danger fs-6" name="action" value="delete" onclick="return confirm('Bạn chắc muốn xóa?');">Xóa</button>
                         </td>
                         </form>
                     </tr>
