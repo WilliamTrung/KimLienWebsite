@@ -25,9 +25,9 @@ namespace KimLienAdministrator.Pages.ProductManagement
         public List<string> Messages { get; set; } = new List<string>();
 
         //Pictures value
-        public readonly string PIC_DELETE = "Delete";
-        public readonly string PIC_PRIMARY = "Set primary";
-        public readonly string PIC_UPLOAD = "Upload";
+        public readonly string PIC_DELETE = "Xóa";
+        public readonly string PIC_PRIMARY = "Đặt ảnh Chính";
+        public readonly string PIC_UPLOAD = "Tải lên";
         
         public List<IFormFile>? Files { get; set; }
         [BindProperty]

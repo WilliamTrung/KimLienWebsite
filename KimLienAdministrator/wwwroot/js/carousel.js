@@ -1,8 +1,4 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
-
-// Write your JavaScript code.
-$(document).ready(function () {
+﻿$(document).ready(function () {
 	var slider = $("#slider");
 	var thumb = $("#thumb");
 	var slidesPerPage = 4; //globaly define number of elements per page
@@ -82,28 +78,3 @@ $(document).ready(function () {
 		}
 	});
 });
-
-$(function () {
-	$('#search-menu').removeClass('toggled');
-
-	$('#search-icon').click(function (e) {
-		e.stopPropagation();
-		$('#search-menu').toggleClass('toggled');
-		$("#popup-search").focus();
-	});
-
-	$('#search-menu input').click(function (e) {
-		e.stopPropagation();
-	});
-
-	$('#search-menu, body').click(function () {
-		$('#search-menu').removeClass('toggled');
-	});
-});
-
-function onSearchSubmit() {
-	var data = document.getElementById("search").value;
-	var base_uri = "/ProductView/ProductList?name=";
-	let uri = base_uri + data;
-	window.location.href = uri;
-}

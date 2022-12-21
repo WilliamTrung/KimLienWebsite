@@ -14,8 +14,22 @@ html {
 }
 
 body {
-    margin-bottom: 60px;
+    min-height: 100vh;
+    position: relative;
+    margin: 0;
+    padding-bottom: 100px;
+    //height of the footer box-sizing: border-box;
 }
+
+#footer-overrides {
+    line-height: 30px;
+}
+footer {
+    position: absolute;
+    bottom: 0;
+    height: 100px;  
+}
+
 
 .product_detail_show_box {
     height: 650px;
@@ -39,8 +53,8 @@ body {
 }
 
 .product_detail_sub_image {
-    max-width: 100%;
-    max-height: 100%;
+    width:100px;
+    height:180px;
     margin-right: 10px;
     border: 1px solid;
     resize: both;
@@ -104,6 +118,10 @@ body {
     min-height: 475px !important;
     height: 100%;
 }
+#products-override {
+    padding-right: 0px;
+    padding-left: 0px;
+}
 
 body {
     background-color: rgb(16, 204, 88);
@@ -130,16 +148,6 @@ body {
     height: 50px;
     display: block;
 }
-.product-view {
-    width: 1350px;
-    overflow: auto;
-    display: block;
-}
-.sub-container {
-    height: 45%;
-    display: block;
-    width: 100%
-}
 .sub-product-list {
     display: block;
     width: 100%;
@@ -161,4 +169,33 @@ body {
     height: 100%;
     display: flex;
 }
-.pro
+.product_detail_category {
+    overflow: auto;
+    height: 150px;
+    width: 500px;
+}
+.header-logo{
+    width:100%;
+    height: 100%;
+    
+}
+
+.navbar {
+    border: 2px solid #808080;
+}
+.nav-item{
+    float:left;
+    color: white;
+    text-align:center;
+    width: 12%;
+    height:100%;
+}
+    .nav-item:hover {
+        background-color: cornflowerblue;
+    }
+    .nav-item.active {
+        background-color: #04AA6D;
+    }
+.link-dark:hover{
+    color: cyan;
+}
