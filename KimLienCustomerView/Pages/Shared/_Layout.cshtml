@@ -15,9 +15,9 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
     <header>
-        <div class="container">
+        <div class="container mb-3">
             <img class="header-logo rounded-2" src="https://kimlien1808.blob.core.windows.net/pictures/header-1.png" alt="Kim Lien Logo" />
-            <nav class="navbar navbar-expand navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3 rounded-2">
+            <nav class="navbar navbar-expand navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow rounded-2">
                 <div class="container">
                     @*<a class="navbar-brand" asp-area="" asp-page="/Index">KimLienCustomerView</a>*@
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -25,9 +25,9 @@
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                        <ul class="navbar-nav flex-grow-1 justify-content-between">
-                            <li class="nav-item">
-                                <a class="nav-link text-dark fs-5" asp-area="" asp-page="/ProductView/Products">Trang Chủ</a>
+                        <ul class="navbar-nav flex-grow-1 justify-content-between d-inline-flex nav-fill">
+                            <li class="nav-item m-auto">
+                                <a class="nav-link text-dark fs-5 " asp-area="" asp-page="/ProductView/Products">Trang Chủ</a>
                             </li>
                             @{
                                 var categories = await GetCategories();
@@ -35,17 +35,31 @@
 
                             @foreach (var item in categories)
                             {
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark fs-5" asp-area="" asp-page="/ProductView/ProductList" asp-route-name="@item.Name">@item.Name</a>
+                                <li class="nav-item m-auto">
+                                    <a class="nav-link text-dark fs-5 text-wrap" asp-area="" asp-page="/ProductView/ProductList" asp-route-category="@item.Name">@*@item.Name*@VAt dung tieu tien lon</a>
                                 </li>
                             }
-                            <li class="nav-item">
+                            <li class="nav-item m-auto">
                                 <a class="nav-link text-dark fs-5" href="#scrollspyFooter">Liên hệ</a>
+                            </li>
+                            <li>
+                                <button class="btn" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#search-external"
+                                        aria-controls="search-external"
+                                        aria-expanded="false"
+                                        aria-label="Toggle navigation">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                                    </svg>
+                                </button>
                             </li>
                         </ul>
                     </div>
                 </div>
             </nav>
+            <div class="collapse" id="search-external">
+                <input id="search" type="text" class="form-control rounded-2 fs-5 border-4" placeholder="Tìm Kiếm" aria-label="Tìm Kiếm..." onsubmit="onSearchSubmit()">
+            </div>
         </div>
     </header>
     <div class="container">
@@ -124,6 +138,15 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <script>
+        var input = document.getElementById("search");
+        input.addEventListener("keypress", function (event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                onSearchSubmit();
+            }
+        });
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

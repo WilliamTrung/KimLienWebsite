@@ -82,3 +82,28 @@ $(document).ready(function () {
 		}
 	});
 });
+
+$(function () {
+	$('#search-menu').removeClass('toggled');
+
+	$('#search-icon').click(function (e) {
+		e.stopPropagation();
+		$('#search-menu').toggleClass('toggled');
+		$("#popup-search").focus();
+	});
+
+	$('#search-menu input').click(function (e) {
+		e.stopPropagation();
+	});
+
+	$('#search-menu, body').click(function () {
+		$('#search-menu').removeClass('toggled');
+	});
+});
+
+function onSearchSubmit() {
+	var data = document.getElementById("search").value;
+	var base_uri = "/ProductView/ProductList?name=";
+	let uri = base_uri + data;
+	window.location.href = uri;
+}
