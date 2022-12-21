@@ -6,9 +6,8 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1>Chỉnh Sửa Sản Phẩm</h1>
 
-<h4>Product</h4>
 <hr />
 @if(Model.Messages.Count > 0)
 {
@@ -20,10 +19,11 @@
 <div class="row">
     <div class="col-md-4">
         <form method="post" asp-page-handler="Category">
+            <label class="fs-5">Chọn Thể Loại</label>
             <input type="hidden" asp-for="Product.Id" />
             <div class="form-group">
-                <select asp-for="MainSelectedCategories" class="form-control" multiple="multiple" asp-items="Model.MainCategories"></select>
-                <button name="action" value="@Model.ACTION_CATEGORY_SELECT" class="btn btn-secondary">Category Select</button>
+                <select asp-for="MainSelectedCategories" class="form-control fs-5" multiple="multiple" asp-items="Model.MainCategories"></select>
+                <button name="action" value="@Model.ACTION_CATEGORY_SELECT" class="btn btn-secondary fs-5">Chọn Thể Loại Phụ</button>
             </div>
             <div class="form-check-group">
                 @if (Model.SubCategories != null && Model.SubCategories.Count() > 0)
@@ -35,49 +35,49 @@
                     }
                 }
 
-                <button name="action" value="@Model.ACTION_CATEGORY_SAVE" class="btn btn-primary">Save</button>
+                <button name="action" value="@Model.ACTION_CATEGORY_SAVE" class="btn btn-primary fs-5">Lưu</button>
             </div>
         </form>
     </div>
     <div class="col-md-4">
         @if (Model.DeserializedPics != null)
             {
-        <form method="post" asp-page-handler="SetPrimaryPicture">
+            <form method="post" asp-page-handler="SetPrimaryPicture">
                 <input type="hidden" asp-for="Product.Id" />
                 <div class="form-group">
-                    <select id="primary_pic" name="selected" class="form-control" asp-items="Model.Pictures" onchange="onSelectPrimaryPicture()"></select>
-                    <img id="show_selected" src="@Model.DeserializedPics.First()">
-                    <button class="btn btn-secondary">@Model.PIC_PRIMARY</button>
+                    <select id="primary_pic" name="selected" class="form-control fs-5" asp-items="Model.Pictures" onchange="onSelectPrimaryPicture()"></select>
+                    <img class="h-auto" id="show_selected" src="@Model.DeserializedPics.First()">
+                    <button class="btn btn-secondary fs-5">@Model.PIC_PRIMARY</button>
                 </div>
         </form>
-        <form method="post" asp-page-handler="DeleteSelectedPicture">
+            <form class="fs-5" method="post" asp-page-handler="DeleteSelectedPicture">
                 <input type="hidden" asp-for="Product.Id" />
                 @foreach (var item in Model.DeserializedPics)
                 {
                     <div class="form-group">
-                    <img src="@item"/>
+                    <img class="h-auto" src="@item"/>
                     <input type="hidden" name="selected" value="@item"/>
-                    <button class="btn btn-primary">@Model.PIC_DELETE</button>
+                    <button class="btn btn-danger fs-5">@Model.PIC_DELETE</button>
                     </div>
                 }
         </form>
         }
-        <form method="post" asp-page-handler="UploadPictures" enctype="multipart/form-data">
+        <form class="fs-5" method="post" asp-page-handler="UploadPictures" enctype="multipart/form-data">
             <input type="hidden" asp-for="Product.Id" />
             <div class="form-group">
-                <label asp-for="Files" class="control-label"></label>
-                <input asp-for="Files" class="form-control" />
-                <button class="btn btn-danger">@Model.PIC_UPLOAD</button>
+                <label asp-for="Files" class="control-label fs-5"></label>
+                <input asp-for="Files" class="form-control fs-5" />
+                <button class="btn btn-success fs-5">@Model.PIC_UPLOAD</button>
             </div>
         </form>
     </div>
     <div class="col-md-4">
-        <form method="post" asp-page-handler="Update">
+        <form class="m-0 fs-5" method="post" asp-page-handler="Update">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Product.Id" />
             <div class="form-group">
-                <label asp-for="Product.Name" class="control-label"></label>
-                <input asp-for="Product.Name" class="form-control" />
+                <label asp-for="Product.Name" class="fs-5">Tên</label>
+                <input asp-for="Product.Name" class="form-control fs-5" />
             </div>
             <div class="form-group">
                 <label class="control-label">Category</label>
@@ -86,24 +86,19 @@
                     <label>@item.Category.Name</label>
                 }
             </div>
-            <div class="form-group">
-                <label asp-for="Product.Description" class="control-label"></label>
-                <input asp-for="Product.Description" class="form-control" />
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Product.IsDeleted" /> @Html.DisplayNameFor(model => model.Product.IsDeleted)
-                </label>
+            <div class="form-group ">
+                <label asp-for="Product.Description" class="fs-5">Chi tiết mô tả</label>
+                <input asp-for="Product.Description" class="form-control fs-5" />
             </div>
             <div class="form-group">
-                <button name="action" value="@Model.ACTION_SAVE" class="btn btn-primary">Save</button>
+                <button name="action" value="@Model.ACTION_SAVE" class="btn btn-primary fs-5">Lưu</button>
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-page="./Index">Back to List</a>
+    <a class="fs-5" asp-page="./Index">Về danh sách</a>
 </div>
 
 @section Scripts {

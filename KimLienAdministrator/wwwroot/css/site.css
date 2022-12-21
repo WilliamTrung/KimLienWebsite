@@ -22,7 +22,10 @@ img{
 }
 .button-align{
     text-align: right;
-    width: 15%;
+    width: 17%;
+}
+.isdelete{
+    width:10%
 }
 tr.child_row td {
     padding-left: 20px;
@@ -33,33 +36,16 @@ tr.child_row td {
 .form-group-child{
     padding-left:6.5%;
 }
-/*table {
-    border: none;
-    border-collapse: collapse;
-}
-
-    table td {
-        border-left: 1px ridge #000;
-        border-bottom: 1px ridge #000;
-    }
-
-        table td:first-child {
-            border-left: none;
-        }*/
 .table-border {
     border-right: 1px ridge #000;
     border-bottom: 1px ridge #000;
 }
-.category-parent-label{
-    font-size:28px;
-    margin-right:15px;
+.btn-edit{
+    width:8%;
 }
-.name-label{
-    font-size:20px;
-}
-.custom-select{
-    position:relative;
-    width: 200px;
+.category-parent-label {
+    font-size: 28px;
+    margin-right: 15px;
 }
 .product_detail_show_box {
     height: 650px;

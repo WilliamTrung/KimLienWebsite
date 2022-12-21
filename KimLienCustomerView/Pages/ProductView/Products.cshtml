@@ -5,9 +5,9 @@
 @{
     ViewData["Title"] = "Products";
 }
-<div class="product-view" style="border: 2px solid rgb(192,192,192);">
+<div class="container" style="border: 2px solid rgb(192,192,192);">
     <h1>Sản Phẩm Nổi Bật</h1>
-    <div class="sub-container">
+    <div id="products-override" class="container-fluid">
         <div class="product_show_box">
             <div class="product_row">
                 @foreach (var item in Model.Products.Take(6))
@@ -35,7 +35,7 @@
     <a asp-page="./ProductList">
         <h1>Sản Phẩm Mới</h1>
     </a>
-    <div class="sub-container">
+    <div id="products-override" class="container-fluid">
         <div class="product_show_box">
             <div class="product_row">
                 @foreach (var item in Model.Products.Take(6))

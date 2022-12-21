@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using AppService.DTOs;
+@using AppService.UnitOfWork;
+@inject IUnitOfWork _unitOfWork
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -10,27 +13,40 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">KimLienCustomerView</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                        </li>
-                    </ul>
+        <div class="container">
+            <img class="header-logo rounded-2" src="https://kimlien1808.blob.core.windows.net/pictures/header-1.png" alt="Kim Lien Logo" />
+            <nav class="navbar navbar-expand navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3 rounded-2">
+                <div class="container">
+                    @*<a class="navbar-brand" asp-area="" asp-page="/Index">KimLienCustomerView</a>*@
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                        <ul class="navbar-nav flex-grow-1 justify-content-between">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark fs-5" asp-area="" asp-page="/ProductView/Products">Trang Chủ</a>
+                            </li>
+                            @{
+                                var categories = await GetCategories();
+                            }
+
+                            @foreach (var item in categories)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark fs-5" asp-area="" asp-page="/ProductView/ProductList" asp-route-name="@item.Name">@item.Name</a>
+                                </li>
+                            }
+                            <li class="nav-item">
+                                <a class="nav-link text-dark fs-5" href="#scrollspyFooter">Liên hệ</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-        </nav>
+            </nav>
+        </div>
     </header>
     <div class="container">
         <main role="main" class="pb-3">
@@ -38,10 +54,69 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2022 - KimLienCustomerView - <a asp-area="" asp-page="/Privacy">Privacy</a>
-        </div>
+    <footer id="footer-overrides" class="border-top footer text-muted bg-light">
+        <section class="bg-light">
+            <div class="container text-center text-md-start">
+                <!-- Grid row -->
+                <div class="row mt-3">
+                    <!-- Grid column -->
+                    <div class="col-md-3 col-lg-4 col-xl-3 mx-auto text-wrap fs-6">
+                        <!-- Content -->
+                        <h6 class="text-uppercase fw-bold fs-5">Tên công ty</h6>
+                        <hr class="mt-0 d-inline-block mx-auto"
+                            style="width: 60px; background-color: #7c4dff; height: 2px" />
+                        <ul>
+                            <li class="fw-bold mb-0">
+                                CÔNG TY TNHH MTV THIẾT BỊ VẬT TƯ KIM LIÊN
+                            </li>
+                            <li>
+                                118/1 Nguyễn Tưu Nghiêm, P.Bình Trưng Tây, Quận 2, TP.HCM.
+                            </li>
+                            <li>
+                                0913.971497 - 0949.791306
+                            </li>
+                            <li>
+                                kimlienq2hcm@gmail.com
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- Grid column -->
+                    <!-- Grid column -->
+                    <div class="col-md-4 col-lg-3 col-xl-3 mx-auto text-wrap">
+                        <!-- Links -->
+                        <h6 class="text-uppercase fw-bold fs-5">DANH MỤC SẢN PHẨM</h6>
+                        <hr class="d-inline-block mx-auto"
+                            style="width: 60px; background-color: #7c4dff; height: 2px" />
+                        <ul class="list-unstyled">
+                            @foreach (var item in categories)
+                            {
+                                <li>
+                                    <a class="link-dark fs-5 text-decoration-none" asp-area="" asp-page="/ProductView/ProductList" asp-route-name="@item.Name">@item.Name</a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                    <!-- Grid column -->
+                    <!-- Grid column -->
+                    <div class="col-md-4 col-lg-3 col-xl-3 mx-auto text-wrap mb-md-0">
+                        <!-- Links -->
+                        <h6 id="scrollspyFooter" class="text-uppercase fw-bold fs-5">HỖ TRỢ KHÁCH HÀNG</h6>
+                        <hr class="mb-4 mt-0 d-inline-block mx-auto"
+                            style="width: 60px; background-color: #7c4dff; height: 2px" />
+                        <ul class="list-unstyled">
+                            <li>
+                                <a class="link-dark fs-5 text-decoration-none" asp-area="" asp-page="">Chính sách đổi trả</a>
+                            </li>
+                            <li>
+                                <a class="link-dark fs-5 text-decoration-none" asp-area="" asp-page="">Hình thức thanh toán</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- Grid column -->
+                </div>
+                <!-- Grid row -->
+            </div>
+        </section>
     </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -52,3 +127,10 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+@{
+    async Task<IEnumerable<Category>> GetCategories()
+    {
+        var categories = await _unitOfWork.CategoryService.GetDTOs(filter: c => c.ParentId == null);
+        return categories;
+    }
+}
