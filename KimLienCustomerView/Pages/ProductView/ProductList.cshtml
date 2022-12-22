@@ -7,24 +7,24 @@
 <div class="container">
     <div class="row">
         @foreach (var item in Model.Products.Take(12))
-    {
-        <div class="col-xl-4 col-sm-12 col-md-12">
-            <a asp-page="./ProductDetail" asp-route-id="@item.Product.Id">
-                <div class="w-100 my-2">
-                    <img class="h-auto w-100" src="@item.Product.DeserializedPictures.FirstOrDefault()" alt="@item.Product.Name">
-                    <div class="p-2 text-black bg-light text-center border border-3">
-                        <p class="h5 text-decoration-none">
-                            @item.Product.Name
-                        </p>
+        {
+            <div class="col-xl-4 col-sm-12 col-md-12">
+                <a asp-page="./ProductDetail" asp-route-id="@item.Product.Id">
+                    <div class="w-100 my-2">
+                        <img class="h-auto w-100" src="@item.Product.DeserializedPictures.FirstOrDefault()" alt="@item.Product.Name">
+                        <div class="p-2 text-black bg-light text-center border border-3">
+                            <p class="h5 text-decoration-none">
+                                @item.Product.Name
+                            </p>
+                        </div>
                     </div>
-                </div>
-            </a>
-        </div>
-    }
+                </a>
+            </div>
+        }
     </div>
-    
+
 </div>
-    <nav class="ms-2">
+<nav class="ms-2">
     <form method="post">
         <ul class="pagination">
             @if (Model.PageIndex != 0)
@@ -46,14 +46,15 @@
 
             @for (int i = 1; i <= @Model.MaxPages; i++)
             {
-                @if (Model.PageIndex == (i-1))
+                @if (Model.PageIndex == (i - 1))
                 {
                     <li class="page-item active">
-                    <button name="index" class="page-link" value="@(i-1)" aria-label="@i">
-                        <span class="sr-only">@i</span>
-                    </button>
-                </li>
-                } else
+                        <button name="index" class="page-link" value="@(i-1)" aria-label="@i">
+                            <span class="sr-only">@i</span>
+                        </button>
+                    </li>
+                }
+                else
                 {
                     <li class="page-item">
                         <button name="index" class="page-link" value="@(i-1)" aria-label="@i">
@@ -61,7 +62,7 @@
                         </button>
                     </li>
                 }
-                
+
             }
             @if (Model.PageIndex == Model.MaxPages - 1)
             {
