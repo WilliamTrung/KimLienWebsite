@@ -13,9 +13,9 @@ namespace KimLienCustomerView.Pages
             _unitOfWork = unitOfWork;
         }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
-
+            return RedirectToPage("/ProductView/Products");
         }
     }
 }
