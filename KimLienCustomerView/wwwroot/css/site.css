@@ -18,6 +18,9 @@ body {
     position: relative;
     margin: 0;
     padding-bottom: 100px;
+    background: url("https://kimlien1808.blob.core.windows.net/pictures/backround_3.jpeg") center no-repeat fixed;
+    background-size: cover;
+    backdrop-filter:blur(3.25px);
     //height of the footer box-sizing: border-box;
 }
 
