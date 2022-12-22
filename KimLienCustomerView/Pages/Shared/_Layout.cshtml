@@ -13,48 +13,43 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
 </head>
-<body class="d-flex flex-column min-vh-100">
+<body class="d-flex flex-column">
     <header>
-        <div class="container mb-3 ps-0 pe-0">
-            <img class="w-100 rounded-2" src="https://kimlien1808.blob.core.windows.net/pictures/header-1.png" alt="Kim Lien Logo" />
-            <nav class="navbar navbar-expand navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow rounded-2">
-                <div class="container">
-                    @*<a class="navbar-brand" asp-area="" asp-page="/Index">KimLienCustomerView</a>*@
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                            aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                        <ul class="navbar-nav flex-grow-1 justify-content-between d-inline-flex nav-fill">
-                            <li class="nav-item m-auto">
-                                <a class="nav-link text-dark fs-5 " asp-area="" asp-page="/ProductView/Products">Trang Chủ</a>
-                            </li>
-                            @{
-                                var categories = await GetCategories();
-                            }
+        <div class="container mb-3">
+            <img class="header-logo rounded-2 w-100 h-auto" src="https://kimlien1808.blob.core.windows.net/pictures/header-1.png" alt="Kim Lien Logo" />
+            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom box-shadow rounded-2 py-0" style="opacity: 80%">
+                <a class="navbar-brand px-3 mx-0 border border-2 border-start-0 border-top-0 border-bottom-0" asp-area="" asp-page="/ProductView/Products">Trang Chủ</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse">
+                    <ul class="navbar-nav flex-grow-1 justify-content-start">
+                        @{
+                            var categories = await GetCategories();
+                        }
 
-                            @foreach (var item in categories)
-                            {
-                                <li class="nav-item m-auto">
-                                    <a class="nav-link text-dark fs-5 text-wrap" asp-area="" asp-page="/ProductView/ProductList" asp-route-category="@item.Name">@*@item.Name*@VAt dung tieu tien lon</a>
-                                </li>
-                            }
-                            <li class="nav-item m-auto">
-                                <a class="nav-link text-dark fs-5" href="#scrollspyFooter">Liên hệ</a>
+                        @foreach (var item in categories)
+                        {
+                            <li class="px-3 border border-2 border-start-0 border-top-0 border-bottom-0">
+                                <a class="nav-link text-dark fs-5 text-wrap" asp-area="" asp-page="/ProductView/ProductList" asp-route-category="@item.Name">@item.Name</a>
                             </li>
-                            <li class="m-auto">
-                                <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse"
-                                        data-bs-target="#search-external"
-                                        aria-controls="search-external"
-                                        aria-expanded="false"
-                                        aria-label="Toggle navigation">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                                    </svg>
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
+                        }
+                    </ul>
+                </div>
+                <div class="navbar-expand">
+                    <a class="nav-link text-dark fs-5" href="#scrollspyFooter">Liên hệ</a>
+                </div>
+                <div class="navbar-expand">
+                    <button class="btn m-auto" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#search-external"
+                            aria-controls="search-external"
+                            aria-expanded="false"
+                            aria-label="Toggle navigation">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                        </svg>
+                    </button>
                 </div>
             </nav>
             <div class="collapse" id="search-external">
@@ -62,7 +57,7 @@
             </div>
         </div>
     </header>
-    <div class="container ps-0 pe-0" style="background-color: rgb(16, 204, 88);">
+    <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
@@ -84,7 +79,7 @@
                                 CÔNG TY TNHH MTV THIẾT BỊ VẬT TƯ KIM LIÊN
                             </li>
                             <li>
-                                118/1 Nguyễn Tưu Nghiêm, P.Bình Trưng Tây, TP.Thủ Đức, TP.HCM.
+                                118/1 Nguyễn Tưu Nghiêm, P.Bình Trưng Tây, Quận 2, TP.HCM.
                             </li>
                             <li>
                                 0913.971497 - 0949.791306
@@ -99,7 +94,7 @@
                     <div class="col-md-4 col-lg-3 col-xl-3 mx-auto text-wrap">
                         <!-- Links -->
                         <h6 class="text-uppercase fw-bold fs-5">DANH MỤC SẢN PHẨM</h6>
-                        <hr class="d-inline-block mx-auto mt-0"
+                        <hr class="d-inline-block mx-auto"
                             style="width: 60px; background-color: #7c4dff; height: 2px" />
                         <ul class="list-unstyled">
                             @foreach (var item in categories)
@@ -119,12 +114,10 @@
                             style="width: 60px; background-color: #7c4dff; height: 2px" />
                         <ul class="list-unstyled">
                             <li>
-                                <a class="link-dark fs-5 text-decoration-none" asp-area="" asp-page="/Policies/ReturnPolicy">Chính sách đổi trả</a>
+                                <a class="link-dark fs-5 text-decoration-none" asp-area="" asp-page="">Chính sách đổi trả</a>
                             </li>
                             <li>
-                                <p class="text-dark fs-6 text-decoration-none mb-0">Hình thức thanh toán: </p>
-                                <p class="text-dark fs-6 text-decoration-none mb-0">KHU VỰC TP.HCM: Thanh toán bằng tiền mặt hoặc chuyển khoản</p>
-                                <p class="text-dark fs-6 text-decoration-none mb-0">CÁC TỈNH KHÁC: Thanh toán bằng chuyển khoản</p>
+                                <a class="link-dark fs-5 text-decoration-none" asp-area="" asp-page="">Hình thức thanh toán</a>
                             </li>
                         </ul>
                     </div>
