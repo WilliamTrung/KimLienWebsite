@@ -18,9 +18,6 @@ body {
     position: relative;
     margin: 0;
     padding-bottom: 100px;
-    background: url('https://kimlien1808.blob.core.windows.net/pictures/backround_2.jpg') no-repeat center center fixed;
-    background-size: cover;
-    backdrop-filter: blur(7px);
     //height of the footer box-sizing: border-box;
 }
 
@@ -92,31 +89,31 @@ footer {
 }
 
 .product_card {
-    width: 31%;
+    width: 346.5px;
     float: left;
-    margin-right: 2%;
+    margin-right: 30px;
     height: 400px;
 }
 
 .product_image {
     resize: both;
-    width: 100%;
+    width: 346.5px;
     height: 300px;
-    margin:auto;
+    padding-right: 10px;
 }
 
 .product_name {
     overflow-wrap: break-word;
-    width: 100%;
+    width: 346.5px;
     height: 100px;
     max-height: 200px;
     text-align: center;
-    margin: auto;
+    padding-right: 10px;
 }
 
 .product_row {
     margin: 10px;
-    width: 100%;
+    width: 1200px;
     display: block;
     min-height: 475px !important;
     height: 100%;
@@ -124,6 +121,10 @@ footer {
 #products-override {
     padding-right: 0px;
     padding-left: 0px;
+}
+
+body {
+    background-color: rgb(16, 204, 88);
 }
 .pagination {
     /*display: inline-block;*/
@@ -161,7 +162,7 @@ footer {
     height: 100%;
 }
 .product-list-box {
-    margin:auto;
+    padding-left: 100px;
     width: 100%;
     display: block;
     min-height: 475px !important;
@@ -172,6 +173,11 @@ footer {
     overflow: auto;
     height: 150px;
     width: 500px;
+}
+.header-logo{
+    width:100%;
+    height: 100%;
+    
 }
 
 .navbar {
