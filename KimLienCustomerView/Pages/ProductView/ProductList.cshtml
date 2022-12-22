@@ -8,7 +8,7 @@
     <div class="row">
         @foreach (var item in Model.Products.Take(12))
         {
-            <div class="col-xl-4 col-sm-12 col-md-12 bg-light bg-opacity-50">
+            <div class="col-xl-4 col-sm-12 col-md-12 bg-light bg-opacity-50 rounded-3">
                 <a asp-page="./ProductDetail" asp-route-id="@item.Product.Id">
                     <div class="w-100 my-2">
                         <img class="h-auto w-100" src="@item.Product.DeserializedPictures.FirstOrDefault()" alt="@item.Product.Name">
