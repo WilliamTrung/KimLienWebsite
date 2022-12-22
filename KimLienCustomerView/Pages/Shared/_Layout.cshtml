@@ -18,7 +18,7 @@
         <div class="container mb-3">
             <img class="header-logo rounded-2 w-100 h-auto" src="https://kimlien1808.blob.core.windows.net/pictures/header-1.png" alt="Kim Lien Logo" />
             <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom box-shadow rounded-2 py-0" style="opacity: 80%">
-                <a class="navbar-brand px-3 mx-0 border border-2 border-start-0 border-top-0 border-bottom-0" asp-area="" asp-page="/ProductView/Products">Trang Chủ</a>
+                <a id="nav-item" class="navbar-brand px-3 mx-0 border border-2 border-top-0 border-bottom-0" asp-area="" asp-page="/ProductView/Products">Trang Chủ</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -31,16 +31,16 @@
 
                         @foreach (var item in categories)
                         {
-                            <li class="px-3 border border-2 border-start-0 border-top-0 border-bottom-0">
-                                <a class="nav-link text-dark fs-5 text-wrap" asp-area="" asp-page="/ProductView/ProductList" asp-route-category="@item.Name">@item.Name</a>
+                            <li id="nav-item" class="px-3 border border-2 border-top-0 border-bottom-0">
+                                <a  class="nav-link text-dark fs-5 text-wrap" asp-area="" asp-page="/ProductView/ProductList" asp-route-category="@item.Name">@item.Name</a>
                             </li>
                         }
                     </ul>
                 </div>
                 <div class="navbar-expand">
-                    <a class="nav-link text-dark fs-5" href="#scrollspyFooter">Liên hệ</a>
+                    <a id="nav-item" class="nav-link text-dark fs-5" href="#scrollspyFooter">Liên hệ</a>
                 </div>
-                <div class="navbar-expand">
+                <div id="nav-item" class="navbar-expand">
                     <button class="btn m-auto" type="button" data-bs-toggle="collapse"
                             data-bs-target="#search-external"
                             aria-controls="search-external"
