@@ -5,47 +5,57 @@
 @{
     ViewData["Title"] = "Products";
 }
-<div class="container bg-light bg-opacity-50">
+<div class="container">
     <h1>Sản Phẩm Nổi Bật</h1>
-    <div class="container">
-        <div class="row">
+    <div id="products-override" class="container-fluid">
+        <div class="product_show_box">
+            <div class="product_row">
                 @foreach (var item in Model.Products.Take(6))
                 {
-                    <div class="col-xl-4 col-sm-12 col-md-12">
+                    <div class="product_card">
                         <a asp-page="./ProductDetail" asp-route-id="@item.Product.Id">
-                            <div class="w-100 my-2">
-                                <img class="h-auto w-100" src="@item.Product.DeserializedPictures.FirstOrDefault()" alt="@item.Product.Name">
-                                <div class="p-2 text-black bg-light text-center border border-3">
-                                    <p class="h5 text-decoration-none">
-                                        @item.Product.Name
+                            <div>
+                                <img class="product_image" src="@item.Product.DeserializedPictures.FirstOrDefault()" alt="@item.Product.Name">
+                            </div>
+                            <div class="product_name">
+                                <div class="card-header text-white bg-info text-lg-center">
+                                    <p class="card-text">
+                                        <h5>
+                                            @item.Product.Name
+                                        </h5>
                                     </p>
                                 </div>
                             </div>
                         </a>
                     </div>
                 }
+            </div>
         </div>
     </div>
     <a asp-page="./ProductList">
         <h1>Sản Phẩm Mới</h1>
     </a>
-    <div class="container">
-        <div class="row">
-            @foreach (var item in Model.Products.Take(6))
-            {
-                <div class="col-xl-4 col-sm-12 col-md-12">
-                    <a asp-page="./ProductDetail" asp-route-id="@item.Product.Id">
-                        <div class="w-100 my-2">
-                            <img class="h-auto w-100" src="@item.Product.DeserializedPictures.FirstOrDefault()" alt="@item.Product.Name">
-                            <div class="p-2 text-black bg-light text-center border border-3">
-                                <p class="h5 text-decoration-none">
-                                    @item.Product.Name
+    <div id="products-override" class="container-fluid">
+        <div class="product_show_box">
+            <div class="product_row">
+                @foreach (var item in Model.Products.Take(6))
+                {
+                    <a class="product_card" asp-page="./ProductDetail" asp-route-id="@item.Product.Id">
+                        <div>
+                            <img class="product_image" src="@item.Product.DeserializedPictures.FirstOrDefault()" alt="@item.Product.Name">
+                        </div>
+                        <div class="product_name">
+                            <div class="card-header text-white bg-info text-lg-center">
+                                <p class="card-text">
+                                    <h5>
+                                        @item.Product.Name
+                                    </h5>
                                 </p>
                             </div>
                         </div>
                     </a>
-                </div>
-            }
+                }
             </div>
         </div>
+    </div>
 </div>
