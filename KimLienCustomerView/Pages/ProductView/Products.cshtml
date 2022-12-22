@@ -5,7 +5,7 @@
 @{
     ViewData["Title"] = "Products";
 }
-<div class="container" style="border: 2px solid rgb(192,192,192);">
+<div class="container">
     <h1>Sản Phẩm Nổi Bật</h1>
     <div id="products-override" class="container-fluid">
         <div class="product_show_box">
@@ -13,7 +13,7 @@
                 @foreach (var item in Model.Products.Take(6))
                 {
                     <div class="product_card">
-                        <a class="product_card" asp-page="./ProductDetail" asp-route-id="@item.Product.Id">
+                        <a asp-page="./ProductDetail" asp-route-id="@item.Product.Id">
                             <div>
                                 <img class="product_image" src="@item.Product.DeserializedPictures.FirstOrDefault()" alt="@item.Product.Name">
                             </div>

@@ -15,8 +15,8 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
     <header>
-        <div class="container mb-3">
-            <img class="header-logo rounded-2" src="https://kimlien1808.blob.core.windows.net/pictures/header-1.png" alt="Kim Lien Logo" />
+        <div class="container mb-3 ps-0 pe-0">
+            <img class="w-100 rounded-2" src="https://kimlien1808.blob.core.windows.net/pictures/header-1.png" alt="Kim Lien Logo" />
             <nav class="navbar navbar-expand navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow rounded-2">
                 <div class="container">
                     @*<a class="navbar-brand" asp-area="" asp-page="/Index">KimLienCustomerView</a>*@
@@ -42,8 +42,8 @@
                             <li class="nav-item m-auto">
                                 <a class="nav-link text-dark fs-5" href="#scrollspyFooter">Liên hệ</a>
                             </li>
-                            <li>
-                                <button class="btn" type="button" data-bs-toggle="collapse"
+                            <li class="m-auto">
+                                <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse"
                                         data-bs-target="#search-external"
                                         aria-controls="search-external"
                                         aria-expanded="false"
@@ -62,7 +62,7 @@
             </div>
         </div>
     </header>
-    <div class="container">
+    <div class="container ps-0 pe-0" style="background-color: rgb(16, 204, 88);">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
@@ -84,7 +84,7 @@
                                 CÔNG TY TNHH MTV THIẾT BỊ VẬT TƯ KIM LIÊN
                             </li>
                             <li>
-                                118/1 Nguyễn Tưu Nghiêm, P.Bình Trưng Tây, Quận 2, TP.HCM.
+                                118/1 Nguyễn Tưu Nghiêm, P.Bình Trưng Tây, TP.Thủ Đức, TP.HCM.
                             </li>
                             <li>
                                 0913.971497 - 0949.791306
@@ -99,7 +99,7 @@
                     <div class="col-md-4 col-lg-3 col-xl-3 mx-auto text-wrap">
                         <!-- Links -->
                         <h6 class="text-uppercase fw-bold fs-5">DANH MỤC SẢN PHẨM</h6>
-                        <hr class="d-inline-block mx-auto"
+                        <hr class="d-inline-block mx-auto mt-0"
                             style="width: 60px; background-color: #7c4dff; height: 2px" />
                         <ul class="list-unstyled">
                             @foreach (var item in categories)
@@ -119,10 +119,12 @@
                             style="width: 60px; background-color: #7c4dff; height: 2px" />
                         <ul class="list-unstyled">
                             <li>
-                                <a class="link-dark fs-5 text-decoration-none" asp-area="" asp-page="">Chính sách đổi trả</a>
+                                <a class="link-dark fs-5 text-decoration-none" asp-area="" asp-page="/Policies/ReturnPolicy">Chính sách đổi trả</a>
                             </li>
                             <li>
-                                <a class="link-dark fs-5 text-decoration-none" asp-area="" asp-page="">Hình thức thanh toán</a>
+                                <p class="text-dark fs-6 text-decoration-none mb-0">Hình thức thanh toán: </p>
+                                <p class="text-dark fs-6 text-decoration-none mb-0">KHU VỰC TP.HCM: Thanh toán bằng tiền mặt hoặc chuyển khoản</p>
+                                <p class="text-dark fs-6 text-decoration-none mb-0">CÁC TỈNH KHÁC: Thanh toán bằng chuyển khoản</p>
                             </li>
                         </ul>
                     </div>

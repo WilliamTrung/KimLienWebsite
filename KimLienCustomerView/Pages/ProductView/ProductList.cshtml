@@ -11,16 +11,14 @@
                 @foreach (var item in Model.Products.Take(12))
                 {
                     <div class="product_card">
-                        <a class="product_card" asp-page="./ProductDetail" asp-route-id="@item.Product.Id">
+                        <a asp-page="./ProductDetail" asp-route-id="@item.Product.Id">
                             <div>
                                 <img class="product_image" src="@item.Product.DeserializedPictures.FirstOrDefault()" alt="@item.Product.Name">
                             </div>
                             <div class="product_name">
-                                <div class="card-header text-white bg-info text-lg-center">
-                                    <p class="card-text">
-                                        <h5>
+                                <div class="card-header text-decoration-none text-white bg-info fs-4">
+                                    <p class="card-text m-auto">
                                             @item.Product.Name
-                                        </h5>
                                     </p>
                                 </div>
                             </div>
