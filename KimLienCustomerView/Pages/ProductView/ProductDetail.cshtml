@@ -72,20 +72,22 @@
 </div>
 <br />
 <h1 class="text-lg-center">Sản Phẩm Liên Quan</h1>
-<div class="container">
-    @foreach (var item in Model.recommendProducts.Take(6))
-    {
-        <div class="col-xl-4 col-sm-12 m-3 ms-lg-0 p-3 ps-lg-0 float-start">
-            <a asp-page="./ProductDetail" asp-route-id="@item.Product.Id">
-                <div class="w-100">
-                    <img class="h-auto w-100" src="@item.Product.DeserializedPictures.FirstOrDefault()" alt="@item.Product.Name">
-                    <div class="p-3 text-black bg-light text-center border border-3">
-                        <p class="h5 text-decoration-none">
-                            @item.Product.Name
-                        </p>
+<div class="container bg-light bg-opacity-50">
+    <div class="row">
+        @foreach (var item in Model.recommendProducts.Take(12))
+        {
+            <div class="col-xl-4 col-sm-12 col-md-12">
+                <a asp-page="./ProductDetail" asp-route-id="@item.Product.Id">
+                    <div class="w-100 my-2">
+                        <img class="h-auto w-100" src="@item.Product.DeserializedPictures.FirstOrDefault()" alt="@item.Product.Name">
+                        <div class="p-2 text-black bg-light text-center border border-3">
+                            <p class="h5 text-decoration-none">
+                                @item.Product.Name
+                            </p>
+                        </div>
                     </div>
-                </div>
-            </a>
-        </div>
-    }
+                </a>
+            </div>
+        }
+    </div>
 </div>
