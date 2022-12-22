@@ -11,12 +11,14 @@ using KimLienAdministrator.Helper.Azure.IBlob;
 using AppService.DTOs;
 using AppService.Extension;
 using NuGet.Packaging.Signing;
+using AppService;
 
 namespace KimLienAdministrator.Pages.ProductManagement
 {
     //Implement each properties for Product
     //On Create click --> Submit each property and conclude into Product
     //Validate properties --> Create Product
+    [Authorized("Administrator")]
     public class CreateModel : PageModel
     {
         private readonly IUnitOfWork _unitOfWork;
