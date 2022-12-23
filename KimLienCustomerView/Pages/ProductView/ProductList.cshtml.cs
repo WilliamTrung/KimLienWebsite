@@ -59,14 +59,12 @@ namespace KimLienCustomerView.Pages.ProductView
             if (category != null)
             {
                 result = result.Where(e => e.ProductCategories.Any(c => c.Category.Name == category));
-                ViewData["Category"] = category;
             }
             if(name != null)
             {
                 result = result.Where(e => e.Product.Name.ToLower().Contains(name.ToLower()));
             }
             Products = result.ToList();
-            
         }
         private void AdjustModels()
         {

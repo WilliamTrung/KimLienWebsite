@@ -9,8 +9,7 @@
 <div class="container bg-light bg-opacity-50 rounded-3">
     <p class="h1 text-center pt-3" style="font-family: 'Alegreya', serif">Nổi Bật</p>
     <div class="row">
-        @foreach (var item in Model.HotProducts.Take(6))
-
+        @foreach (var item in Model.Products.Take(6))
         {
             <div class="col-xl-4 col-sm-6 col-md-6">
                 <a asp-page="./ProductDetail" asp-route-id="@item.Product.Id">
@@ -27,22 +26,21 @@
         }
     </div>
 </div>
-<div class="my-3" style="opacity: 0.85">
-    <img class="w-100 h-auto rounded-3" src="https://kimlien1808.blob.core.windows.net/pictures/Bank_logos.jpg" alt="Ảnh các ngân hàng" />
+<div class="my-3">
+    <img class="w-100 h-auto rounded-3" src="https://kimlien1808.blob.core.windows.net/pictures/header-1.png" alt="Ảnh các ngân hàng" />
 </div>
-<div class="container bg-light bg-opacity-50 rounded-3 my-4">
-
+<div class="container bg-light bg-opacity-50 rounded-3 mt-4">
         <a class="d-block text-decoration-none h1 pt-3 mt-3 text-center" style="font-family: 'Alegreya', serif" asp-page="./ProductList">
             Sản Phẩm Mới
         </a>
     <div class="row">
-        @foreach (var item in Model.NewProducts.Take(6))
+        @foreach (var item in Model.Products.Take(6))
         {
             <div class="col-xl-4 col-sm-6 col-md-6">
                 <a asp-page="./ProductDetail" asp-route-id="@item.Product.Id">
-                    <div class="w-100 my-2 border border-4 rounded-3">
-                        <img class="h-auto w-100 rounded-3" src="@item.Product.DeserializedPictures.FirstOrDefault()" alt="@item.Product.Name">
-                        <div class="p-2 text-black bg-light text-center">
+                    <div class="w-100 my-2">
+                        <img class="h-auto w-100" src="@item.Product.DeserializedPictures.FirstOrDefault()" alt="@item.Product.Name">
+                        <div class="p-2 text-black bg-light text-center border border-3">
                             <p class="h5 text-decoration-none">
                                 @item.Product.Name
                             </p>
