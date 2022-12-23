@@ -29,7 +29,7 @@
         <div class="form-group" style="margin-bottom:30px;">
             <p class="fs-5" style="margin-bottom:-2px">Thể Loại Chính</p>
             <select asp-for="MainSelectedCategories" class="form-control fs-5" multiple="multiple" asp-items="Model.MainCategories"></select>
-            <button name="action" value="@Model.ACTION_CATEGORY_SELECT" class="btn btn-secondary fs-5">Chọn Thể Loại Phụ</button>
+            <button name="action" value="@Model.ACTION_CATEGORY_SELECT" class="btn btn-secondary fs-5 mt-2">Chọn Thể Loại Phụ</button>
         </div>
         <div class="form-check-group">
             @if (Model.SubCategories != null && Model.SubCategories.Count() > 0)
