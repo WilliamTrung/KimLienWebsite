@@ -28,7 +28,8 @@ namespace KimLienAdministrator.Pages
             {
                 Message = Helper.Strings.LoginFailed;
                 return Page();
-            } else
+            }
+            else
             {
                 //login successfully
                 var session = HttpContext.Session;

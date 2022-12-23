@@ -9,19 +9,18 @@
 
 <p>
     <a asp-page="Create">
-        <h3>Tạo Thể Loại</h3>
+        <p class="btn btn-primary fs-5">Tạo Thể Loại</p>
     </a>
 </p>
 @*Table for Parent Categories*@
-<table class="table" style="width:78%; margin: 0 auto;">
-    <thead>
+<table class="table m-auto" style="width: 60% !important">
+    <thead class="bg-info bg-opacity-50">
         <tr>
-            <th>
+            <th class="col-md-5 fs-4">
                 Tên
             </th>
-            <th>
-
-            </th>
+            <th class="col-2">
+            </th >
         </tr>
     </thead>
     <tbody>
@@ -44,9 +43,9 @@
                         </div>
 
                     </td>
-                    <td class="button-align">
-                        <button class="btn btn-primary fs-6" name="action" value="update" onclick="return confirm('Bạn chắc muốn cập nhật?');">Cập Nhật</button>
-                        <button class="btn btn-danger fs-6" name="action" value="delete" onclick="return confirm('Bạn chắc muốn xóa?');">Xóa</button>
+                    <td >
+                        <button class="btn btn-primary fs-6 mt-1" name="action" value="update" onclick="return confirm('Bạn chắc muốn cập nhật?');">Cập Nhật</button>
+                        <button class="btn btn-danger fs-6 mt-1" name="action" value="delete" onclick="return confirm('Bạn chắc muốn xóa?');">Xóa</button>
                     </td>
                     </form>
                 </tr>
@@ -71,9 +70,9 @@
 
                             </div>
                         </td>
-                        <td class="button-align">
-                            <button class="btn btn-primary fs-6" name="action" value="update" onclick="return confirm('Bạn chắc muốn cập nhật?');">Cập Nhật</button>
-                            <button class="btn btn-danger fs-6" name="action" value="delete" onclick="return confirm('Bạn chắc muốn xóa?');">Xóa</button>
+                        <td>
+                            <button class="btn btn-primary fs-6 mt-1" name="action" value="update" onclick="return confirm('Bạn chắc muốn cập nhật?');">Cập Nhật</button>
+                            <button class="btn btn-danger fs-6 mt-1" name="action" value="delete" onclick="return confirm('Bạn chắc muốn xóa?');">Xóa</button>
                         </td>
                         </form>
                     </tr>
