@@ -21,7 +21,7 @@
         <form method="post" asp-page-handler="Category">
             <label class="fs-5">Chọn Thể Loại</label>
             <input type="hidden" asp-for="Product.Id" />
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <select asp-for="MainSelectedCategories" class="form-control fs-5" multiple="multiple" asp-items="Model.MainCategories"></select>
                 <button name="action" value="@Model.ACTION_CATEGORY_SELECT" class="btn btn-secondary fs-5">Chọn Thể Loại Phụ</button>
             </div>
@@ -47,7 +47,7 @@
                 <div class="form-group">
                     <select id="primary_pic" name="selected" class="form-control fs-5" asp-items="Model.Pictures" onchange="onSelectPrimaryPicture()"></select>
                     <img class="h-auto" id="show_selected" src="@Model.DeserializedPics.First()">
-                    <button class="btn btn-secondary fs-5">@Model.PIC_PRIMARY</button>
+                    <button class="btn btn-secondary fs-5 mb-4 mt-2">@Model.PIC_PRIMARY</button>
                 </div>
         </form>
             <form class="fs-5" method="post" asp-page-handler="DeleteSelectedPicture">
@@ -57,7 +57,7 @@
                     <div class="form-group">
                     <img class="h-auto" src="@item"/>
                     <input type="hidden" name="selected" value="@item"/>
-                    <button class="btn btn-danger fs-5">@Model.PIC_DELETE</button>
+                        <button class="btn btn-danger fs-5 mb-4 mt-2">@Model.PIC_DELETE</button>
                     </div>
                 }
         </form>
@@ -65,9 +65,9 @@
         <form class="fs-5" method="post" asp-page-handler="UploadPictures" enctype="multipart/form-data">
             <input type="hidden" asp-for="Product.Id" />
             <div class="form-group">
-                <label asp-for="Files" class="control-label fs-5"></label>
+                <label asp-for="Files" class="control-label fs-5">File Ảnh</label>
                 <input asp-for="Files" class="form-control fs-5" />
-                <button class="btn btn-success fs-5">@Model.PIC_UPLOAD</button>
+                <button class="btn btn-success fs-5 mt-2">@Model.PIC_UPLOAD</button>
             </div>
         </form>
     </div>
@@ -79,16 +79,17 @@
                 <label asp-for="Product.Name" class="fs-5">Tên</label>
                 <input asp-for="Product.Name" class="form-control fs-5" />
             </div>
-            <div class="form-group">
-                <label class="control-label">Category</label>
+            <div class="form-group mb-5">
+                <label class="control-label fw-bold">Category: </label>
                 @foreach(var item in Model.ProductModel.ProductCategories)
                 {
-                    <label>@item.Category.Name</label>
+                    <label class="border border-dark p-1 m-1 rounded fs-5">@item.Category.Name</label>
                 }
             </div>
-            <div class="form-group ">
+            <div class="form-group mb-4">
                 <label asp-for="Product.Description" class="fs-5">Chi tiết mô tả</label>
-                <input asp-for="Product.Description" class="form-control fs-5" />
+                @*<input asp-for="Product.Description" class="form-control fs-5" />*@
+                <textarea class="" cols="20" rows="5" asp-for="Product.Description"></textarea>
             </div>
             <div class="form-group">
                 <button name="action" value="@Model.ACTION_SAVE" class="btn btn-primary fs-5">Lưu</button>
@@ -98,9 +99,19 @@
 </div>
 
 <div>
-    <a class="fs-5" asp-page="./Index">Về danh sách</a>
+    <a class="fs-5" asp-page="./Index"><p class="btn btn-secondary fs-5">Về danh sách</p></a>
 </div>
-
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.3.1/tinymce.min.js"></script>
+<script type="text/javascript">
+    tinymce.init({
+        selector: 'textarea',
+        max_height: 600,
+        max_width: 600,
+        min_height: 200,
+        min_width: 400,
+        content_style: "body {font-size: 15pt;}",
+    });
+</script>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

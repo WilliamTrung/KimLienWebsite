@@ -34,7 +34,7 @@ namespace KimLienAdministrator.Pages.CategoryManagement
             var mainCategories = await _unitOfWork.CategoryService.GetDTOs(filter: c => c.ParentId == null);
             mainCategories = mainCategories.Prepend(new Category()
             {
-                Name= "None",
+                Name= "Không có",
                 Id = Guid.Empty
             });
             MainCategories = new MultiSelectList(mainCategories, "Id", "Name");
