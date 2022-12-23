@@ -1,5 +1,5 @@
 html {
-    font-size: 14px;
+    font-size: 15px;
 }
 
 @media (min-width: 768px) {
@@ -126,9 +126,6 @@ footer {
     padding-left: 0px;
 }
 
-body {
-    background-color: rgb(16, 204, 88);
-}
 .pagination {
     /*display: inline-block;*/
 }
@@ -186,19 +183,19 @@ body {
 .navbar {
     border: 2px solid #808080;
 }
-.nav-item{
-    float:left;
-    color: white;
-    text-align:center;
-    width: 12%;
-    height:100%;
+
+@media only screen and (min-width: 1300px) {
+    #nav-item {
+        transition: transform .3s;
+    }
+
+        #nav-item:hover {
+            transform: scale(1.25);
+            border: 1px solid #dee2e6 !important;
+            background-color: white;
+        }
 }
-    .nav-item:hover {
-        background-color: cornflowerblue;
-    }
-    .nav-item.active {
-        background-color: #04AA6D;
-    }
-.link-dark:hover{
+
+.link-dark:hover {
     color: cyan;
 }
