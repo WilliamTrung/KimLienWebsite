@@ -1,5 +1,5 @@
 html {
-    font-size: 14px;
+    font-size: 15px;
 }
 
 @media (min-width: 768px) {
@@ -43,11 +43,6 @@ footer {
     padding-right: 0px;
     padding-left: 0px;
 }
-
-body {
-    background-color: rgb(16, 204, 88);
-}
-
 .pagination {
     /*display: inline-block;*/
 }

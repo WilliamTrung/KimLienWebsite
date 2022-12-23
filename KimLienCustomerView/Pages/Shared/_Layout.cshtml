@@ -10,13 +10,13 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/KimLienCustomerView.styles.css" asp-append-version="true" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya&display=swap%27"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:wght@400;600&display=swap" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
 </head>
 <body class="d-flex flex-column">
-    <header>
-        <div class="container mb-3">
+    <div class="container">
+        <header>
             <img class="header-logo rounded-2 w-100 h-auto" src="https://kimlien1808.blob.core.windows.net/pictures/header-1.png" alt="Kim Lien Logo" />
             <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom box-shadow rounded-2 py-0" style="opacity: 80%">
                 <a id="nav-item" class="navbar-brand px-3 mx-0 border border-2 border-top-0 border-bottom-0" asp-area="" asp-page="/ProductView/Products">Trang Chủ</a>
@@ -98,7 +98,7 @@
                         <hr class="d-inline-block mx-auto mt-0"
                             style="width: 60px; background-color: #7c4dff; height: 2px" />
                         <ul class="list-unstyled">
-                            @foreach (var item in categories)
+                            @foreach (var item in categories.Where(c => c.ParentId == null))
                             {
                                 <li>
                                     <a class="link-dark text-muted text-decoration-none" asp-area="" asp-page="/ProductView/ProductList" asp-route-name="@item.Name">@item.Name</a>
@@ -155,7 +155,7 @@
 @{
     async Task<IEnumerable<Category>> GetCategories()
     {
-        var categories = await _unitOfWork.CategoryService.GetDTOs(filter: c => c.ParentId == null);
+        var categories = await _unitOfWork.CategoryService.GetDTOs();
         return categories;
     }
 }

@@ -1,4 +1,4 @@
-﻿@page
+﻿@page 
 @using System.Text
 @model KimLienCustomerView.Pages.ProductView.ProductList
 @{
@@ -7,24 +7,35 @@
 
 @if (Model.Products.Count <= 0)
 {
-    <p class="h1 bg-light rounded-3 text-center py-4 opacity-75">Không có sản phẩm nào!</p>
+    <div class="bg-light rounded-3 text-center my-3 pb-3 opacity-75 pb-4">
+        @if (ViewData["Category"] != null)
+        {
+            <p class="h1 text-center pt-3 fw-bold" style="font-family: 'Alegreya', serif; font-weight: 600px">@ViewData["Category"]</p>
+        }
+        <p class="h1">Không có sản phẩm nào!</p>
+    </div>
+    
 }
 else
 {
-    <div class="container">
+    <div class="container bg-light bg-opacity-50 rounded-3 my-3">
+        @if(ViewData["Category"] != null)
+        {
+            <p class="h1 text-center pt-3 fw-bold" style="font-family: 'Alegreya', serif; font-weight: 600px">@ViewData["Category"]</p>
+        }
         <div class="row">
             @foreach (var item in Model.Products.Take(12))
             {
-                <div class="col-xl-4 col-sm-6 col-md-6 bg-light bg-opacity-50 rounded-3">
+                <div class="col-xl-4 col-sm-6 col-md-6">
                     <a asp-page="./ProductDetail" asp-route-id="@item.Product.Id">
-                        <div class="w-100 my-2">
-                            <img class="h-auto w-100" src="@item.Product.DeserializedPictures.FirstOrDefault()" alt="@item.Product.Name">
-                            <div class="p-2 text-black bg-light text-center border border-3">
-                                <p class="h5 text-decoration-none">
-                                    @item.Product.Name
-                                </p>
-                            </div>
+                        <div class="w-100 my-2 border border-4 rounded-3">
+                        <img class="h-auto w-100 rounded-3" src="@item.Product.DeserializedPictures.FirstOrDefault()" alt="@item.Product.Name">
+                        <div class="p-2 text-black bg-light text-center">
+                            <p class="h5 text-decoration-none">
+                                @item.Product.Name
+                            </p>
                         </div>
+                    </div>
                     </a>
                 </div>
             }
@@ -34,6 +45,25 @@ else
         <form method="post">
             <ul class="pagination">
                 @if (Model.PageIndex != 0)
+                {
+                    <li class="page-item">
+                        <button class="page-link" value="@Model.PageIndex - 1" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </button>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item disabled">
+                        <button class="page-link" value="@Model.PageIndex - 1" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </button>
+                    </li>
+                }
+
+            @for (int i = 1; i <= @Model.MaxPages; i++)
+            {
+                @if (Model.PageIndex == (i - 1))
                 {
                     <li class="page-item">
                         <button class="page-link" value="@Model.PageIndex - 1" aria-label="Previous">
@@ -82,13 +112,5 @@ else
                 else
                 {
                     <li class="page-item">
-
-                        <button class="page-link disabled" href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </button>
-                    </li>
-                }
-            </ul>
-        </form>
-    </nav>
+</nav>
 }
