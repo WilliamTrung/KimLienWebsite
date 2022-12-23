@@ -47,17 +47,18 @@
             <div id="preview"></div>
         </div>
         <div class="form-group" style="margin-bottom:15px;">
-            <input type="submit" value="Create" class="btn btn-primary fs-5" />
+            <input type="submit" value="Tạo" class="btn btn-primary fs-5" />
         </div>
     </form>
 </div>
 
 <div>
-    <a asp-page="Index"><h5>Về danh sách</h5></a>
+    <a asp-page="Index"><p class="btn btn-secondary fs-5">Về danh sách</p></a>
 </div>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.3.1/tinymce.min.js"></script>
 <script type="text/javascript">
-    tinymce.init({ selector: 'textarea',
+    tinymce.init({
+        selector: 'textarea',
         max_height: 600,
         max_width: 600,
         min_height: 200,
@@ -65,6 +66,7 @@
         content_style: "body {font-size: 15pt;}",
     });
 </script>
+
 @section Scripts {
     @{
     await Html.RenderPartialAsync("_ValidationScriptsPartial");
