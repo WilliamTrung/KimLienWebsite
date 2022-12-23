@@ -61,25 +61,6 @@ else
                     </li>
                 }
 
-            @for (int i = 1; i <= @Model.MaxPages; i++)
-            {
-                @if (Model.PageIndex == (i - 1))
-                {
-                    <li class="page-item">
-                        <button class="page-link" value="@Model.PageIndex - 1" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </button>
-                    </li>
-                }
-                else
-                {
-                    <li class="page-item disabled">
-                        <button class="page-link" value="@Model.PageIndex - 1" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </button>
-                    </li>
-                }
-
                 @for (int i = 1; i <= @Model.MaxPages; i++)
                 {
                     @if (Model.PageIndex == (i - 1))
@@ -112,5 +93,14 @@ else
                 else
                 {
                     <li class="page-item">
-</nav>
+
+                        <button class="page-link disabled" href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </button>
+                    </li>
+                }
+            </ul>
+        </form>
+
+    </nav>
 }
