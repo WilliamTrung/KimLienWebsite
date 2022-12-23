@@ -36,7 +36,7 @@ namespace KimLienCustomerView.Pages.ProductView
             {
                 Product = found;
                 var products = await _unitOfWork.ProductService.GetProductModels();
-                var relatives = products.Where(p => p.ProductCategories.Any(category => found.ProductCategories.Any(fCategory => fCategory.CategoryId == category.CategoryId)) && p.Product.Id != id);
+                var relatives = products.Where(p => p.ProductCategories.Any(category => found.ProductCategories.Any(fCategory => fCategory.CategoryId == category.CategoryId)));
                 recommendProducts = relatives.ToList();
                 return Page();
             } else
