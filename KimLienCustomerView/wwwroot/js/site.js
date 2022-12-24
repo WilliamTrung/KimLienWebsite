@@ -110,16 +110,15 @@ function onSearchSubmit() {
 }
 
 function onNavHover(id) {
-	console.log(id);
-	console.log('hover');
 	var dropdown = document.getElementById(id);
 	if (dropdown != null) {
 		dropdown.style.display = 'block';
 	}
 }
 function onNavOut(id) {
-	console.log(id);
-	console.log('out');
 	var dropdown = document.getElementById(id);
-	dropdown.style.display = 'none';
+	if (dropdown != null) {
+		dropdown.style.display = 'none';
+	}
+	
 }
