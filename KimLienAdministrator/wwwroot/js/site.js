@@ -29,7 +29,7 @@ function previewImages() {
         reader.addEventListener("load", function () {
             var image = new Image();
             /*image.src = "http://localhost/image.jpg?" + new Date().getTime();*/
-            image.style = "height: auto; max-height: 300px; width:auto; padding:8px;";
+            image.style = "height: auto; max-height: 300px; width:auto";
             image.title = file.name;
             image.src = this.result;
             image.setAttribute("class", "preview-image");

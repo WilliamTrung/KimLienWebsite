@@ -23,19 +23,19 @@
             <input type="hidden" asp-for="Product.Id" />
             <div class="form-group mb-3">
                 <select asp-for="MainSelectedCategories" class="form-control fs-5" multiple="multiple" asp-items="Model.MainCategories"></select>
-                <button name="action" value="@Model.ACTION_CATEGORY_SELECT" class="btn btn-secondary fs-5 mt-2">Chọn Thể Loại Phụ</button>
+                <button name="action" value="@Model.ACTION_CATEGORY_SELECT" class="btn btn-secondary fs-5">Chọn Thể Loại Phụ</button>
             </div>
             <div class="form-check-group">
                 @if (Model.SubCategories != null && Model.SubCategories.Count() > 0)
                 {
                     @foreach (var sub in Model.SubCategories)
                     {
-                        <label class="fs-5">@sub.Key</label>
-                        <select asp-for="SubSelectedCategories" class="form-control fs-5" multiple="multiple" asp-items="sub.Value"></select>
+                        <label>@sub.Key</label>
+                        <select asp-for="SubSelectedCategories" class="form-control" multiple="multiple" asp-items="sub.Value"></select>
                     }
                 }
 
-                <button name="action" value="@Model.ACTION_CATEGORY_SAVE" class="btn btn-primary fs-5 mt-2">Lưu</button>
+                <button name="action" value="@Model.ACTION_CATEGORY_SAVE" class="btn btn-primary fs-5">Lưu</button>
             </div>
         </form>
     </div>
@@ -43,16 +43,14 @@
         @if (Model.DeserializedPics != null)
             {
             <form method="post" asp-page-handler="SetPrimaryPicture">
-                <label class="fs-5">Ảnh chính của sản phẩm</label>
                 <input type="hidden" asp-for="Product.Id" />
                 <div class="form-group">
-                    <select id="primary_pic" name="selected" class="form-control fs-5 mb-2" asp-items="Model.Pictures" onchange="onSelectPrimaryPicture()"></select>
+                    <select id="primary_pic" name="selected" class="form-control fs-5" asp-items="Model.Pictures" onchange="onSelectPrimaryPicture()"></select>
                     <img class="h-auto" id="show_selected" src="@Model.DeserializedPics.First()">
                     <button class="btn btn-secondary fs-5 mb-4 mt-2">@Model.PIC_PRIMARY</button>
                 </div>
         </form>
             <form class="fs-5" method="post" asp-page-handler="DeleteSelectedPicture">
-                <label class="fs-5">Ảnh phụ của sản phẩm</label>
                 <input type="hidden" asp-for="Product.Id" />
                 @foreach (var item in Model.DeserializedPics)
                 {
@@ -88,7 +86,7 @@
                     <label class="border border-dark p-1 m-1 rounded fs-5">@item.Category.Name</label>
                 }
             </div>
-            <div class="form-group mb-2">
+            <div class="form-group mb-4">
                 <label asp-for="Product.Description" class="fs-5">Chi tiết mô tả</label>
                 @*<input asp-for="Product.Description" class="form-control fs-5" />*@
                 <textarea class="" cols="20" rows="5" asp-for="Product.Description"></textarea>
