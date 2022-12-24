@@ -46,3 +46,19 @@ function previewImages() {
     }
 }
 document.querySelector('#img-selector').addEventListener("change", previewImages);
+
+function onCategoryExpand(id) {
+    var click = document.getElementById(id);
+    $(".rotate").toggleClass("down");
+    //var display = click.style.display;
+    let classId = '.' + id;
+    $(classId).toggleClass("visible");
+    //click.toggleClass("visible");
+    if (display == 'none') {
+        //click.style.display = 'block';
+        //click.style.visibility = 'visible';
+    } else {
+        //click.style.display = 'none';
+        //click.style.visibility = 'hidden';
+    }
+}
