@@ -12,65 +12,125 @@
         <p class="btn btn-primary fs-5">Tạo sản phẩm</p>
     </a>
 </p>
-<table class="table border-dark" style="background-color: #f4e2ab;)">
-    <thead class="bg-info bg-opacity-50">
+<div class="container" >
+    <div class="row fs-4 fw-bold border-dark border text-center bg-light">
+        <div class="col-1 border-end border-dark">
+            Tên
+        </div>
+        <div class="col-4 border-end border-dark">
+            Chi tiết mô tả
+        </div>
+        <div class="col-2">
+            Hình Ảnh
+        </div>
+        <div class="col-2 border-end border-dark">
+            Đã Xóa
+        </div>
+        <div class="col-2 border-end border-dark grid">
+            Thời gian cập nhật
+        </div>
+        <div class="col-1">
+        </div>
+    </div>
+    @foreach (var item in Model.Product)
+    {
+        <div class="row fs-5 border-2 border-dark border-top border-bottom border-start hoverdiv">
+
+            <div class="col-1 pt-2 fw-bold text-break border-2 border-end border-dark">
+                <p>@item.Name</p>
+            </div>
+            <div class="col-4 pt-2 text-break border-2 border-end border-dark">
+                @Html.Raw(item.Description)
+            </div>
+            <div class="col-2 mb-2 mt-2">
+                <img class="h-auto" src="@item.DeserializedPictures.First()">
+            </div>
+            <div class="col-2 pt-3 border-2 border-end border-dark">
+                @if (item.IsDeleted == false)
+                {
+                        <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="40" fill="currentColor" class="bi bi-x-square-fill" viewBox="0 0 16 16">
+                            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z" />
+                        </svg>
+                }
+                else
+                {
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-check-square-fill" viewBox="0 0 16 16">
+                            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm10.03 4.97a.75.75 0 0 1 .011 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.75.75 0 0 1 1.08-.022z" />
+                        </svg>
+                }
+            </div>
+            <div class="col-2 pt-2 border-2 border-end border-dark">
+                @Html.DisplayFor(modelItem => item.ModifiedDate)
+            </div>
+            <div class="col-1 border-4 border-end border-dark pt-2">
+                <a class="btn btn-primary mb-2" asp-page="./Edit" asp-route-id="@item.Id">Chỉnh sửa</a>
+                <br>
+                <a class="btn btn-info" asp-page="./Details" asp-route-id="@item.Id">Chi Tiết</a>
+            </div>
+        </div>
+    }
+</div>
+@*<table class="table table-hover table-bordered border-dark">
+    <thead class="fs-4 fw-bold align-top">
         <tr>
-            <th class="fs-4 col-1 border-end border-dark text-center">
+            <th scope="col">
                 Tên
             </th>
-            <th class="fs-4 col-2 border-end border-dark text-center">
+            <th scope="col">
                 Chi tiết mô tả
             </th>
-            <th class="fs-4 col-2 border-end border-dark text-center">
+            <th scope="col">
                 Hình Ảnh
             </th>
-            <th class="fs-4 col-1 border-end border-dark text-center">
+            <th scope="col">
                 Đã Xóa
             </th>
-            <th class="fs-4 col-2 border-end border-dark text-center">
+            <th scope="col">
                 Thời gian cập nhật
             </th>
-            <th class="col-1"></th>
+            <th scope="col" style="width:9%;">
+
+            </th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model.Product)
         {
-            <tr >
-                <td class="fs-5 border-end border-dark fw-bold">
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td class="fs-5 border-end border-dark">
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td class="fs-5 border-end border-dark">
-                    <img class="h-auto" src="@item.DeserializedPictures.First()">
-                </td>
-                @if (item.IsDeleted == false)
-                {
-                    <td class="border-end border-dark">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-x-square-fill" viewBox="0 0 16 16">
-                            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z" />
-                        </svg>
-                    </td>
-                }
-                else
-                {
-                    <td class="border-end border-dark">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-check-square-fill" viewBox="0 0 16 16">
-                            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm10.03 4.97a.75.75 0 0 1 .011 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.75.75 0 0 1 1.08-.022z" />
-                        </svg>
-                    </td>
-                }
-                <td class="fs-5 border-end border-dark">
-                    @Html.DisplayFor(modelItem => item.ModifiedDate)
-                </td>
-                <td class="btn-edit">
-                    <a class="btn btn-primary w-100 mb-3" asp-page="./Edit" asp-route-id="@item.Id">Chỉnh sửa</a>
-                    <br>
-                    <a class="btn btn-info w-100" asp-page="./Details" asp-route-id="@item.Id">Chi Tiết</a>
-                </td>
-            </tr>
+        <tr>
+            <td class="fs-5 fw-bold">
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td class="fs-5">
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td class="fs-5">
+                <img class="h-auto" src="@item.DeserializedPictures.First()">
+            </td>
+            @if (item.IsDeleted == false)
+            {
+            <td>
+                <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="40" fill="currentColor" class="bi bi-x-square-fill" viewBox="0 0 16 16">
+                    <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z" />
+                </svg>
+            </td>
+            }
+            else
+            {
+            <td>
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-check-square-fill" viewBox="0 0 16 16">
+                    <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm10.03 4.97a.75.75 0 0 1 .011 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.75.75 0 0 1 1.08-.022z" />
+                </svg>
+            </td>
+            }
+            <td class="fs-5">
+                @Html.DisplayFor(modelItem => item.ModifiedDate)
+            </td>
+            <td>
+                <a class="btn btn-primary w-100 mb-3" asp-page="./Edit" asp-route-id="@item.Id">Chỉnh sửa</a>
+                <br>
+                <a class="btn btn-info w-100" asp-page="./Details" asp-route-id="@item.Id">Chi Tiết</a>
+            </td>
+        </tr>
         }
     </tbody>
-</table>
+</table>*@

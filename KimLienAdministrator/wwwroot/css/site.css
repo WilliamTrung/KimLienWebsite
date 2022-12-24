@@ -40,10 +40,6 @@ a:hover{
     color: #00CC99;
     transform: scale(1.1);
 }
-/*.button-align{
-    text-align: right;
-    width: 17%;
-}*/
 .isdelete {
     width: 10%
 }
@@ -56,14 +52,37 @@ tr.child_row td {
 .form-group-child{
     padding-left:6.5%;
 }
-table{
-    border-radius:0.5rem;
-    overflow:hidden;
-}
-.btn-edit{
-    width:8%;
+.hoverdiv:hover{
+    background-color: lightgray;
 }
 .create-product-description{
     width: 100%;
     height: 80%;
 }
+.center {
+    line-height: 0px;
+}
+
+.rotate {
+    -moz-transition: all 0.2s linear;
+    -webkit-transition: all 0.2s linear;
+    transition: all 0.2s linear;
+}
+
+    .rotate.down {
+        -moz-transform: rotate(90deg);
+        -webkit-transform: rotate(90deg);
+        transform: rotate(90deg);
+    }
+
+.hidden {
+    height: 0px;
+    opacity: 0;
+    transition: height 0ms 400ms;
+}
+
+    .hidden.visible {
+        height: auto;
+        opacity: 1;
+        transition: height 0ms 0ms;
+    }
