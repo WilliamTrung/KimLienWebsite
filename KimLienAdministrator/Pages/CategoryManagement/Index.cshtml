@@ -49,10 +49,10 @@
             {
 
                 <form method="post" class="row justify-content-around my-1">
-                    <div class="col-1  offset-lg-3 offset-md-1 offset-sm-0 border border-3 border-start-0 border-top-0 border-bottom-0 border-dark">
+                    <div class="col-1  offset-lg-3 offset-md-1 offset-sm-0">
                     </div>
                     <div class="col-4">
-                        <div class="col-11 offset-1  h-100">
+                        <div class="col-11 offset-1 border-start ps-4 border-2 border-dark h-100">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <input name="id" type="hidden" value="@childItem.Id" />
                             <input name="name" asp-for="@childItem.Name" class="fs-5 w-100 rounded-start h-100" />
