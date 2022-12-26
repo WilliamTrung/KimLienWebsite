@@ -11,6 +11,9 @@ using KimLienAdministrator.Helper.Azure.IBlob;
 using AppService.UnitOfWork;
 using AppService.DTOs;
 using AppService;
+using Microsoft.CodeAnalysis;
+using KimLienAdministrator.Pages.CategoryManagement;
+using AppService.Models;
 
 namespace KimLienAdministrator.Pages.ProductManagement
 {
@@ -26,12 +29,21 @@ namespace KimLienAdministrator.Pages.ProductManagement
             _unitOfWork = unitOfWork;
         }
 
-        public IList<Product> Product { get;set; } = default!;
+        public IList<Product> Products { get; set; } = default!;
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(string? name = "")
         {
-            var products = await _unitOfWork.ProductService.GetDTOs();
-            Product = products.ToList();
+            await GetProductAsync(name);
+        }
+        private async Task GetProductAsync(string? name = "")
+        {
+            var result = await _unitOfWork.ProductService.GetDTOs();
+            if (name != string.Empty && name !=null)
+            {
+                var search = result.Where(c => c.Name.ToLower().Contains(name.ToLower()));
+                result = search;
+            }
+            Products =  result.ToList();
         }
     }
 }
