@@ -26,18 +26,19 @@ else
         <div class="row">
             @foreach (var item in Model.Products.Take(12))
             {
-                <div class="col-xl-4 col-sm-6 col-md-6">
-                    <a asp-page="./ProductDetail" asp-route-id="@item.Product.Id">
-                        <div class="w-100 my-2 border border-4 rounded-3">
-                        <img class="h-auto w-100 rounded-3" src="@item.Product.DeserializedPictures.FirstOrDefault()" alt="@item.Product.Name">
-                        <div class="p-2 text-black bg-light text-center">
-                            <p class="h5 text-decoration-none">
-                                @item.Product.Name
-                            </p>
-                        </div>
+                <div class="col-xl-4 col-sm-6 col-md-6 my-2">
+                <a asp-page="./ProductDetail" asp-route-id="@item.Product.Id">
+                    <div class="d-flex border border-4 border-bottom-0 bg-light justify-content-center rounded-top">
+                        <img class="d-block rounded-3 mw-100 img-200 transform-15" src="@item.Product.DeserializedPictures.FirstOrDefault()" alt="@item.Product.Name">
                     </div>
-                    </a>
-                </div>
+                    <div class="p-2 text-black text-center border border-4 border-top-0 rounded-bottom" style="background-color: #0099CC;">
+                        <p class="h5 text-decoration-none">
+                            @item.Product.Name
+                        </p>
+                    </div>
+
+                </a>
+            </div>
             }
         </div>
     </div>

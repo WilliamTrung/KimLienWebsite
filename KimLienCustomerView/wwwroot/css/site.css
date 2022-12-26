@@ -103,3 +103,15 @@ footer {
 .link-dark:hover {
     color: cyan;
 }
+.img-180{
+    height: 180px;
+}
+.img-200 {
+    height: 200px;
+}
+img{
+    transition: .2s;
+}
+.transform-15:hover {
+    transform: scale(1.15);
+}
