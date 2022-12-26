@@ -85,3 +85,10 @@
         </div>
     }
 </div>
+<script>
+    $(document).ready(function () {
+        $('#category').autocomplete({
+            source: '@Url.Page("index", "get")'
+        });
+    });
+</script>
