@@ -17,15 +17,22 @@ namespace KimLienAdministrator.Pages.CategoryManagement
         }
         public IList<Category> Category { get;set; } = default!;
         public CategoryMessage Message { get; set; } = default!;
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(string? name = "")
         {
-            await GetCategoriesAsync();
-
-            
+            await GetCategoriesAsync(name);
         }
-        private async Task GetCategoriesAsync()
+        private async Task GetCategoriesAsync(string? name = "")
         {
             var result = await _unitOfWork.CategoryService.GetDTOs();
+            if(name != string.Empty)
+            {
+                var search_name = result.Where(c => c.Name.ToLower().Contains(name.ToLower()));
+                var search_child = result.Where(child => search_name.Any(parent => parent.Id == child.ParentId));
+                var search_parent = result.Where(parent => search_name.Any(child => child.ParentId == parent.Id));
+
+                var combination = search_child.Except(search_parent).Concat(search_parent);
+                result = search_name.Except(combination).Concat(combination);
+            }
             if(Message == null)
             {
                 Message = new CategoryMessage();

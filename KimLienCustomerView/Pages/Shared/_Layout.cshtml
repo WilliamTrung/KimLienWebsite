@@ -10,54 +10,67 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/KimLienCustomerView.styles.css" asp-append-version="true" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya&display=swap%27"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:wght@400;600&display=swap" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
 </head>
 <body class="d-flex flex-column">
-    <header>
-        <div class="container mb-3">
+    <div class="container">
+        <header>
             <img class="header-logo rounded-2 w-100 h-auto" src="https://kimlien1808.blob.core.windows.net/pictures/header-1.png" alt="Kim Lien Logo" />
-            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom box-shadow rounded-2 py-0" style="opacity: 80%">
-                <a id="nav-item" class="navbar-brand px-3 mx-0 border border-2 border-top-0 border-bottom-0" asp-area="" asp-page="/ProductView/Products">Trang Chủ</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse">
-                    <ul class="navbar-nav flex-grow-1 justify-content-start">
-                        @{
-                            var categories = await GetCategories();
-                        }
+        </header>
+    </div>
+    <div class="container sticky-top mb-3">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom box-shadow rounded-2 py-0" style="opacity: 85%">
+            <a id="nav-item" class="navbar-brand px-3 mx-0 border border-2 border-start-0 border-top-0 border-bottom-0" asp-area="" asp-page="/ProductView/Products">Trang Chủ</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav flex-grow-1 justify-content-start">
+                    @{
+                        var categories = await GetCategories();
+                    }
 
-                        @foreach (var item in categories)
-                        {
-                            <li id="nav-item" class="px-3 border border-2 border-top-0 border-bottom-0">
-                                <a  class="nav-link text-dark fs-5 text-wrap" asp-area="" asp-page="/ProductView/ProductList" asp-route-category="@item.Name">@item.Name</a>
-                            </li>
-                        }
-                    </ul>
-                </div>
-                <div class="navbar-expand">
-                    <a id="nav-item" class="nav-link text-dark fs-5" href="#scrollspyFooter">Liên hệ</a>
-                </div>
-                <div id="nav-item" class="navbar-expand">
-                    <button class="btn m-auto" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#search-external"
-                            aria-controls="search-external"
-                            aria-expanded="false"
-                            aria-label="Toggle navigation">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                        </svg>
-                    </button>
-                </div>
-            </nav>
-            <div class="collapse" id="search-external">
-                <input id="search" type="text" class="form-control rounded-2 fs-5 border-4" placeholder="Tìm Kiếm" aria-label="Tìm Kiếm..." onsubmit="onSearchSubmit()">
+                    @foreach (var item in categories.Where(c => c.ParentId == null))
+                    {
+                        <li class="px-3 border border-2 border-start-0 border-top-0 border-bottom-0" onmouseover="onNavHover('@item.Id')" onmouseout="onNavOut('@item.Id')">
+                            <a id="nav-item" class="nav-link fs-5 text-wrap" asp-area="" asp-page="/ProductView/ProductList" asp-route-category="@item.Name">@item.Name</a>
+                            @if (categories.Any(c => c.ParentId == item.Id))
+                            {
+                                <ul id="@item.Id" class="dropdown-menu">
+                                    @foreach (var child in categories.Where(c => c.ParentId == item.Id))
+                                    {
+                                        <li>
+                                            <a id="nav-item" class="nav-link fs-5 text-wrap" asp-area="" asp-page="/ProductView/ProductList" asp-route-category="@child.Name">@child.Name</a>
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                        </li>
+                    }
+                </ul>
             </div>
+            <div class="navbar-expand">
+                <a id="nav-refer" class="nav-link fs-5" href="#scrollspyFooter">Liên hệ</a>
+            </div>
+            <div id="nav-item" class="navbar-expand">
+                <button class="btn m-auto" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#search-external"
+                        aria-controls="search-external"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                    </svg>
+                </button>
+            </div>
+        </nav>
+        <div class="collapse" id="search-external">
+            <input id="search" type="text" class="form-control rounded-2 fs-5 border-4" placeholder="Tìm Kiếm" aria-label="Tìm Kiếm..." onsubmit="onSearchSubmit()">
         </div>
-    </header>
+    </div>
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -98,7 +111,7 @@
                         <hr class="d-inline-block mx-auto mt-0"
                             style="width: 60px; background-color: #7c4dff; height: 2px" />
                         <ul class="list-unstyled">
-                            @foreach (var item in categories)
+                            @foreach (var item in categories.Where(c => c.ParentId == null))
                             {
                                 <li>
                                     <a class="link-dark text-muted text-decoration-none" asp-area="" asp-page="/ProductView/ProductList" asp-route-name="@item.Name">@item.Name</a>
@@ -155,7 +168,7 @@
 @{
     async Task<IEnumerable<Category>> GetCategories()
     {
-        var categories = await _unitOfWork.CategoryService.GetDTOs(filter: c => c.ParentId == null);
+        var categories = await _unitOfWork.CategoryService.GetDTOs();
         return categories;
     }
 }

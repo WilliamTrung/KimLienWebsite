@@ -2,6 +2,7 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
+
 $(document).ready(function () {
 	var slider = $("#slider");
 	var thumb = $("#thumb");
@@ -106,4 +107,18 @@ function onSearchSubmit() {
 	var base_uri = "/ProductView/ProductList?name=";
 	let uri = base_uri + data;
 	window.location.href = uri;
+}
+
+function onNavHover(id) {
+	var dropdown = document.getElementById(id);
+	if (dropdown != null) {
+		dropdown.style.display = 'block';
+	}
+}
+function onNavOut(id) {
+	var dropdown = document.getElementById(id);
+	if (dropdown != null) {
+		dropdown.style.display = 'none';
+	}
+	
 }

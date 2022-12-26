@@ -15,6 +15,7 @@ namespace KimLienCustomerView.Pages.ProductView
 {
     public class ProductsModel : PageModel
     {
+        private static Random rng = new Random();
         private readonly IUnitOfWork _unitOfWork;
         public string Truncate(string proName, int maxChars, int maxCharShown)
         {
@@ -30,45 +31,37 @@ namespace KimLienCustomerView.Pages.ProductView
             _unitOfWork = unitOfWork;
         }
 
-        public IList<ProductModel> Products { get;set; } = default!;
-        [BindProperty]
-        public int MaxPages { get; set; } = 0;
-        [BindProperty]
-        public int PageIndex { get; set; } = 0;
-
-        private int PageSize { get; set; } = 6;
-        public async Task OnPostAsync(int? index = 0)
-        {
-            if(index != null)
-            {
-                PageIndex = (int)index;
-            }
-            await OnGetAsync();
-         }
+        public IList<ProductModel> NewProducts { get;set; } = default!;
+        public IList<ProductModel> HotProducts { get; set; } = default!;
         public async Task OnGetAsync()
         {
-            int total = await _unitOfWork.ProductService.GetTotal();
-            MaxPages = (int)Math.Ceiling((double)total / PageSize);
-            var page = new PagingRequest()
-            {
-                PageSize = PageSize,
-                PageIndex = PageIndex
-            };
-            var result = await _unitOfWork.ProductService.GetProductModels(paging: page);          
-            Products = result.ToList();
+            await SetNewProductsAsync();
+            await SetHotProductsAsync();
+        }
+        private async Task SetNewProductsAsync()
+        {
+            var products = await _unitOfWork.ProductService.GetProductModels();
+            products = products.OrderByDescending(p => p.Product.ModifiedDate);
+            NewProducts = products.ToList();
+        }
+        private async Task SetHotProductsAsync()
+        {
+            var products = await _unitOfWork.ProductService.GetProductModels();
+            products = products.OrderBy(p => rng.Next()).ToList();
+            HotProducts = products.ToList();
         }
         private void AdjustModels()
         {
-            if(Products != null)
-            {
-                foreach (var product in Products)
-                {
-                    var productName = product.Product.Name;
-                    int maxChars = 50;
-                    int maxCharShown = 47;
-                    product.Product.Name = Truncate(productName, maxChars, maxCharShown);
-                }
-            }
+            //if(Products != null)
+            //{
+            //    foreach (var product in Products)
+            //    {
+            //        var productName = product.Product.Name;
+            //        int maxChars = 50;
+            //        int maxCharShown = 47;
+            //        product.Product.Name = Truncate(productName, maxChars, maxCharShown);
+            //    }
+            //}
         }
     }
 }
