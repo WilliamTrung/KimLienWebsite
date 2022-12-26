@@ -9,75 +9,66 @@
 
 <p>
     <a asp-page="Create">
-        <p class="btn btn-primary fs-5">Tạo Thể Loại</p>
+        <p class="btn btn-primary fs-5">Tạo Loại sản phẩm</p>
     </a>
 </p>
-@*Table for Parent Categories*@
-<table class="table m-auto" style="width: 60% !important">
-    <thead class="bg-info bg-opacity-50">
-        <tr>
-            <th class="col-md-5 fs-4">
-                Tên
-            </th>
-            <th class="col-2">
-            </th >
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Category)
-        {
-            @if (item.Parent == null)
-            {
+<div class="container">
+    <div class="col-12">
+        <p class="text-start h3">Loại sản phẩm </p>
+    </div>
+    @foreach (var item in Model.Category.Where(c => c.ParentId == null))
+    {
+        <form method="post" class="row justify-content-around my-1">
+            <div class="col-1 offset-lg-3 offset-md-1 offset-sm-0 align-self-baseline">
 
-                <tr>
-                    <form method="post">
-                    <td style="border-right: 1px ridge #000">
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <div class="form-group">
-                            <input name="id" type="hidden" value="@item.Id" />
-                            <input name="name" asp-for="@item.Name" class="form-control fs-5" />
-                                @if (item.Id == Model.Message.Id)
-                                {
-                                <span value="@Model.Message.Message" class="text-danger"></span>
-                                }
-                        </div>
-
-                    </td>
-                    <td >
-                        <button class="btn btn-primary fs-6 mt-1" name="action" value="update" onclick="return confirm('Bạn chắc muốn cập nhật?');">Cập Nhật</button>
-                        <button class="btn btn-danger fs-6 mt-1" name="action" value="delete" onclick="return confirm('Bạn chắc muốn xóa?');">Xóa</button>
-                    </td>
-                    </form>
-                </tr>
-
-            }
-            @foreach (var childItem in Model.Category)
-            {
-                @if (childItem.ParentId.Equals(item.Id))
+                <div class="btn center offset-8 col-4">
+                    @if (Model.Category.Any(c => c.ParentId == item.Id))
+                    {
+                        <svg onclick="onCategoryExpand('@item.Id')" class="rotate d-block mt-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+                            <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z" />
+                        </svg>
+                    }
+                </div>
+            </div>
+            <div class="col-4">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input name="id" type="hidden" value="@item.Id" />
+                <input name="name" asp-for="@item.Name" class="fs-5 w-100 rounded-start h-100" />
+                @if (item.Id == Model.Message.Id)
                 {
-
-                    <tr class="child-row">
-                        <form method="post">
-                        <td style="border-right: 1px ridge #000">
-                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                            <div class="form-group-child">
-                                <input name="id" type="hidden" value="@childItem.Id" />
-                                <input name="name" asp-for="@childItem.Name" class="form-control fs-5" />
-                                    @if (childItem.Id == Model.Message.Id)
-                                    {
-                                    <span value="@Model.Message.Message" class="text-danger"></span>
-                                    }
-
-                            </div>
-                        </td>
-                        <td>
-                            <button class="btn btn-primary fs-6 mt-1" name="action" value="update" onclick="return confirm('Bạn chắc muốn cập nhật?');">Cập Nhật</button>
-                            <button class="btn btn-danger fs-6 mt-1" name="action" value="delete" onclick="return confirm('Bạn chắc muốn xóa?');">Xóa</button>
-                        </td>
-                        </form>
-                    </tr>
+                    <span value="@Model.Message.Message" class="text-danger"></span>
                 }
+            </div>
+            <div class="col-4">
+                <button class="btn btn-primary fs-6" name="action" value="update" onclick="return confirm('Bạn chắc muốn cập nhật?');">Cập Nhật</button>
+                <button class="btn btn-danger fs-6" name="action" value="delete" onclick="return confirm('Bạn chắc muốn xóa?');">Xóa</button>
+            </div>
+        </form>
+        <div class="@item.Id hidden" style="">
+            @foreach (var childItem in Model.Category.Where(c => c.ParentId == item.Id))
+            {
+
+                <form method="post" class="row justify-content-around my-1">
+                    <div class="col-1  offset-lg-3 offset-md-1 offset-sm-0">
+                    </div>
+                    <div class="col-4">
+                        <div class="col-11 offset-1 border-start ps-4 border-2 border-dark h-100">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input name="id" type="hidden" value="@childItem.Id" />
+                            <input name="name" asp-for="@childItem.Name" class="fs-5 w-100 rounded-start h-100" />
+                            @if (childItem.Id == Model.Message.Id)
+                            {
+                                <span value="@Model.Message.Message" class="text-danger"></span>
+                            }
+                        </div>
+                        
+                    </div>
+                    <div class="col-4">
+                        <button class="btn btn-primary fs-6" name="action" value="update" onclick="return confirm('Bạn chắc muốn cập nhật?');">Cập Nhật</button>
+                        <button class="btn btn-danger fs-6" name="action" value="delete" onclick="return confirm('Bạn chắc muốn xóa?');">Xóa</button>
+                    </div>
+                </form>
             }
-        }
-    </tbody>
-</table>
+        </div>
+    }
+</div>

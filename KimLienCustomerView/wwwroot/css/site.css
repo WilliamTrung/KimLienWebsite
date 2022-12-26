@@ -1,5 +1,5 @@
 html {
-    font-size: 14px;
+    font-size: 15px;
 }
 
 @media (min-width: 768px) {
@@ -43,11 +43,6 @@ footer {
     padding-right: 0px;
     padding-left: 0px;
 }
-
-body {
-    background-color: rgb(16, 204, 88);
-}
-
 .pagination {
     /*display: inline-block;*/
 }
@@ -81,19 +76,30 @@ body {
 .navbar {
     border: 2px solid #808080;
 }
-
-@media only screen and (min-width: 1300px) {
-    #nav-item {
-        transition: transform .3s;
-    }
-
-        #nav-item:hover {
-            transform: scale(1.25);
-            border: 1px solid #dee2e6 !important;
-            background-color: white;
-        }
+#nav-category:hover{
+    background-color: lightcoral;
 }
-
+#nav-item {
+    color: black;
+}
+    #nav-item:hover {
+        color: #00CC99;
+        background-color: whitesmoke;
+    }
+#nav-refer {
+    color: black;
+}
+    #nav-refer:hover {
+        color: #0099CC;
+        background-color: whitesmoke;
+    }
+.dropdown-menu::-webkit-scrollbar{
+    display: none
+}
+.dropdown-menu{
+    overflow-y: scroll;
+    max-height:200px;
+}
 .link-dark:hover {
     color: cyan;
 }
