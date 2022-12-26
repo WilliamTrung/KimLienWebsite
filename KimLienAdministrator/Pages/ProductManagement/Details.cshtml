@@ -4,6 +4,13 @@
 @{
     ViewData["Title"] = "Details";
 }
+<div class="container">
+    <div class="row">
+        <div class="col-4">
+            <a class="btn btn-secondary fs-5" asp-page="./Index">Về danh sách</a>
+        </div>
+    </div>
+</div>
 <div class="container bg-light">
     <div class="row">
         <div class="col-md-6">
@@ -67,5 +74,15 @@
 
         </div>
 
+    </div>
+</div>
+<div class="container text-end">
+    <div class="row">
+        <div class="col-10">
+
+        </div>
+        <div class="col-2">
+            <a class="text- btn btn-primary fs-5" asp-page="./Edit" asp-route-id="@Model.Product.Product.Id">Chỉnh Sửa</a>
+        </div>
     </div>
 </div>
