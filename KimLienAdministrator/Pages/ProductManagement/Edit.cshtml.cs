@@ -114,7 +114,7 @@ namespace KimLienAdministrator.Pages.ProductManagement
             }
             var temp = Product;
             var result = await _unitOfWork.ProductService.Update(p => p.Id == Product.Id, Product);
-            var check = await Initialize(Product.Id);
+            await Initialize(Product.Id);
             return Page();
         }
         public async Task<IActionResult> OnPostCategoryAsync(string action)
@@ -137,18 +137,18 @@ namespace KimLienAdministrator.Pages.ProductManagement
                 categories.AddRange(mainCategories);
                 var check = await _unitOfWork.ProductCategoryService.Implement(Product, categories);
             }
-            var check2 = await Initialize(Product.Id);
+            await Initialize(Product.Id);
             return Page();
         }
         public async Task<IActionResult> OnPostSetPrimaryPicture(string selected)
         {
             var pic_name = selected;
-            var check1 = await Initialize(Product.Id);
+            await Initialize(Product.Id);
             if (pic_name != DeserializedPics.First())
             {
                 var check = await _unitOfWork.ProductService.SetPrimaryPicture(Product.Id, pic_name);
             }
-            
+            await Initialize(Product.Id);
             return Page();
         }
         //DeleteSelectedPicture
