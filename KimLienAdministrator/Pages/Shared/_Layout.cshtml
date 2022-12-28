@@ -27,14 +27,14 @@
     <header>
         <nav id="nav-color" class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3">
             <div class="container ">
-                <label class="navbar-brand fw-bold" asp-area="">KimLienAdministrator</label>
+                <label class="navbar-brand fw-bold me-1" asp-area="">KimLienAdministrator</label>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 @if (login != null)
                 {
-                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between ps-1  ">
                         <ul class="navbar-nav flex-grow-1 border-start border-dark">
 
                             <li class="nav-item">
@@ -48,7 +48,7 @@
                     <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end">
                         <ul class="navbar-nav flex-grow-0">
                             <li class="nav-item border-end border-dark">
-                                <label class="nav-link fw-bold text-dark navbar-brand">@login.Role.Name</label>
+                                <label class="nav-link fw-bold text-dark navbar-brand me-0">User: @login.Role.Name</label>
                             </li>
                             <li class="nav-item">
                                 <a id="nav-hover" class="nav-link fw-bold" asp-page="@Strings.NavLogout">@Strings.NavLogoutText</a>
