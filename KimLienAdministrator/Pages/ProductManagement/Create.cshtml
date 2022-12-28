@@ -5,7 +5,7 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Tạo Sản Phẩm</h1>
+<h1 class="text-uppercase">Tạo Sản Phẩm</h1>
 <hr />
 @if (Model.Messages.Count > 0)
 {
@@ -27,9 +27,9 @@
             <textarea class="" cols="20" rows="5" asp-for="Description"></textarea>
             </div>
         <div class="form-group mb-3">
-            <p class="fs-5" style="margin-bottom:-2px">Thể Loại Chính</p>
+            <p class="fs-5 mb-0">Thể Loại Chính</p>
             <select asp-for="MainSelectedCategories" class="form-control fs-5" multiple="multiple" asp-items="Model.MainCategories"></select>
-            <button name="action" value="@Model.ACTION_CATEGORY_SELECT" class="btn btn-secondary fs-5">Chọn Thể Loại Phụ</button>
+            <button name="action" value="@Model.ACTION_CATEGORY_SELECT" class="btn btn-info fs-5">Chọn Thể Loại Phụ</button>
         </div>
         <div class="form-check-group">
             @if (Model.SubCategories != null && Model.SubCategories.Count() > 0)

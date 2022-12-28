@@ -57,7 +57,7 @@
                 <button class="btn btn-danger fs-6" name="action" value="delete" onclick="return confirm('Bạn chắc muốn xóa?');">Xóa</button>
             </div>
         </form>
-        <div class="@item.Id hidden" style="">
+        <div class="@item.Id collapse" style="">
             @foreach (var childItem in Model.Category.Where(c => c.ParentId == item.Id))
             {
 

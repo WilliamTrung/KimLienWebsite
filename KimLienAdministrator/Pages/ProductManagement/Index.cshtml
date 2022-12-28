@@ -6,16 +6,16 @@
 }
 
 <h1 class="text-uppercase">Danh sách Sản Phẩm</h1>
-
-<div class="container fs-5">
+<hr />
+<div class="container mt-2 p-0">
     <div class="row">
-        <div class="col-9">
+        <div class="col-9 ">
             <a asp-page="Create">
-                <p class="btn btn-primary">Tạo sản phẩm</p>
+                <p class="btn btn-primary fs-5">Tạo sản phẩm</p>
             </a>
         </div>
-        <div class="col-3">
-            <form method="get" class="sticky-top justify-content-end">
+        <div class="col-3  fs-5">
+            <form method="get" class="sticky-top justify-content-end ">
                 <div class="input-group rounded">
                     <input name="name" type="search" class="form-control rounded" placeholder="Tìm Kiếm" aria-label="Search" aria-describedby="search-addon" />
                     <button class="input-group-text border-0" id="search-addon">
@@ -35,11 +35,11 @@
         <div class="col-5 ">
             Chi tiết mô tả
         </div>
-        <div class="col-3 d-flex ">
-            <div class="col-8 text-center">
+        <div class="col-3 d-flex me-0 pe-0">
+            <div class="col-7 text-end">
                 Hình Ảnh
             </div>
-            <div class="col-4 text-center">
+            <div class="col-5 text-end">
                 Đã Xóa
             </div>
         </div>
@@ -55,11 +55,11 @@
                 <div class="col-1 pt-2 fw-bold text-break border-2 border-end border-dark">
                     <p>@item.Name</p>
                 </div>
-                <div class="col-6 pt-2 text-break border-2 border-end border-dark">
+                <div class="col-6 pt-2 text-break border-2 border-end border-dark ps-2">
                     @Html.Raw(item.Description)
                 </div>
                 <div class="col-3 d-flex">
-                    <div class="col-9 mb-2 mt-2">
+                    <div class="col-9 mb-2 mt-2 ms-2">
                         <img class="h-auto" src="@item.DeserializedPictures.First()">
                     </div>
                     <div class="col-3 pt-3 border-2 border-end border-dark">
@@ -83,12 +83,14 @@
                     </p>
                 </div>
             </a>
-            <a class="col-1 btn btn-primary w-auto h-25 m-3" asp-page="./Edit" asp-route-id="@item.Id">
+            <div class="col-1 ps-2">
+                <a class="btn btn-primary w-auto h-auto m-3" asp-page="./Edit" asp-route-id="@item.Id">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                     <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
                     <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
                 </svg>
             </a>
+            </div>
         </div>
 
     }

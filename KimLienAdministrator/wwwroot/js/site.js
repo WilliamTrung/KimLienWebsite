@@ -52,13 +52,13 @@ function onCategoryExpand(id) {
     $(".rotate").toggleClass("down");
     //var display = click.style.display;
     let classId = '.' + id;
-    $(classId).toggleClass("visible");
+    $(classId).toggleClass("show");
     //click.toggleClass("visible");
-    if (display == 'none') {
-        //click.style.display = 'block';
-        //click.style.visibility = 'visible';
-    } else {
-        //click.style.display = 'none';
-        //click.style.visibility = 'hidden';
-    }
+    //if (display == 'none') {
+    //    click.style.display = 'block';
+    //    click.style.visibility = 'visible';
+    //} else {
+    //    click.style.display = 'none';
+    //    click.style.visibility = 'hidden';
+    //}
 }
