@@ -95,6 +95,7 @@ namespace AppService.Service
             var found = find.FirstOrDefault();
             if(found != null)
             {
+                found.Name.ToCapitalize();
                 //adjust pictures
                 if(dto.Pictures != null && dto.Pictures != found.Pictures)
                 {
@@ -150,7 +151,14 @@ namespace AppService.Service
             }
             return found;
         }
+        public override Task<DTOs.Product> Create(DTOs.Product dto)
+        {
+#pragma warning disable CS8604 // Possible null reference argument.
+            dto.Name.ToCapitalize();
+#pragma warning restore CS8604 // Possible null reference argument.
 
+            return base.Create(dto);
+        }
         public async Task<int> GetTotal()
         {
             var products = await GetDTOs();
