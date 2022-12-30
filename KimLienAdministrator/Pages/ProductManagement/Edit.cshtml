@@ -91,6 +91,11 @@
                 @*<input asp-for="Product.Description" class="form-control fs-5" />*@
                 <textarea class="" cols="20" rows="5" asp-for="Product.Description"></textarea>
             </div>
+            <div class="form-group form-check mb-4">
+                <label asp-for="Product.IsDeleted" class="fs-5">Trạng thái</label>
+                @*<input asp-for="Product.Description" class="form-control fs-5" />*@
+                <input class="form-check-input" asp-for="Product.IsDeleted"/>
+            </div>
             <div class="form-group">
                 <button name="action" value="@Model.ACTION_SAVE" class="btn btn-primary fs-5">Lưu</button>
             </div>
