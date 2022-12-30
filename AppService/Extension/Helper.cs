@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -11,6 +12,11 @@ namespace AppService.Extension
 {
     public static class Helper
     {
+        public static string ToCapitalize(this string input)
+        {
+            return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(input.ToLower());
+        }
+    
         public static bool MinimalCompareString(string a, string b)
         {
             return a.ToLower().Contains(b.ToLower());
