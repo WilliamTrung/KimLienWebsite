@@ -33,6 +33,14 @@ namespace KimLienCustomerView.Pages.ProductView
 
         public IList<ProductModel> NewProducts { get;set; } = default!;
         public IList<ProductModel> HotProducts { get; set; } = default!;
+        public IList<string> BankPics { get; set; } = new List<string>()
+        {
+            "https://www.tcqtkd.edu.vn/wp-content/uploads/2022/09/gio-lam-viec-agribank-2.jpg",
+            "https://cdn.tgdd.vn/2020/04/GameApp/unnamed-200x200-18.png",
+            "https://vanhoadoisong.vn/wp-content/uploads/2022/08/vpbank-la-ngan-hang-gi-ngan-hang-vpbank-co-uy-tin-khong-nhung-san-pham-dich-vu-vpbank-03.jpg",
+            "https://i.redd.it/5nd6lxvfnp161.jpg"
+        };
+        
         public async Task OnGetAsync()
         {
             await SetNewProductsAsync();
