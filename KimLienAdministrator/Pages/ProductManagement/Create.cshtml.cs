@@ -141,6 +141,7 @@ namespace KimLienAdministrator.Pages.ProductManagement
                 }
                 if(ModelState.IsValid)
                 {
+                    Product.IsDeleted = true;
                     var created = await _unitOfWork.ProductService.Create(Product);
                     SetSelectedCategories();
                     var check_categories = await _unitOfWork.ProductCategoryService.Implement(created, SelectedCategories);
