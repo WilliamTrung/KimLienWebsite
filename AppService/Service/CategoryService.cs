@@ -25,14 +25,14 @@ namespace AppService.Service
         {
             //IDK what to do here yet. Have to ask
         }
-        public override async Task<bool> Delete(DTOs.Category dto)
+        public override async Task<bool> Delete(Expression<Func<Category, bool>> filter, DTOs.Category dto)
         {
             var productcategories = await _productCategoryService.GetDTOs(pc => pc.CategoryId == dto.Id);
             foreach (var productcategory in productcategories)
             {
-                await _productCategoryService.Delete(productcategory);
+                await _productCategoryService.Delete(filter: d => d.CategoryId == dto.Id && d.ProductId == productcategory.ProductId, productcategory);
             }
-            return await base.Delete(dto);
+            return await base.Delete(filter: d => d.Id == dto.Id, dto);
         }
         public override async Task<IEnumerable<DTOs.Category>> GetDTOs(Expression<Func<Category, bool>>? filter = null, string? includeProperties = null, PagingRequest? paging = null)
         {
