@@ -42,12 +42,12 @@ namespace AppService.Service
             }
             return dto;
         }
-        public virtual async Task<bool> Delete(TDto dto)
+        public virtual async Task<bool> Delete(Expression<Func<TEntity, bool>> filter, TDto dto)
         {
             var entity = _mapper.Map<TEntity>(dto);
             if (entity != null)
             {
-                if (await _repository.Delete(entity))
+                if (await _repository.Delete(filter, entity))
                     return true;
                 return false;
             }

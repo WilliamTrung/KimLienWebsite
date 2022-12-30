@@ -32,7 +32,7 @@ namespace ApplicationCore.Repository
             }
         }
 
-        public async Task<bool> Delete(TEntity entity)
+        public async Task<bool> Delete(Expression<Func<TEntity, bool>> filter, TEntity entity)
         {
             try
             {
@@ -45,9 +45,15 @@ namespace ApplicationCore.Repository
                     return true;
                 } else
                 {
-                    _context.Remove(entity);
-                    await _context.SaveChangesAsync();
-                    return true;
+                    var find = await Get(filter);
+                    var found = find.First();
+                    if(found != null) {
+                        _context.Entry(found).State = EntityState.Detached;
+                        _context.Remove(found);
+                        await _context.SaveChangesAsync();
+                        return true;
+                    }
+                    return false;   
                 }
                 
             }

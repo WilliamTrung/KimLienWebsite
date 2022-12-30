@@ -16,6 +16,6 @@ namespace ApplicationCore.Repository
         //U
         public Task<TEntity> Update(Expression<Func<TEntity, bool>> filter, TEntity entity);
         //D
-        public Task<bool> Delete(TEntity entity);
+        public Task<bool> Delete(Expression<Func<TEntity, bool>> filter, TEntity entity);
     }
 }
