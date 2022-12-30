@@ -28,8 +28,20 @@
         }
     </div>
 </div>
-<div class="my-3" style="opacity: 0.85">
-    <img class="w-100 h-auto rounded-3" src="https://kimlien1808.blob.core.windows.net/pictures/Bank_logos.jpg" alt="Ảnh các ngân hàng" />
+<div id="sliderBank" class="my-3 owl-carousel product-slider" style="opacity: 0.85">
+    @*<img class="w-100 h-auto rounded-3" src="https://kimlien1808.blob.core.windows.net/pictures/Bank_logos.jpg" alt="Ảnh các ngân hàng" />*@
+    @foreach(var item in Model.BankPics)
+    {
+        <div class="d-flex justify-content-center my-auto">
+            <img class="" src="@item" style="max-width: 200px; height: 110px" />
+        </div>
+    }
+</div>
+<div id="thumbBank" class="owl-carousel prouduct-thumb d-none">
+    @foreach (var item in Model.BankPics)
+    {
+        <img class="" src="@item" />
+    }
 </div>
 <div class="container bg-light bg-opacity-50 rounded-3 my-4">
 
@@ -55,3 +67,4 @@
         }
     </div>
 </div>
+<script src="~/js/bankCarousel.js"></script>
