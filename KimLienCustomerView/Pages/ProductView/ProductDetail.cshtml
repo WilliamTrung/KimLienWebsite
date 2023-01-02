@@ -16,7 +16,7 @@
                 <img class="w-100 h-auto" src="@item">
                 </div>*@
                     <div class="d-flex bg-light justify-content-center">
-                        <img class="img-detail-main rounded-3 mw-100" src="@item" style="width: auto;">
+                        <img id="zoomMain" class="img-detail-main rounded-3 mw-100" src="@item" style="width: auto;" data-zoom-image="@item">
                     </div>
                 }
             </div>
@@ -90,3 +90,11 @@
         }
     </div>
 </div>
+<script>
+    $("#zoomMain").ezPlus({
+        zoomWindowWidth: 500,
+        zoomWindowHeight: 500,
+        scrollZoom: true,
+    });
+</script>
+
