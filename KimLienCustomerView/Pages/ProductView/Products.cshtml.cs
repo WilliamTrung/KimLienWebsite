@@ -35,10 +35,15 @@ namespace KimLienCustomerView.Pages.ProductView
         public IList<ProductModel> HotProducts { get; set; } = default!;
         public IList<string> BankPics { get; set; } = new List<string>()
         {
-            "https://www.tcqtkd.edu.vn/wp-content/uploads/2022/09/gio-lam-viec-agribank-2.jpg",
-            "https://cdn.tgdd.vn/2020/04/GameApp/unnamed-200x200-18.png",
-            "https://vanhoadoisong.vn/wp-content/uploads/2022/08/vpbank-la-ngan-hang-gi-ngan-hang-vpbank-co-uy-tin-khong-nhung-san-pham-dich-vu-vpbank-03.jpg",
-            "https://i.redd.it/5nd6lxvfnp161.jpg"
+            "https://kimlien1808.blob.core.windows.net/pictures/abbank_logo.png",
+            "https://kimlien1808.blob.core.windows.net/pictures/agribank_logo.png",
+            "https://kimlien1808.blob.core.windows.net/pictures/bidv_logo.png",
+            "https://kimlien1808.blob.core.windows.net/pictures/lienvietpostbank_logo.png",
+            "https://kimlien1808.blob.core.windows.net/pictures/maritimebank_logo.png",
+            "https://kimlien1808.blob.core.windows.net/pictures/MBbank_logo.png",
+            "https://kimlien1808.blob.core.windows.net/pictures/sacombank_logo.png",
+            "https://kimlien1808.blob.core.windows.net/pictures/vietcombank_logo.png",
+            "https://kimlien1808.blob.core.windows.net/pictures/viettinbank_logo.png"
         };
         
         public async Task OnGetAsync()
@@ -48,13 +53,13 @@ namespace KimLienCustomerView.Pages.ProductView
         }
         private async Task SetNewProductsAsync()
         {
-            var products = await _unitOfWork.ProductService.GetProductModels();
+            var products = await _unitOfWork.ProductService.GetProductModels(filter: p => p.IsDeleted == true);
             products = products.OrderByDescending(p => p.Product.ModifiedDate);
             NewProducts = products.ToList();
         }
         private async Task SetHotProductsAsync()
         {
-            var products = await _unitOfWork.ProductService.GetProductModels();
+            var products = await _unitOfWork.ProductService.GetProductModels(filter: p => p.IsDeleted == true);
             products = products.OrderBy(p => rng.Next()).ToList();
             HotProducts = products.ToList();
         }

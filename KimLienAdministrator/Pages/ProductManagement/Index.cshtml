@@ -60,7 +60,14 @@
                 </div>
                 <div class="col-3 d-flex">
                     <div class="col-9 mb-2 mt-2 ms-2">
-                        <img class="h-auto" src="@item.DeserializedPictures.First()">
+                        @{
+                            var pic = item.DeserializedPictures.FirstOrDefault();
+                        }
+                        @if(pic != null)
+                        {
+                            <img class="h-auto" src="@item.DeserializedPictures.First()">
+                        }
+                        
                     </div>
                     <div class="col-3 pt-3 border-2 border-end border-dark">
                         @if (item.IsDeleted == false)

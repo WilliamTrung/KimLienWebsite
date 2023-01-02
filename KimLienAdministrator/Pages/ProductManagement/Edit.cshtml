@@ -40,7 +40,7 @@
         </form>
     </div>
     <div class="col-md-4">
-        @if (Model.DeserializedPics != null)
+        @if (Model.DeserializedPics != null && Model.DeserializedPics.FirstOrDefault() != null) 
             {
             <form method="post" asp-page-handler="SetPrimaryPicture">
                 <input type="hidden" asp-for="Product.Id" />

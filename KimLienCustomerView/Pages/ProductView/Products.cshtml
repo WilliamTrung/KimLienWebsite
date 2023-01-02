@@ -28,12 +28,14 @@
         }
     </div>
 </div>
-<div id="sliderBank" class="my-3 owl-carousel product-slider" style="opacity: 0.85">
+<div class="container bg-light bg-opacity-50 rounded-3 mt-3 py-3">
+    <p class="h1 text-center pt-3" style="font-family: 'Alegreya', serif">Đối tác</p>
+    <div id="sliderBank" class="my-3 owl-carousel product-slider" style="opacity: 0.85">
     @*<img class="w-100 h-auto rounded-3" src="https://kimlien1808.blob.core.windows.net/pictures/Bank_logos.jpg" alt="Ảnh các ngân hàng" />*@
     @foreach(var item in Model.BankPics)
     {
-        <div class="d-flex justify-content-center my-auto">
-            <img class="" src="@item" style="max-width: 200px; height: 110px" />
+        <div class="d-flex justify-content-center my-auto align-bottom">
+            <img class="" src="@item" style="width: auto; max-width: 250px; height: 100px" />
         </div>
     }
 </div>
@@ -43,6 +45,8 @@
         <img class="" src="@item" />
     }
 </div>
+    </div>
+
 <div class="container bg-light bg-opacity-50 rounded-3 my-4">
 
     <a class="d-block text-decoration-none h1 pt-3 mt-3 text-center" style="font-family: 'Alegreya', serif" asp-page="./ProductList">

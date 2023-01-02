@@ -55,7 +55,7 @@ namespace KimLienCustomerView.Pages.ProductView
                 PageSize = PageSize,
                 PageIndex = PageIndex
             };
-            IEnumerable<ProductModel> result = await _unitOfWork.ProductService.GetProductModels(paging: page);
+            IEnumerable<ProductModel> result = await _unitOfWork.ProductService.GetProductModels(paging: page, filter: p => p.IsDeleted == true);
             if (category != null)
             {
                 result = result.Where(e => e.ProductCategories.Any(c => c.Category.Name == category));

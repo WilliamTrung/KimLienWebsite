@@ -4,7 +4,7 @@
 	var slidesPerPage = 4; //globaly define number of elements per page
 	var syncedSecondary = true;
 	slider.owlCarousel({
-		items: 2,
+		items: 4,
 		slideSpeed: 1000,
 		nav: false,
 		autoplay: true,

@@ -68,7 +68,7 @@ namespace KimLienAdministrator.Pages.CategoryManagement
                 var found = find.FirstOrDefault();
                 if(found != null)
                 {
-                    var result = await _unitOfWork.CategoryService.Delete(found);
+                    var result = await _unitOfWork.CategoryService.Delete(filter: c=> c.Id == found.Id, found);
                     if(result == false)
                     {
                         //delete failed
