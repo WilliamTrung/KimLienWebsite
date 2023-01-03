@@ -67,6 +67,10 @@ namespace ApplicationCore.Repository
         {
             var _dbSet = _context.Set<TEntity>();
             var query = _dbSet.AsQueryable();
+            if(query.FirstOrDefault() != null && query.FirstOrDefault() is Product)
+            {
+                query = query.OrderBy(p => (p as Product).ModifiedDate);
+            }
             if (includeProperties != null)
             {
                 foreach (string property in includeProperties.Split(","))
