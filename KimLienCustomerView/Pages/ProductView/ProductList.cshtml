@@ -8,10 +8,17 @@
 @if (Model.Products.Count <= 0)
 {
     <div class="bg-light rounded-3 text-center my-3 pb-3 opacity-75 pb-4">
-        @if (ViewData["Search"] != null)
+        @if (ViewData["Category"] != null || ViewData["Name"] != null)
         {
-            <p class="h1 text-center pt-3 fw-bold" style="font-family: 'Alegreya', serif; font-weight: 600px">@ViewData["Search"]</p>
-        }
+            @if(ViewData["Category"] != null)
+            {
+                <p class="h1 text-center pt-3 fw-bold" style="font-family: 'Alegreya', serif; font-weight: 600px">Loại hàng: @ViewData["Category"]</p>
+            } else
+            {
+                <p class="h1 text-center pt-3 fw-bold" style="font-family: 'Alegreya', serif; font-weight: 600px">Sản phẩm có tên chứa "@ViewData["Name"]"</p>
+            }
+
+        } 
         <p class="h1">Không có sản phẩm nào!</p>
     </div>
     
@@ -19,9 +26,19 @@
 else
 {
     <div class="container bg-light bg-opacity-50 rounded-3 my-3">
-        @if(ViewData["Search"] != null)
+        @if (ViewData["Category"] != null || ViewData["Name"] != null)
         {
-            <p class="h1 text-center pt-3 fw-bold" style="font-family: 'Alegreya', serif; font-weight: 600px">@ViewData["Search"]</p>
+            @if(ViewData["Category"] != null)
+            {
+                <p class="h1 text-center pt-3 fw-bold" style="font-family: 'Alegreya', serif; font-weight: 600px">Loại hàng: @ViewData["Category"]</p>
+            } else
+            {
+                <p class="h1 text-center pt-3 fw-bold" style="font-family: 'Alegreya', serif; font-weight: 600px">Sản phẩm có tên chứa "@ViewData["Name"]"</p>
+            }
+
+        } else
+        {
+            <p class="h1 text-center pt-3 fw-bold" style="font-family: 'Alegreya', serif; font-weight: 600px">Tất cả sản phẩm</p>
         }
         <div class="row">
             @foreach (var item in Model.Products.Take(12))
@@ -44,6 +61,8 @@ else
     </div>
     <nav class="ms-2">
         <form method="post">
+            <input type="hidden" name="category" value="@ViewData["Category"]" class="d-none" />
+            <input type="hidden" name="name" value="@ViewData["Name"]" class="d-none" />
             <ul class="pagination">
                 @if (Model.PageIndex != 0)
                 {

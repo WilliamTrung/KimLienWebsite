@@ -1,0 +1,88 @@
+﻿@page
+@model KimLienAdministrator.Pages.UploadPictureModel
+@{
+}
+@if(ViewData["message"]!= null)
+{
+    <h2 class="alert-danger">@ViewData["message"]</h2>
+}
+<label class="h3">Tải ảnh nền</label>
+<form id="uploadForm" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="File" class="control-label">Chọn ảnh</label>
+        <input asp-for="File" type="file" id="imageInput" accept="image/*" class="form-control" required/>
+        <h3>Xem trước</h3>
+        <div class="iframe-container">
+            <iframe src="https://ctytnhhkimlien.vn/ProductView/Products" id="previewIframe"></iframe>
+        </div>
+        <div class="d-flex justify-content-center">
+        <!-- Centered button -->
+            <button class="btn btn-primary my-3">Xác nhận?</button>
+        </div>
+        
+    </div>
+</form>
+
+  <script>
+    document.getElementById("imageInput").addEventListener("change", function (event) {      
+        console.log('notify image added!');
+        // Get the uploaded image file
+        var imageInput = document.getElementById("imageInput");
+        var imageFile = imageInput.files[0];
+        console.log(imageFile);
+        // Create a FileReader to read the image file
+        var reader = new FileReader();
+
+        // Set the onload event handler for the FileReader
+        reader.onload = function (e) {
+            // Get the result (base64-encoded image data) from the FileReader
+            var imageDataURL = e.target.result;
+            console.log(imageDataURL);
+            // Get the iframe element
+            var iframe = document.getElementById("previewIframe");
+
+            // Access the iframe's content window and document
+            var iframeWindow = iframe.contentWindow;
+            var iframeDocument = iframe.contentDocument || iframeWindow.document;
+
+            // Modify the background image of the iframe's content
+            var iframeBody = iframeDocument.body;
+            
+            iframeBody.style.backgroundImage = "url('" + imageDataURL + "')"; // Set the base64-encoded image data as the background image
+        };
+
+        // Read the image file as Data URL
+        reader.readAsDataURL(imageFile);
+    });
+  </script>
+<style>
+    img.imagePreview {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        object-fit: cover;
+        z-index: -1;
+        filter: blur(3.25px);        
+    }
+</style>
+ <style>
+    /* Container for the iframe */
+    .iframe-container {
+      position: relative;
+      width: 100%;
+      height: 60vh; /* set the height of the iframe */      
+    }
+
+    /* Style the iframe to fill the container */
+    .iframe-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none; /* remove the iframe border */
+    }
+
+  </style>
