@@ -30,7 +30,7 @@ namespace KimLienCustomerView.Pages.ProductView
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
-            var find = await _unitOfWork.ProductService.GetProductModels(filter: p => p.Id == id && p.IsDeleted == true);
+            var find = await _unitOfWork.ProductService.GetProductModels(filter: p => p.Id == id && p.IsDeleted == false);
             var found = find.FirstOrDefault();
             if (found != null)
             {

@@ -38,36 +38,52 @@ namespace KimLienCustomerView.Pages.ProductView
         public int PageIndex { get; set; } = 0;
 
         private int PageSize { get; set; } = 12;
-        public async Task OnPostAsync(int? index = 0)
+        public async Task OnPostAsync(int? index = 0, string? name = null, string? category = null)
         {
             if (index != null)
             {
                 PageIndex = (int)index;
             }
-            await OnGetAsync();
+            await OnGetAsync(category: category, name: name);
         }
         public async Task OnGetAsync(string? name = null, string? category = null)
         {
-            int total = await _unitOfWork.ProductService.GetTotal();
-            MaxPages = (int)Math.Ceiling((double)total / PageSize);
-            var page = new PagingRequest()
+            if(category != null)
             {
-                PageSize = PageSize,
-                PageIndex = PageIndex
-            };
-            IEnumerable<ProductModel> result = await _unitOfWork.ProductService.GetProductModels(paging: page, filter: p => p.IsDeleted == true);
-            if (category != null)
+                int total = await _unitOfWork.ProductService.GetTotal(p => p.ProductCategories.Any(c => c.Category.Name == category));
+                MaxPages = (int)Math.Ceiling((double)total / PageSize);
+                var page = new PagingRequest()
+                {
+                    PageSize = PageSize,
+                    PageIndex = PageIndex
+                };
+                IEnumerable<ProductModel> result = await _unitOfWork.ProductService.GetProductModels(paging: page, filter: p => p.IsDeleted == false && p.ProductCategories.Any(c => c.Category.Name == category));
+                Products = result.ToList();
+                ViewData["Category"] = category;
+            } else if(name != null)
             {
-                result = result.Where(e => e.ProductCategories.Any(c => c.Category.Name == category));
-                ViewData["Search"] = category;
+                int total = await _unitOfWork.ProductService.GetTotal(e => e.Name.ToLower().Contains(name.ToLower()));
+                MaxPages = (int)Math.Ceiling((double)total / PageSize);
+                var page = new PagingRequest()
+                {
+                    PageSize = PageSize,
+                    PageIndex = PageIndex
+                };
+                IEnumerable<ProductModel> result = await _unitOfWork.ProductService.GetProductModels(paging: page, filter: p => p.IsDeleted == false && p.Name.ToLower().Contains(name.ToLower()));
+                Products = result.ToList();
+                ViewData["Name"] = name;
+            } else
+            {
+                int total = await _unitOfWork.ProductService.GetTotal();
+                MaxPages = (int)Math.Ceiling((double)total / PageSize);
+                var page = new PagingRequest()
+                {
+                    PageSize = PageSize,
+                    PageIndex = PageIndex
+                };
+                IEnumerable<ProductModel> result = await _unitOfWork.ProductService.GetProductModels(paging: page, filter: p => p.IsDeleted == false);
+                Products = result.ToList();
             }
-            if(name != null)
-            {
-                result = result.Where(e => e.Product.Name.ToLower().Contains(name.ToLower()));
-                ViewData["Search"] = name;
-            }
-            Products = result.ToList();
-            
         }
         private void AdjustModels()
         {

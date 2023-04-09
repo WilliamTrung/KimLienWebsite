@@ -154,14 +154,14 @@ namespace AppService.Service
         public override Task<DTOs.Product> Create(DTOs.Product dto)
         {
 #pragma warning disable CS8604 // Possible null reference argument.
-            dto.Name.ToCapitalize();
+            dto.Name = dto.Name.ToCapitalize();
 #pragma warning restore CS8604 // Possible null reference argument.
 
             return base.Create(dto);
         }
-        public async Task<int> GetTotal()
+        public async Task<int> GetTotal(Expression<Func<Product, bool>>? filter = null)
         {
-            var products = await GetDTOs();
+            var products = await GetDTOs(filter);
             if(products == null)
             {
                 return 0;

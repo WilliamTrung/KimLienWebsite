@@ -53,13 +53,13 @@ namespace KimLienCustomerView.Pages.ProductView
         }
         private async Task SetNewProductsAsync()
         {
-            var products = await _unitOfWork.ProductService.GetProductModels(filter: p => p.IsDeleted == true);
+            var products = await _unitOfWork.ProductService.GetProductModels(filter: p => p.IsDeleted == false);
             products = products.OrderByDescending(p => p.Product.ModifiedDate);
             NewProducts = products.ToList();
         }
         private async Task SetHotProductsAsync()
         {
-            var products = await _unitOfWork.ProductService.GetProductModels(filter: p => p.IsDeleted == true);
+            var products = await _unitOfWork.ProductService.GetProductModels(filter: p => p.IsDeleted == false);
             products = products.OrderBy(p => rng.Next()).ToList();
             HotProducts = products.ToList();
         }

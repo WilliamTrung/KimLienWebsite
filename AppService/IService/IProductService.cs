@@ -17,6 +17,6 @@ namespace AppService.IService
         IList<string> GetDeserializedPictures(DTOs.Product product);
         Task<DTOs.Product?> SetPrimaryPicture(Guid productId, string picture);
 
-        Task<int> GetTotal();
+        Task<int> GetTotal(Expression<Func<Product, bool>>? filter = null);
     }
 }

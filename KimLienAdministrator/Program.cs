@@ -42,6 +42,7 @@ services.AddSession();
 services.AddAutoMapper(typeof(Mapping));
 services.AddScoped<IUnitOfWork, UnitOfWork>();
 services.AddScoped<IProductBlob, ProductBlob>();
+services.AddTransient<PictureBlob>();
 services.AddSession(option => option.IdleTimeout = TimeSpan.FromMinutes(30));
 services.AddTransient<IAuthService, AuthService>();
 
