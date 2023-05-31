@@ -1,0 +1,21 @@
+
+When Add new product:
+	- Required name, description, product categories selecting
+When Add/Update product:
+	- Preview customer pre-loading page
+
+FE - Ref bachhoaxanh - AngularJS
+Landing Page:
+	[Top Pane]
+	- Logo
+	- Search
+	[Left Pane]
+	- Category Menu
+	- Dropdown sub-category
+	[Main]
+	- By Category Section
+	- Banks Slideshow
+	- Footer
+Detail Page:
+	-[Liên hệ] Section - [Pop out]
+	

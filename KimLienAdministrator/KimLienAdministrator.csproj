@@ -23,7 +23,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AppCore\AppCore.csproj" />
-    <ProjectReference Include="..\AppService\AppService.csproj" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="https://appsemble.app/api.json" /></VisualStudio></ProjectExtensions>

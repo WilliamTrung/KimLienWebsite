@@ -64,7 +64,6 @@ namespace AppCore.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Pictures")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

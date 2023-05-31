@@ -15,7 +15,7 @@ namespace AppCore.Entities
         [Required]
         public Guid CategoryId;
         [Required]
-        public bool IsDeleted { get; set; }
+        public bool IsDeleted { get; set; } = false;
         public virtual Product Product { get; set; } = null!;
         public virtual Category Category { get; set; } = null!;
 

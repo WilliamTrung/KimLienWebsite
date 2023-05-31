@@ -5,17 +5,20 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ApplicationCore.Repository
+namespace AppRepository
 {
-    public interface IGenericRepository<TEntity> where TEntity : class
+    public interface IGenericRepository<TEntity> : IDisposable where TEntity : class
     {
         //C
-        public Task<TEntity> Create(TEntity entity);
+        public void Create(TEntity entity);
         //R
-        public Task<IEnumerable<TEntity>> Get(Expression<Func<TEntity,bool>>? filter = null, string? includeProperties = null);
+        public IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>>? filter = null,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null, string ? includeProperties = null);
+        public TEntity? GetById(params object?[]? keyValues);
         //U
-        public Task<TEntity> Update(Expression<Func<TEntity, bool>> filter, TEntity entity);
+        public void Update(Expression<Func<TEntity, bool>> filter, TEntity entity);
+        public void Update(TEntity entity);
         //D
-        public Task<bool> Delete(Expression<Func<TEntity, bool>> filter, TEntity entity);
+        public void Delete(TEntity entity);
     }
 }

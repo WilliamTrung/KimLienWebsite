@@ -16,7 +16,7 @@ namespace AppCore.Entities
         public Guid Id { get; set; }
         [Required]
         [MinLength(1, ErrorMessage = "Password is required!")]
-        public string? Password { get; set; }
+        public string Password { get; set; } = null!;
         [Required]
         public Guid RoleId { get; set; }
 

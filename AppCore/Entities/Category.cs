@@ -15,7 +15,7 @@ namespace AppCore.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
         [Required]
-        public string? Name { get; set; }
+        public string Name { get; set; } = null!;
         [AllowNull]
         public Guid? ParentId { get; set; }
 

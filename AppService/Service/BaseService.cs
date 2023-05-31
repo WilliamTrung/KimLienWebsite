@@ -6,9 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ApplicationCore.Repository;
 using System.Linq.Expressions;
 using AppService.Paging;
+using AppRepository;
 
 namespace AppService.Service
 {

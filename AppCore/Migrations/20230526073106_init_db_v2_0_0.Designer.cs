@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppCore.Migrations
 {
     [DbContext(typeof(SqlContext))]
-    [Migration("20221126101050_removePwdHash")]
-    partial class removePwdHash
+    [Migration("20230526073106_init_db_v2_0_0")]
+    partial class init_db_v2_0_0
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -34,23 +34,18 @@ namespace AppCore.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("ProductId")
+                    b.Property<Guid?>("ParentId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("Category");
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("AppCore.Entities.Product", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CategoryId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedDate")
@@ -71,12 +66,29 @@ namespace AppCore.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Pictures")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Product");
+                    b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("AppCore.Entities.ProductCategory", b =>
+                {
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.HasKey("ProductId", "CategoryId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("ProductCategories");
                 });
 
             modelBuilder.Entity("AppCore.Entities.Role", b =>
@@ -91,7 +103,7 @@ namespace AppCore.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Role");
+                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("AppCore.Entities.User", b =>
@@ -111,14 +123,26 @@ namespace AppCore.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("User");
+                    b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("AppCore.Entities.Category", b =>
+            modelBuilder.Entity("AppCore.Entities.ProductCategory", b =>
                 {
-                    b.HasOne("AppCore.Entities.Product", null)
-                        .WithMany("Categories")
-                        .HasForeignKey("ProductId");
+                    b.HasOne("AppCore.Entities.Category", "Category")
+                        .WithMany("ProductCategories")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AppCore.Entities.Product", "Product")
+                        .WithMany("ProductCategories")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("AppCore.Entities.User", b =>
@@ -132,9 +156,14 @@ namespace AppCore.Migrations
                     b.Navigation("Role");
                 });
 
+            modelBuilder.Entity("AppCore.Entities.Category", b =>
+                {
+                    b.Navigation("ProductCategories");
+                });
+
             modelBuilder.Entity("AppCore.Entities.Product", b =>
                 {
-                    b.Navigation("Categories");
+                    b.Navigation("ProductCategories");
                 });
 #pragma warning restore 612, 618
         }
