@@ -19,23 +19,23 @@ namespace ApiService.UnitOfWork
 
         private SqlContext _context;
 
-        private GenericRepository<Category>? _categoryRepository;
+        private GenericRepository<AppCore.Entities.Category>? _categoryRepository;
         private IProductRepository? _productRepository;
-        private GenericRepository<Role>? _roleRepository;
-        private GenericRepository<User>? _userRepository;
+        private GenericRepository<AppCore.Entities.Role>? _roleRepository;
+        private GenericRepository<AppCore.Entities.User>? _userRepository;
         private IProductCategoryRepository? _productCategoryRepository;
         public UnitOfWork(SqlContext context)
         {
             _context = context;
         }
 
-        public GenericRepository<Category> CategoryRepository
+        public GenericRepository<AppCore.Entities.Category> CategoryRepository
         {
             get
             {
                 if(_categoryRepository == null)
                 {
-                    _categoryRepository = new GenericRepository<Category>(_context);                   
+                    _categoryRepository = new GenericRepository<AppCore.Entities.Category>(_context);                   
                 }
                 return _categoryRepository;
             }
@@ -53,25 +53,25 @@ namespace ApiService.UnitOfWork
             }
         }
 
-        public GenericRepository<Role> RoleRepository
+        public GenericRepository<AppCore.Entities.Role> RoleRepository
         {
             get
             {
                 if (_roleRepository == null)
                 {
-                    _roleRepository = new GenericRepository<Role>(_context);
+                    _roleRepository = new GenericRepository<AppCore.Entities.Role>(_context);
                 }
                 return _roleRepository;
             }
         }
 
-        public GenericRepository<User> UserRepository
+        public GenericRepository<AppCore.Entities.User> UserRepository
         {
             get
             {
                 if (_userRepository == null)
                 {
-                    _userRepository = new GenericRepository<User>(_context);
+                    _userRepository = new GenericRepository<AppCore.Entities.User>(_context);
                 }
                 return _userRepository;
             }

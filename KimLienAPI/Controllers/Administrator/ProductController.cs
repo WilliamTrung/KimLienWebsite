@@ -2,6 +2,7 @@
 using ApiService.ServiceAdministrator;
 using KimLienAPI.Model;
 using KimLienAPI.Model.Product;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
@@ -12,6 +13,7 @@ using System.Data;
 namespace KimLienAPI.Controllers.Administrator
 {
     [Route("api/administrator/products")]
+    [Authorize(Roles = "Administrator")]
     [ApiController]
     public class ProductController : ODataController 
     {                        

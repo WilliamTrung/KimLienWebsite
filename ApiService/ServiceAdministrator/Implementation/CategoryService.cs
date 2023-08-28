@@ -1,4 +1,5 @@
 ﻿using ApiService.Azure;
+using ApiService.DTOs;
 using ApiService.UnitOfWork;
 using AutoMapper;
 using System;
@@ -19,19 +20,26 @@ namespace ApiService.ServiceAdministrator.Implementation
         /// <summary>
         /// Add new Category
         /// <para>Throw DuplicateNameException: Duplicated name on category</para>
+        /// <para>Throw ArgumentException: Selected parent for this category is a child of another category</para>
         /// </summary>
         /// <param name="category"></param>
         /// <exception cref="DuplicateNameException"></exception>
+        /// <exception cref="ArgumentException"></exception>
         public void Add(DTOs.Category category)
         {
             using (var categoryRepos = _unitOfWork.CategoryRepository)
             {
-                var checkDuplicated = categoryRepos.Get().Where(c => Extension.StringExtension.MinimalCompareString(category.Name, c.Name));
+                var checkDuplicated = categoryRepos.Get().Where(c => string.Equals(category.Name, c.Name, StringComparison.OrdinalIgnoreCase));
                 if(checkDuplicated.Any())
                 {
                     throw new DuplicateNameException();
                 }
-                categoryRepos.Create(category);
+                var checkParent = categoryRepos.Get(filter: c => c.Id == category.ParentId).FirstOrDefault();
+                if(checkParent != null && checkParent.ParentId != null)
+                {
+                    throw new ArgumentException("Selected parent category is a child!");
+                }
+                categoryRepos.Create(_mapper.Map<AppCore.Entities.Category>(category));
                 _unitOfWork.Save();
             }
         }
@@ -44,7 +52,7 @@ namespace ApiService.ServiceAdministrator.Implementation
                 if(category == null)
                     throw new KeyNotFoundException();
                     
-                await DeleteChildren(category);                
+                await DeleteChildren(_mapper.Map<Category>(category));                
                 _unitOfWork.Save();
             }
         }    
@@ -65,14 +73,14 @@ namespace ApiService.ServiceAdministrator.Implementation
                                 foreach (var child in children)
                                 {
                                     productCategoryRepos.DeleteByCategory(child.Id);
-                                    DeleteChildren(child);
+                                    DeleteChildren(_mapper.Map<Category>(child));
                                 }
                             }
                         }
 
                     }
                 }
-                categoryRepos.Delete(category);
+                categoryRepos.Delete(_mapper.Map<AppCore.Entities.Category>(category));
             }
             return Task.CompletedTask;
         }
@@ -80,7 +88,7 @@ namespace ApiService.ServiceAdministrator.Implementation
         {
             using(var categoryRepos = _unitOfWork.CategoryRepository)
             {
-                return categoryRepos.Get(orderBy: c => c.OrderBy(c => c.Name));
+                return _mapper.Map<IEnumerable<Category>>(categoryRepos.Get(orderBy: c => c.OrderBy(c => c.Name)));
             }
         }
         /// <summary>
@@ -98,7 +106,7 @@ namespace ApiService.ServiceAdministrator.Implementation
                 {
                     throw new DuplicateNameException();
                 }
-                categoryRepos.Update(category);
+                categoryRepos.Update(_mapper.Map<AppCore.Entities.Category>(category));
                 _unitOfWork.Save();
             }
         }

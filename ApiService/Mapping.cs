@@ -12,6 +12,7 @@ namespace ApiService
     {
         public Mapping()
         {
+            CreateMap<User, DTOs.CreateAccountModel>().ReverseMap();
             CreateMap<Category, DTOs.Category>().ReverseMap();
             CreateMap<Product, DTOs.Product>().ReverseMap();
             CreateMap<Role, DTOs.Role>().ReverseMap();

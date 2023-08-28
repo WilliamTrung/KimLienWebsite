@@ -1,6 +1,8 @@
 ﻿using ApiService.DTOs;
 using ApiService.ServiceAdministrator;
+using JwtService;
 using KimLienAPI.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
@@ -11,6 +13,7 @@ using System.Data;
 namespace KimLienAPI.Controllers.Administrator
 {
     [Route("api/administrator/categories")]
+    [Authorize(Roles = "Administrator")]
     [ApiController]
     public class CategoryController : ODataController
     {
@@ -18,7 +21,7 @@ namespace KimLienAPI.Controllers.Administrator
 
         public CategoryController(ICategoryService categoryService)
         {
-            _categoryService = categoryService;
+            _categoryService = categoryService;            
         }
         // GET: api/<CategoryController>
         [HttpGet]
@@ -39,6 +42,9 @@ namespace KimLienAPI.Controllers.Administrator
             } catch(DuplicateNameException)
             {
                 return Ok(StatusCode(409, "Duplicated category name"));
+            } catch(ArgumentException ex)
+            {
+                return Ok(StatusCode(StatusCodes.Status406NotAcceptable, ex.Message));
             }
             return Ok(StatusCode(201));
 

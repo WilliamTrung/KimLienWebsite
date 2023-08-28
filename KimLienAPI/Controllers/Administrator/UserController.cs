@@ -1,5 +1,6 @@
 ﻿using ApiService.DTOs;
 using ApiService.ServiceAdministrator;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using System.Data;
@@ -9,6 +10,7 @@ using System.Data;
 namespace KimLienAPI.Controllers.Administrator
 {
     [Route("api/administrator/users")]
+    [Authorize(Roles = "Administrator")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -29,7 +31,7 @@ namespace KimLienAPI.Controllers.Administrator
 
         // POST api/<RoleController>
         [HttpPost]
-        public IActionResult Post([FromBody] User user)
+        public IActionResult Post([FromBody] CreateAccountModel user)
         {
             try
             {

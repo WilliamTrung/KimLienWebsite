@@ -1,5 +1,6 @@
 ﻿using ApiService.DTOs;
 using ApiService.ServiceAdministrator;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using System.Data;
@@ -9,6 +10,7 @@ using System.Data;
 namespace KimLienAPI.Controllers.Administrator
 {
     [Route("api/administrator/roles")]
+    [Authorize(Roles = "Administrator")]
     [ApiController]
     public class RoleController : ControllerBase
     {

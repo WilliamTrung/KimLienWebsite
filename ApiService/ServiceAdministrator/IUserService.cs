@@ -9,6 +9,7 @@ namespace ApiService.ServiceAdministrator
 {
     public interface IUserService
     {
+        User? Login(Guid id, string pwdHashed);
         IEnumerable<User>? GetUsers();
         /// <summary>
         /// Find user by Id        
@@ -28,7 +29,17 @@ namespace ApiService.ServiceAdministrator
         /// <para>Null if not found</para>
         /// </returns>
         IEnumerable<User>? GetUsersByRole(string role);
-        void Add(User user);
+        /// <summary>
+        /// Throw ArgumentException: Password is null or empty
+        /// </summary>
+        /// <param name="user"></param>
+        /// <exception cref="ArgumentException"></exception>
+        void Add(CreateAccountModel user);
+        /// <summary>
+        /// Throw ArgumentException: Password is null or empty
+        /// </summary>
+        /// <param name="user"></param>
+        /// <exception cref="ArgumentException"></exception>
         void Update(User user);
         /// <summary>
         /// Not supported function

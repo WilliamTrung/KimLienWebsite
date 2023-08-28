@@ -11,10 +11,10 @@ namespace ApiService.UnitOfWork
 {
     public interface IUnitOfWork : IDisposable
     {
-        GenericRepository<Category> CategoryRepository { get; }
+        GenericRepository<AppCore.Entities.Category> CategoryRepository { get; }
         IProductRepository ProductRepository { get; }
-        GenericRepository<Role> RoleRepository { get; }
-        GenericRepository<User> UserRepository { get; }
+        GenericRepository<AppCore.Entities.Role> RoleRepository { get; }
+        GenericRepository<AppCore.Entities.User> UserRepository { get; }
         IProductCategoryRepository ProductCategoryRepository { get; }
         void Save();
     }

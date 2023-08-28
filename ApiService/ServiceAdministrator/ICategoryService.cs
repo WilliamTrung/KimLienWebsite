@@ -27,9 +27,11 @@ namespace ApiService.ServiceAdministrator
         /// <summary>
         /// Add new Category
         /// <para>Throw DuplicateNameException: Duplicated name on category</para>
+        /// <para>Throw ArgumentException: Selected parent for this category is a child of another category</para>
         /// </summary>
         /// <param name="category"></param>
         /// <exception cref="DuplicateNameException"></exception>
+        /// <exception cref="ArgumentException"></exception>
         void Add(Category category);
     }
 }

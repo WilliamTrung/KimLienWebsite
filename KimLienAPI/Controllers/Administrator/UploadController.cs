@@ -2,6 +2,7 @@
 using ApiService.ServiceAdministrator;
 using KimLienAPI.Model;
 using KimLienAPI.Model.Product;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace KimLienAPI.Controllers.Administrator
 {
     [Route("api/administrator/upload")]
+    [Authorize(Roles = "Administrator")]
     [ApiController]
     public class UploadController : ControllerBase
     {

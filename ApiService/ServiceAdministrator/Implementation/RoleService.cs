@@ -27,11 +27,12 @@ namespace ApiService.ServiceAdministrator.Implementation
             using(var roleRepos = _unitOfWork.RoleRepository)
             {
                 role.Name = role.Name.Trim();
-                if(roleRepos.Get(filter: r => Extension.StringExtension.MinimalCompareString(role.Name, r.Name)).FirstOrDefault() != null)
+                var roles = roleRepos.Get();
+                if (roles.Any(r => Extension.StringExtension.MinimalCompareString(role.Name, r.Name)))                   
                 {
                     throw new DuplicateNameException();
                 }
-                roleRepos.Create(role);
+                roleRepos.Create(_mapper.Map<AppCore.Entities.Role>(role));
                 _unitOfWork.Save();
             }
         }
@@ -66,7 +67,7 @@ namespace ApiService.ServiceAdministrator.Implementation
                 var result = roleRepos.GetById(Id);                
                 if(result != null)
                 {
-                    return result;
+                    return _mapper.Map<Role>(result);
                 } else
                 {
                     throw new KeyNotFoundException();
@@ -84,10 +85,11 @@ namespace ApiService.ServiceAdministrator.Implementation
         {
             using (var roleRepos = _unitOfWork.RoleRepository)
             {
-                var result = roleRepos.Get(filter: r => Extension.StringExtension.MinimalCompareString(Name, r.Name));
+                var roles = roleRepos.Get();
+                var result = roles.Where(r => Extension.StringExtension.MinimalCompareString(Name, r.Name));
                 if (result != null)
                 {
-                    return result;
+                    return _mapper.Map<IEnumerable<Role>>(result);
                 }
                 else
                 {
@@ -108,7 +110,7 @@ namespace ApiService.ServiceAdministrator.Implementation
                 var result = roleRepos.Get();
                 if (result != null)
                 {
-                    return result;
+                    return _mapper.Map<IEnumerable<Role>>(result);
                 }
                 else
                 {
@@ -122,11 +124,12 @@ namespace ApiService.ServiceAdministrator.Implementation
             using (var roleRepos = _unitOfWork.RoleRepository)
             {
                 role.Name = role.Name.Trim();
-                if (roleRepos.Get(filter: r => Extension.StringExtension.MinimalCompareString(role.Name, r.Name)).FirstOrDefault() != null)
+                var roles = roleRepos.Get();
+                if (roles.Any(r => Extension.StringExtension.MinimalCompareString(role.Name, r.Name)))
                 {
                     throw new DuplicateNameException();
                 }
-                roleRepos.Update(role);
+                roleRepos.Update(_mapper.Map<AppCore.Entities.Role>(role));
                 _unitOfWork.Save();
             }
         }
