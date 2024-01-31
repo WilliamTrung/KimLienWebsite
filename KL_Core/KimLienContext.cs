@@ -12,7 +12,7 @@ namespace KL_Core
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("server=WILLIAMTRUNG\\MYSQL;database=kimliendb;uid=sa;pwd=123;trusted_connection=true");
+            optionsBuilder.UseSqlServer("server=WILLIAMTRUNG\\MYSQL;database=kimliendb_rework;uid=sa;pwd=123;TrustServerCertificate=True");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -21,21 +21,21 @@ namespace KL_Core
             {
                 e.ToTable("Users");
                 e.HasKey(x => x.Id);
-                e.Property(e => e.Id).UseIdentityColumn();
+                e.Property(e => e.Id).ValueGeneratedOnAdd();
                 e.Property(c => c.Role).HasDefaultValue(Models.Enum.Role.General);
             });
             modelBuilder.Entity<Category>(e =>
             {
                 e.ToTable("Categories");
                 e.HasKey(x => x.Id);
-                e.Property(e => e.Id).UseIdentityColumn();
+                e.Property(e => e.Id).ValueGeneratedOnAdd();
                 e.Property(e => e.IsDeleted).HasDefaultValue(false);
             });
             modelBuilder.Entity<Product>(e =>
             {
                 e.ToTable("Products");
                 e.HasKey(x => x.Id);
-                e.Property(e => e.Id).UseIdentityColumn();
+                e.Property(e => e.Id).ValueGeneratedOnAdd();
                 e.Property(e => e.IsDeleted).HasDefaultValue(false);            
             });
             modelBuilder.Entity<ProductCategory>(e =>
