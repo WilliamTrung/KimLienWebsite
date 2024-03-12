@@ -1,4 +1,7 @@
-﻿using Models.Entities;
+﻿using KL_Core;
+using Microsoft.EntityFrameworkCore;
+using Models.Entities;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace KL_Repository.Generic
@@ -7,35 +10,83 @@ namespace KL_Repository.Generic
     {
         private bool disposedValue;
 
-        //private DbSet<TEntity> _entities;
+        internal KimLienContext _context; 
+        internal DbSet<TEntity> _entities;
 
-        public GenericRepository()
+        public GenericRepository(KimLienContext context)
         {
-            
+            _context = context;
+            _entities = _context.Set<TEntity>();
         }
-        public Task Add(TEntity entity)
+        public virtual void Add(TEntity entity)
         {
-            throw new NotImplementedException();
+            if(entity is IAuditEntity)
+            {
+                ((IAuditEntity)entity).CreatedDate = DateTime.UtcNow.AddHours(8);
+                ((IAuditEntity)entity).LastModifiedDate = DateTime.UtcNow.AddHours(8);
+            }
+            _entities.Add(entity);
+        }
+                                                                                                
+        public virtual void Delete(TEntity entity)
+        {
+            if(entity is IDeleteEntity)
+            {
+                ((IDeleteEntity)entity).IsDeleted = true;
+            } else
+            {
+                _entities.Remove(entity);
+            }            
         }
 
-        public Task Delete(TEntity entity)
+        public virtual IQueryable<TEntity> Get(Expression<Func<TEntity, bool>>? expression = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null, params string[] includeProperties)
         {
-            throw new NotImplementedException();
+            IQueryable<TEntity> query = _entities;
+
+            if (expression != null)
+            {
+                query = query.Where(expression);
+            }
+
+            foreach (var includeProperty in includeProperties)
+            {
+                query = query.Include(includeProperty);
+            }
+
+            if (orderBy != null)
+            {
+                return orderBy(query);
+                //return query.OrderBy(orderBy);
+            }
+            else
+            {
+                return query;
+            }
         }
 
-        public Task<IQueryable<TEntity>> Get(Expression<Func<TEntity, bool>>? expression = null, params string[] includeProperties)
+        public virtual TEntity? GetFirst(Expression<Func<TEntity, bool>>? expression = null, params string[] includeProperties)
         {
-            throw new NotImplementedException();
+            IQueryable<TEntity> query = _entities;
+
+            if (expression != null)
+            {
+                query = query.Where(expression);
+            }
+
+            foreach (var includeProperty in includeProperties)
+            {
+                query = query.Include(includeProperty);
+            }
+            return query.FirstOrDefault();
         }
 
-        public Task<TEntity?> GetFirst(Expression<Func<TEntity, bool>>? expression = null, params string[] includeProperties)
+        public virtual void Update(TEntity entity)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task Update(TEntity entity)
-        {
-            throw new NotImplementedException();
+            if (entity is IAuditEntity)
+            {
+                ((IAuditEntity)entity).LastModifiedDate = DateTime.UtcNow.AddHours(8);
+            }
+            _entities.Update(entity);
         }
 
         protected virtual void Dispose(bool disposing)
@@ -44,6 +95,7 @@ namespace KL_Repository.Generic
             {
                 if (disposing)
                 {
+                    _context.Dispose();                    
                 }
                 disposedValue = true;
             }

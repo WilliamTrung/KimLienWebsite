@@ -4,10 +4,10 @@ namespace KL_Repository.Generic
 {
     public interface IGenericRepository<TEntity> : IDisposable where TEntity : class
     {
-        Task Add(TEntity entity);
-        Task Update(TEntity entity);
-        Task Delete(TEntity entity);
-        Task<IQueryable<TEntity>> Get(Expression<Func<TEntity, bool>>? expression = null, params string[] includeProperties);
-        Task<TEntity?> GetFirst(Expression<Func<TEntity, bool>>? expression = null, params string[] includeProperties);
+        void Add(TEntity entity);
+        void Update(TEntity entity);
+        void Delete(TEntity entity);
+        IQueryable<TEntity> Get(Expression<Func<TEntity, bool>>? expression = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null, params string[] includeProperties);
+        TEntity? GetFirst(Expression<Func<TEntity, bool>>? expression = null, params string[] includeProperties);
     }
 }

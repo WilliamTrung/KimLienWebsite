@@ -1,0 +1,93 @@
+﻿using AutoMapper;
+using Models.Entities;
+using Models.ServiceModels.Categories;
+using Models.ServiceModels.Product.Operation;
+using Models.ServiceModels.Product.View;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace KL_SP_MappingConfig
+{
+    public class ProductMapping : Profile
+    {
+        public ProductMapping()
+        {
+            Map_Product_ProductCustomerViewModel();
+        }
+        private void Map_Product_ProductCustomerViewModel()
+        {
+            CreateMap<Product, ProductCustomerViewModel>()
+                .AfterMap<Map_Product_ProductCustomerViewModel>();
+        }
+        private void Map_ProductAddModel_Product()
+        {
+            CreateMap<ProductAddModel, Product>().AfterMap<Map_ProductAddModel_Product>();         
+        }
+        private void Map_Product_ProductAdminViewModel()
+        {
+            CreateMap<Product, ProductAdminViewModel>()
+                .AfterMap<Map_Product_ProductAdminViewModel>();
+        }
+        private void Map_ProductCategory_CategoryAdminViewModel()
+        {
+            CreateMap<ProductCategory, CategoryAdminViewModel>()
+                .AfterMap<Map_ProductCategory_CategoryAdminViewModel>();
+        }
+    }    
+    public class Map_Product_ProductCustomerViewModel : IMappingAction<Product, ProductCustomerViewModel>
+    {
+        public void Process(Product source, ProductCustomerViewModel destination, ResolutionContext context)
+        {
+            destination.Id = source.Id;
+            destination.Name = source.Name;
+            destination.LastModifiedDate = source.LastModifiedDate;
+            var pictures = source.Pictures.Split(',').ToList();
+            destination.Pictures = pictures;
+            destination.ViewCount = source.ViewCount;
+            destination.Categories = source.ProductCategories.Select(c => c.Category.Name).ToList();
+        }
+    }
+    public class Map_ProductAddModel_Product : IMappingAction<ProductAddModel, Product>
+    {
+        public void Process(ProductAddModel source, Product destination, ResolutionContext context)
+        {
+            destination.Name = source.Name;
+            string pictures = "";
+            foreach (var picture in source.Pictures)
+            {
+                pictures += picture + ",";
+            }
+            destination.Pictures = pictures;
+        }
+    }
+    public class Map_Product_ProductAdminViewModel : IMappingAction<Product, ProductAdminViewModel>
+    {
+        private readonly IMapper _mapper;
+        public Map_Product_ProductAdminViewModel(IMapper mapper)
+        {
+            _mapper = mapper;
+        }
+        public void Process(Product source, ProductAdminViewModel destination, ResolutionContext context)
+        {
+            destination.CreatedDate = source.CreatedDate;
+            destination.LastModifiedDate= source.LastModifiedDate;
+            destination.Name = source.Name;
+            destination.IsDeleted = source.IsDeleted;
+            destination.ViewCount= source.ViewCount;
+            destination.Pictures = source.Pictures.Split(",").ToList();
+            destination.Categories = _mapper.Map <List<CategoryAdminViewModel>>(source.ProductCategories);
+        }
+    }
+    public class Map_ProductCategory_CategoryAdminViewModel : IMappingAction<ProductCategory, CategoryAdminViewModel>
+    {
+        public void Process(ProductCategory source, CategoryAdminViewModel destination, ResolutionContext context)
+        {
+            destination.Id = source.Category.Id;
+            destination.IsDeleted = source.Category.IsDeleted;
+            destination.Name = source.Category.Name;
+        }
+    }
+}
