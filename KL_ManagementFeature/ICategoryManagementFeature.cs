@@ -15,8 +15,9 @@ namespace KL_ManagementFeature
     public interface ICategoryManagementFeature
     {
         IEnumerable<CategoryViewModel> GetCategories();
+        IEnumerable<CategoryViewModel> GetChildren(Guid id);
         CategoryViewModel GetCategoryById(Guid categoryId);
-        Task AddCategory(CategoryAddModel model);
+        Task<Guid> AddCategory(CategoryAddModel model);
         Task ModifyCategory(CategoryModifyModel model);
         Task ToggleCategoryStatus(Guid categoryId);
         Task DeleteCategory(Guid categoryId);
@@ -30,7 +31,7 @@ namespace KL_ManagementFeature
             _uow = unitOfWork;
             _mapper = mapper;
         }
-        public async Task AddCategory(CategoryAddModel model)
+        public async Task<Guid> AddCategory(CategoryAddModel model)
         {
             model.Name = model.Name.Trim();
             var isValidName = CheckNameDuplicated(model.Name, model.ParentId);
@@ -41,6 +42,7 @@ namespace KL_ManagementFeature
             var entity = _mapper.Map<Category>(model);
             _uow.CategoryRepository.Add(entity);
             await _uow.SaveAsync();
+            return entity.Id;
         }
 
         public async Task DeleteCategory(Guid categoryId)
@@ -86,7 +88,12 @@ namespace KL_ManagementFeature
             }          
             return result;
         }
-
+        public IEnumerable<CategoryViewModel> GetChildren(Guid id)
+        {
+            var categories = _uow.CategoryRepository.Get(c => c.ParentId == id);
+            var result = _mapper.Map<List<CategoryViewModel>>(categories);
+            return result;
+        }
         public CategoryViewModel GetCategoryById(Guid categoryId)
         {
             var find = _uow.CategoryRepository.GetFirst(c  => c.Id == categoryId);

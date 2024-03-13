@@ -17,7 +17,7 @@ namespace KL_Service.ProductService
     {
         IEnumerable<ProductAdminViewModel> GetProductAdminView();
         ProductAdminViewModel GetProductAdminById(Guid id);
-        Task AddProduct(ProductAddApiModel model);
+        Task<Guid> AddProduct(ProductAddApiModel model);
         Task AddCategoryToProduct(ProductCategoryAddModel model);
         Task RemoveCategoryFromProduct(ProductCategoryModel model);
         Task ModifyProduct(ProductModifyModel model);
@@ -44,7 +44,7 @@ namespace KL_Service.ProductService
             return _productManagementFeature.AddCategoryToProduct(model);
         }
 
-        public async Task AddProduct(ProductAddApiModel model)
+        public async Task<Guid> AddProduct(ProductAddApiModel model)
         {
             List<string> imageUrls = new List<string>();
             foreach (var image in model.Pictures)
@@ -57,7 +57,7 @@ namespace KL_Service.ProductService
                 Name = model.Name,
                 Pictures = imageUrls    
             };
-            await _productManagementFeature.AddProduct(addModel);
+            return await _productManagementFeature.AddProduct(addModel);
         }
 
        

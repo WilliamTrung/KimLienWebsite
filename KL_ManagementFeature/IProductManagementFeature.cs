@@ -12,7 +12,7 @@ namespace KL_ManagementFeature
     {
         IEnumerable<ProductAdminViewModel> GetProductAdminView();
         ProductAdminViewModel GetProductAdminById(Guid id);
-        Task AddProduct(ProductAddModel model);
+        Task<Guid> AddProduct(ProductAddModel model);
         Task AddCategoryToProduct(ProductCategoryAddModel model);
         Task RemoveCategoryFromProduct(ProductCategoryModel model);
         Task ModifyProduct(ProductModifyModel model);
@@ -88,7 +88,7 @@ namespace KL_ManagementFeature
             await _uow.SaveAsync();
         }
 
-        public async Task AddProduct(ProductAddModel model)
+        public async Task<Guid> AddProduct(ProductAddModel model)
         {
             var product = _mapper.Map<Product>(model);
             _uow.ProductRepository.Add(product);
@@ -99,6 +99,7 @@ namespace KL_ManagementFeature
                 ProductId = product.Id
             };
             await AddCategoryToProduct(productCategories);
+            return product.Id;
         }
 
         public async Task ModifyProduct(ProductModifyModel model)

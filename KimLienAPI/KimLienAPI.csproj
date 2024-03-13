@@ -26,4 +26,8 @@
     <ProjectReference Include="..\KL_SP_MappingConfig\KL_SP_MappingConfig.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Helper\" />
+  </ItemGroup>
+
 </Project>

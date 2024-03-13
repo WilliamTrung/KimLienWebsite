@@ -11,8 +11,9 @@ namespace KL_Service.CategoryService
     public interface ICategoryManagementService
     {
         IEnumerable<CategoryViewModel> GetCategories();
+        IEnumerable<CategoryViewModel> GetChildren(Guid id);
         CategoryViewModel GetCategory(Guid id);
-        Task AddCategory(CategoryAddModel model);
+        Task<Guid> AddCategory(CategoryAddModel model);
         Task ModifyCategory(CategoryModifyModel model);
         Task ToggleCategoryStatus(Guid categoryId);
         Task DeleteCategory(Guid categoryId);
@@ -24,7 +25,7 @@ namespace KL_Service.CategoryService
         {
             _categoryManageFeature = categoryManagementFeature;
         }
-        public Task AddCategory(CategoryAddModel model)
+        public Task<Guid> AddCategory(CategoryAddModel model)
         {
             return _categoryManageFeature.AddCategory(model);
         }
@@ -42,6 +43,11 @@ namespace KL_Service.CategoryService
         public CategoryViewModel GetCategory(Guid id)
         {
             return _categoryManageFeature.GetCategoryById(id);
+        }
+
+        public IEnumerable<CategoryViewModel> GetChildren(Guid id)
+        {
+            return _categoryManageFeature.GetChildren(id);
         }
 
         public Task ModifyCategory(CategoryModifyModel model)
