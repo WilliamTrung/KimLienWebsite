@@ -1,4 +1,5 @@
-﻿using KL_ManagementFeature;
+﻿using KL_AuthFeature;
+using KL_ManagementFeature;
 using KL_ProductCustomerFeature;
 using KL_Repository.UnitOfWork;
 
@@ -18,6 +19,10 @@ namespace KimLienAPI.Startup
         public static void AddCustomerFeature(this WebApplicationBuilder builder)
         {
             builder.Services.AddTransient<IProductCustomerFeature, ProductCustomerFeature>();
+        }
+        public static void AddAuthFeature(this WebApplicationBuilder builder)
+        {
+            builder.Services.AddTransient<IAuthFeature, AuthFeature>();
         }
     }
 }

@@ -19,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KL_CustomerFeature", "KL_Pr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KL_ManagementFeature", "KL_ManagementFeature\KL_ManagementFeature.csproj", "{54350391-BF0B-4C34-B1AF-39F1B2236AC6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KL_Validation", "KL_Validation\KL_Validation.csproj", "{F78FAFD3-954C-453F-9F88-D02784386824}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KL_Validation", "KL_Validation\KL_Validation.csproj", "{F78FAFD3-954C-453F-9F88-D02784386824}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KL_AuthFeature", "KL_AuthFeature\KL_AuthFeature.csproj", "{8F84B1A8-BD4B-4CDB-B16F-82DE21DC63E4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{F78FAFD3-954C-453F-9F88-D02784386824}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F78FAFD3-954C-453F-9F88-D02784386824}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F78FAFD3-954C-453F-9F88-D02784386824}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F84B1A8-BD4B-4CDB-B16F-82DE21DC63E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F84B1A8-BD4B-4CDB-B16F-82DE21DC63E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F84B1A8-BD4B-4CDB-B16F-82DE21DC63E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F84B1A8-BD4B-4CDB-B16F-82DE21DC63E4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

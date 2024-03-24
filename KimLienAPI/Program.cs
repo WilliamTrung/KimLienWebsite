@@ -24,13 +24,15 @@ builder.Services.AddDbContext<KimLienContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
 });
 builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(KL_SP_MappingConfig.AutoMapperAssembly)));
-
+builder.JwtConfiguration();
 builder.InjectUnitOfWork();
 builder.InjectAzureService();
 builder.AddCustomerFeature();
 builder.AddManagementFeature();
 builder.AddCustomerService();
 builder.AddManagementService();
+builder.AddAuthFeature();
+builder.AddAuthService();
 
 var app = builder.Build();
 
@@ -42,7 +44,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

@@ -13,10 +13,10 @@
 
   <ItemGroup>
     <PackageReference Include="Azure.Storage.Blobs" Version="12.19.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\KL_AuthFeature\KL_AuthFeature.csproj" />
     <ProjectReference Include="..\KL_ManagementFeature\KL_ManagementFeature.csproj" />
     <ProjectReference Include="..\KL_ProductCustomerFeature\KL_CustomerFeature.csproj" />
     <ProjectReference Include="..\KL_Repository\KL_Repository.csproj" />
