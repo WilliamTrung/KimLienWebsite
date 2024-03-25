@@ -1,13 +1,16 @@
-﻿using KL_Service.ProductService;
+﻿using KimLienAPI.Helper;
+using KL_Service.ProductService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Models.ApiParams.Product;
+using Models.Enum;
 using Models.ServiceModels.Product.Operation;
 
 namespace KimLienAPI.Controllers
 {
+    [Authorize(Role.Administrator)]
     [Route("api/management/product")]
     [ApiController]
     public class ProductManagementController : ODataController

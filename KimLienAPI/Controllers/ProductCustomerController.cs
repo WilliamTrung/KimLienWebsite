@@ -1,11 +1,14 @@
-﻿using KL_Service.CustomerService;
+﻿using KimLienAPI.Helper;
+using KL_Service.CustomerService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Models.ApiParams.CustomerQuery;
+using Models.Enum;
 
 namespace KimLienAPI.Controllers
 {
+    [Authorize(Role.General)]
     [Route("api/customer")]
     [ApiController]
     public class ProductCustomerController : ODataController

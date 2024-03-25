@@ -1,12 +1,15 @@
-﻿using KL_Service.CategoryService;
+﻿using KimLienAPI.Helper;
+using KL_Service.CategoryService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
+using Models.Enum;
 using Models.ServiceModels.Categories.Operation;
 
 namespace KimLienAPI.Controllers
 {
+    [Authorize(Role.Administrator)]
     [Route("api/management/category")]
     [ApiController]
     public class CategoryManagementController : ODataController

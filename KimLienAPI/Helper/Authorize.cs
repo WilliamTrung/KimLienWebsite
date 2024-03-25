@@ -13,11 +13,11 @@ namespace KimLienAPI.Helper
     {
         private readonly Role[]? _roles;
         private IAuthService _authService = null!;
-        public Authorize(params string[]? roles)
+        public Authorize(params Role[]? roles)
         {
             if (roles != null)
             {
-                _roles = roles.Select(str => (Models.Enum.Role)Enum.Parse(typeof(Models.Enum.Role), str)).ToArray();
+                _roles = roles;
             }
         }
         private void SetConfiguration(ActionExecutingContext context)
