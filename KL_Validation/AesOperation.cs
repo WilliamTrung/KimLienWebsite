@@ -16,7 +16,8 @@ namespace KL_Validation
 
             using (Aes aes = Aes.Create())
             {
-                aes.Key = Encoding.UTF8.GetBytes(key);
+                var base64Key = Convert.FromBase64String(key);
+                aes.Key = base64Key;
                 aes.IV = iv;
 
                 ICryptoTransform encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
@@ -44,7 +45,8 @@ namespace KL_Validation
 
             using (Aes aes = Aes.Create())
             {
-                aes.Key = Encoding.UTF8.GetBytes(key);
+                var base64Key = Convert.FromBase64String(key);
+                aes.Key = base64Key;
                 aes.IV = iv;
                 ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
 

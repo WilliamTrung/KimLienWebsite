@@ -39,12 +39,21 @@ namespace KL_AuthFeature
             {
                 return null;
             }
-            var idClaim = jsonToken.Claims.First(c => c.Type == CustomClaims.ID);
-            if (idClaim != null)
-            {
-                var decryptedIdClaim = new Claim(CustomClaims.ID, AesOperation.Decrypt(idClaim.Value, _jwtConfig.Key));
-                jsonToken.Claims.Append(decryptedIdClaim);
-            }
+            //var idClaim = jsonToken.Claims.First(c => c.Type == CustomClaims.ID);
+            //if (idClaim != null)
+            //{
+            //    var decryptedIdClaim = new Claim(CustomClaims.ID, AesOperation.Decrypt(idClaim.Value, _jwtConfig.Key));                
+            //    jsonToken.Claims.Append(decryptedIdClaim);
+            //    var identity = jsonToken.Identity as ClaimsIdentity;
+            //    if (identity != null)
+            //    {
+            //        // Remove the existing ID claim
+            //        identity.RemoveClaim(idClaim);
+
+            //        // Add the decrypted ID claim
+            //        identity.AddClaim(decryptedIdClaim);
+            //    }
+            //}
             return jsonToken.Claims;
         }
         public string GenerateToken(TokenModel user)
@@ -95,12 +104,14 @@ namespace KL_AuthFeature
 
         public bool ValidateId(Claim[] claims)
         {
+            
             var idClaim = claims.First(c => c.Type == CustomClaims.ID);
             if (idClaim == null)
                 return false;
             try
             {
-                var user = _unitOfWork.UserRepository.GetFirst(c => c.Id == Guid.Parse(idClaim.Value));
+                var decrypted = AesOperation.Decrypt(idClaim.Value, _jwtConfig.Key);
+                var user = _unitOfWork.UserRepository.GetFirst(c => c.Id == Guid.Parse(decrypted));
                 if (user == null)
                     return false;
                 return true;
@@ -119,8 +130,9 @@ namespace KL_AuthFeature
                 return false;
             try
             {
+                var decrypted = AesOperation.Decrypt(idClaim.Value, _jwtConfig.Key);
                 var role = (Models.Enum.Role)Enum.Parse(typeof(Models.Enum.Role), roleClaim.Value);
-                var user = _unitOfWork.UserRepository.GetFirst(c => c.Id == Guid.Parse(idClaim.Value) && c.Role == role);
+                var user = _unitOfWork.UserRepository.GetFirst(c => c.Id == Guid.Parse(decrypted) && c.Role == role);
                 if (user == null)
                     return false;
                 if (!roles.Contains(user.Role))

@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Models.Config.AuthConfig;
+using Swashbuckle.AspNetCore.Filters;
 using System.Text;
 
 namespace KimLienAPI.Startup

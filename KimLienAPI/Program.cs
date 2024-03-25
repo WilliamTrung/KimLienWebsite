@@ -2,6 +2,8 @@ using KimLienAPI.Startup;
 using KL_Core;
 using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Filters;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -33,6 +35,7 @@ builder.AddCustomerService();
 builder.AddManagementService();
 builder.AddAuthFeature();
 builder.AddAuthService();
+
 
 var app = builder.Build();
 
