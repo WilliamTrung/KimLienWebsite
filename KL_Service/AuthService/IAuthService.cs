@@ -1,4 +1,5 @@
 ﻿using KL_AuthFeature;
+using Models.Enum;
 using Models.ServiceModels.Auth;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,8 @@ namespace KL_Service.AuthService
     public interface IAuthService
     {
         string GetToken(LoginRequestModel loginRequest);
-        IEnumerable<Claim>? DeserializeToken(string token);        
+        IEnumerable<Claim>? DeserializeToken(string token);
+        bool ValidateToken(Claim[] claims, Role[]? roles);
     }
     public class AuthService : IAuthService
     {
@@ -29,6 +31,18 @@ namespace KL_Service.AuthService
         public string GetToken(LoginRequestModel loginRequest)
         {
             return _authFeature.Login(loginRequest);
+        }
+        public bool ValidateToken(Claim[] claims, Role[]? roles)
+        {
+            bool result;
+            if(roles == null)
+            {
+                result = _authFeature.ValidateId(claims);
+            } else
+            {
+                result = _authFeature.ValidateRole(claims, roles);
+            }
+            return result;            
         }
     }
 }

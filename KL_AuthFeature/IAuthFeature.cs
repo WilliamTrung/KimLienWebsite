@@ -19,6 +19,8 @@ namespace KL_AuthFeature
         //Task<TokenModel?> ValidateToken(string? token);
         IEnumerable<Claim>? DeserializedToken(string accessToken);
         string GenerateToken(TokenModel user);
+        bool ValidateId(Claim[] claims);
+        bool ValidateRole(Claim[] claims, Role[] roles);
     }
     public class AuthFeature : IAuthFeature
     {
@@ -89,6 +91,46 @@ namespace KL_AuthFeature
             var tokenModel = GetUser(loginUser);
             var token = GenerateToken(tokenModel);
             return token;
+        }
+
+        public bool ValidateId(Claim[] claims)
+        {
+            var idClaim = claims.First(c => c.Type == CustomClaims.ID);
+            if (idClaim == null)
+                return false;
+            try
+            {
+                var user = _unitOfWork.UserRepository.GetFirst(c => c.Id == Guid.Parse(idClaim.Value));
+                if (user == null)
+                    return false;
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool ValidateRole(Claim[] claims, Role[] roles)
+        {
+            var idClaim = claims.First(c => c.Type == CustomClaims.ID);
+            var roleClaim = claims.First(c => c.Type == CustomClaims.Role);
+            if (roleClaim == null || idClaim == null)
+                return false;
+            try
+            {
+                var role = (Models.Enum.Role)Enum.Parse(typeof(Models.Enum.Role), roleClaim.Value);
+                var user = _unitOfWork.UserRepository.GetFirst(c => c.Id == Guid.Parse(idClaim.Value) && c.Role == role);
+                if (user == null)
+                    return false;
+                if (!roles.Contains(user.Role))
+                    return false;
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         //public Task<TokenModel?> ValidateToken(string? token)

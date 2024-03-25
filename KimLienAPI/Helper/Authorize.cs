@@ -1,6 +1,7 @@
 ﻿using KL_Service.AuthService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.OData.UriParser;
 using Models.Enum;
 using Models.ServiceModels.Auth;
 using System.Net;
@@ -24,40 +25,48 @@ namespace KimLienAPI.Helper
             var serviceProvider = context.HttpContext.RequestServices;
             _authService = (IAuthService)serviceProvider.GetRequiredService(typeof(IAuthService));
         }
+        private string? GetToken(string? token)
+        {
+            if (token == null)
+            {
+                return null;
+            }
+            token = token.Split(" ")[1];
+            if (token == null || token.Length == 0)
+            {
+                return null;
+            }
+            return token;
+            //var claims = DeserializedToken(token);
+            //var email = claims.First(c => c.Type == CustomClaimTypes.Email).Value;
+            //var user = await _unitOfWork.UserRepository.GetFirst(c => c.Email == email);
+            //return _mapper.Map<TokenModel>(user);
+        }
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             string? authHeader = context.HttpContext.Request.Headers["Authorization"];
             SetConfiguration(context);
-            TokenModel? authorized = null;
+            bool authorized;
             string message = "Unauthorized";
             try
             {
-                authorized = _authService.ValidateToken(authHeader).Result;
-                bool roleAuthorized = true;
-                if (_roles.Count > 0 && !_roles.Any(r => r == authorized.Role))
+                var token = GetToken(authHeader);
+                if(token == null)
                 {
-                    //role authorizing
-                    roleAuthorized = false;
-                    message += " - Unauthorized for this function!";
+                    throw new InvalidOperationException();
                 }
-                isAuthorized = roleAuthorized;
-                if (!isAuthorized)
+                var claims = _authService.DeserializeToken(token);
+                if (claims == null)
                 {
-                    if (_roles.Count > 0)
-                    {
-                        message += " - Required Role(s): " + GetAlertRequiredRoles();
-                        if (authorized != null)
-                        {
-                            message += " - Current role: " + authorized.Role.ToString();
-                        }
-                    }
+                    throw new InvalidOperationException();
                 }
+                authorized = _authService.ValidateToken(claims.ToArray(), _roles);
             }
             catch (Exception)
             {
-                isAuthorized = false;
+                authorized = false;
             }
-            if (!isAuthorized)
+            if (!authorized)
             {
 
                 context.Result = context.Result = new ObjectResult(message)
