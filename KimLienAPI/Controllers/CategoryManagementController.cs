@@ -45,10 +45,10 @@ namespace KimLienAPI.Controllers
         public async Task<IActionResult> AddCategory(CategoryAddModel category)
         {
             var createdId = await _categoryManagementService.AddCategory(category);
-            return Created(createdId);
+            return StatusCode(StatusCodes.Status201Created, createdId);
         }
         [HttpPatch]
-        [Route("modify")]
+        [Route("modify-name")]
         public async Task<IActionResult> ModifyCategory(CategoryModifyModel category)
         {
             await _categoryManagementService.ModifyCategory(category);
@@ -62,8 +62,8 @@ namespace KimLienAPI.Controllers
             return NoContent();
         }
         [HttpDelete]
-        [Route("delete")]
-        public async Task<IActionResult> DeleteCategory(Guid id)
+        [Route("delete/{id}")]
+        public async Task<IActionResult> DeleteCategory([FromRoute]Guid id)
         {
             await _categoryManagementService.DeleteCategory(id);
             return NoContent();

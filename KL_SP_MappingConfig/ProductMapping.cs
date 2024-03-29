@@ -15,7 +15,10 @@ namespace KL_SP_MappingConfig
     {
         public ProductMapping()
         {
+            Map_Product_ProductAdminViewModel();
             Map_Product_ProductCustomerViewModel();
+            Map_ProductAddModel_Product();
+            Map_ProductCategory_CategoryAdminViewModel();
         }
         private void Map_Product_ProductCustomerViewModel()
         {
@@ -29,6 +32,10 @@ namespace KL_SP_MappingConfig
         private void Map_Product_ProductAdminViewModel()
         {
             CreateMap<Product, ProductAdminViewModel>()
+                .ForMember(c => c.Pictures, o =>
+                {
+                    o.Ignore();
+                })
                 .AfterMap<Map_Product_ProductAdminViewModel>();
         }
         private void Map_ProductCategory_CategoryAdminViewModel()
@@ -71,14 +78,42 @@ namespace KL_SP_MappingConfig
             _mapper = mapper;
         }
         public void Process(Product source, ProductAdminViewModel destination, ResolutionContext context)
-        {
+        {            
             destination.CreatedDate = source.CreatedDate;
             destination.LastModifiedDate= source.LastModifiedDate;
             destination.Name = source.Name;
             destination.IsDeleted = source.IsDeleted;
             destination.ViewCount= source.ViewCount;
-            destination.Pictures = source.Pictures.Split(",").ToList();
-            destination.Categories = _mapper.Map <List<CategoryAdminViewModel>>(source.ProductCategories);
+            var list = source.Pictures.Split(",").ToList();
+            list.Remove(string.Empty);
+            destination.Pictures = list;
+            destination.Categories = new List<CategoryAdminViewModel>();
+            //var categories = _mapper.Map<List<CategoryAdminViewModel>>(source.ProductCategories);
+            var groups = source.ProductCategories.GroupBy(c => c.Category.ParentId);
+            foreach (var group in groups)
+            {
+                //init parent
+                if(group.Key == null)
+                {
+                    foreach (var category in group)
+                    {
+                        var categoryModel = _mapper.Map<CategoryAdminViewModel>(category);
+                        destination.Categories.Add(categoryModel);
+                    }
+                } else
+                {
+                    //add children
+                    var parent = destination.Categories.Single(c => c.Id == group.Key);
+                    if(parent.Children == null)
+                        parent.Children = new List<CategoryAdminViewModel>();
+                    foreach (var category in group)
+                    {
+                        var childModel = _mapper.Map<CategoryAdminViewModel>(category);
+                        parent.Children.Add(childModel);
+                    }
+                }
+                
+            }
         }
     }
     public class Map_ProductCategory_CategoryAdminViewModel : IMappingAction<ProductCategory, CategoryAdminViewModel>

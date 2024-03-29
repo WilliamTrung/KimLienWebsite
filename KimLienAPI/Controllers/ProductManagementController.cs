@@ -36,14 +36,14 @@ namespace KimLienAPI.Controllers
         }
         [HttpPost]
         [Route("add")]
-        public async Task<IActionResult> AddProduct(ProductAddApiModel product)
+        public async Task<IActionResult> AddProduct([FromForm]ProductAddApiModel product)
         {
             var createdId = await _productManagementService.AddProduct(product);
-            return Created(createdId);
+            return StatusCode(StatusCodes.Status201Created, createdId);
         }
         [HttpPatch]
         [Route("modify")]
-        public async Task<IActionResult> ModifyProduct(ProductModifyModel product)
+        public async Task<IActionResult> ModifyProduct([FromBody]ProductModifyModel product)
         {
             await _productManagementService.ModifyProduct(product);
             return NoContent();
@@ -67,14 +67,14 @@ namespace KimLienAPI.Controllers
         }
         [HttpPatch]
         [Route("add-category")]
-        public async Task<IActionResult> AddCategoryToProduct(ProductCategoryAddModel model)
+        public async Task<IActionResult> AddCategoryToProduct([FromBody]ProductCategoryAddModel model)
         {
             await _productManagementService.AddCategoryToProduct(model);
             return NoContent();
         }
         [HttpPatch]
         [Route("remove-category")]
-        public async Task<IActionResult> RemoveCategoryFromProducr(ProductCategoryModel model)
+        public async Task<IActionResult> RemoveCategoryFromProducr([FromBody] ProductCategoryModel model)
         {
             await _productManagementService.RemoveCategoryFromProduct(model);
             return NoContent();
@@ -83,7 +83,7 @@ namespace KimLienAPI.Controllers
         #region image-management
         [HttpPatch]
         [Route("add-image")]
-        public async Task<IActionResult> AddProductImage(ProductImageAddModel model)
+        public async Task<IActionResult> AddProductImage([FromForm]ProductImageAddModel model)
         {
             await _productManagementService.AddImage(model.ProductId, model.Images);
             return NoContent();
@@ -97,8 +97,8 @@ namespace KimLienAPI.Controllers
         }
       
         [HttpDelete]
-        [Route("delete-image")]
-        public async Task<IActionResult> DeleteImage(Guid productId, string imageUrl)
+        [Route("delete-image/{productId}")]
+        public async Task<IActionResult> DeleteImage([FromRoute]Guid productId, [FromBody] string imageUrl)
         {
             await _productManagementService.DeleteImage(productId, imageUrl);
             return NoContent();

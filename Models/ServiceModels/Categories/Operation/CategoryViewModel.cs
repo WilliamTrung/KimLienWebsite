@@ -13,5 +13,6 @@ namespace Models.ServiceModels.Categories.Operation
         public bool IsDeleted { get; set; }
 
         public ICollection<CategoryViewModel>? Children { get; set; }
+        public CategoryViewModel? Parent { get; set; }
     }
 }

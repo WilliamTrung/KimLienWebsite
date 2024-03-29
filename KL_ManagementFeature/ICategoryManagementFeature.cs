@@ -68,9 +68,9 @@ namespace KL_ManagementFeature
             //init result
             List<CategoryViewModel> result = new List<CategoryViewModel>();
             //get parent
-            var categories = _uow.CategoryRepository.Get();
+            var categories = _uow.CategoryRepository.Get().ToList();
             var groups = categories.GroupBy(c => c.ParentId);
-            var parents = groups.Where(c => c.Key == null);
+            var parents = groups.Single(c => c.Key == null);
             foreach (var category in parents)
             {
                 if (category == null)
@@ -80,12 +80,15 @@ namespace KL_ManagementFeature
                 else
                 {
                     var model = _mapper.Map<CategoryViewModel>(category);
-                    var children = groups.Where(c => c.Key == category.Key);
-                    var childrenModels = _mapper.Map<List<CategoryViewModel>>(children);
-                    model.Children = childrenModels;
+                    var children = groups.SingleOrDefault(c => c.Key == category.Id);
+                    if(children != null)
+                    {
+                        var childrenModels = _mapper.Map<List<CategoryViewModel>>(children);
+                        model.Children = childrenModels;
+                    }
                     result.Add(model);
                 }
-            }          
+            }
             return result;
         }
         public IEnumerable<CategoryViewModel> GetChildren(Guid id)
@@ -104,6 +107,11 @@ namespace KL_ManagementFeature
             var model = _mapper.Map<CategoryViewModel>(find);
             if (find.ParentId != null)
             {
+               var parent = _uow.CategoryRepository.GetFirst(c => c.Id == find.ParentId);
+                var model_parent = _mapper.Map<CategoryViewModel>(parent);
+                model.Parent = model_parent;
+            } else
+            {
                 var children = _uow.CategoryRepository.Get(c => c.ParentId == categoryId);
                 var models = _mapper.Map<List<CategoryViewModel>>(children);
                 model.Children = models;
@@ -118,7 +126,7 @@ namespace KL_ManagementFeature
             {
                 throw new KeyNotFoundException("Category not found for id: " + model.Id);
             }
-            var isValidName = CheckNameDuplicated(model.Name, category.ParentId);
+            var isValidName = CheckNameDuplicated(model.Name, category.ParentId, model.Id);
             if (!isValidName)
             {
                 throw new InvalidDataException("DUPLICATED");
@@ -136,7 +144,8 @@ namespace KL_ManagementFeature
                 throw new KeyNotFoundException("Category not found for id: " + categoryId);
             }
             category.IsDeleted = !category.IsDeleted;
-            //if(category.ParentId == null)
+            //disable status for children
+            //if (category.ParentId == null)
             //{
             //    var children = _uow.CategoryRepository.Get(c => c.ParentId == category.Id);
             //    foreach (var child in children)
@@ -147,12 +156,24 @@ namespace KL_ManagementFeature
             _uow.CategoryRepository.Update(category);
             await _uow.SaveAsync();
         }
-        private bool CheckNameDuplicated(string categoryName, Guid? parentId)
+        private bool CheckNameDuplicated(string categoryName, Guid? parentId, Guid? id = null)
         {
-            var find = _uow.CategoryRepository.Get(c => c.Name == categoryName && c.ParentId == parentId);
-            if (find != null && find.Count() > 0) {
-                return false;
+            if(id != null)
+            {
+                var find = _uow.CategoryRepository.Get(c => c.Name == categoryName && c.ParentId == parentId && c.Id != id);
+                if (find != null && find.Count() > 0)
+                {
+                    return false;
+                }
+            } else
+            {
+                var find = _uow.CategoryRepository.Get(c => c.Name == categoryName && c.ParentId == parentId);
+                if (find != null && find.Count() > 0)
+                {
+                    return false;
+                }
             }
+           
             return true;
         }
     }

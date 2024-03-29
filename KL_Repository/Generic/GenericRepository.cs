@@ -22,8 +22,8 @@ namespace KL_Repository.Generic
         {
             if(entity is IAuditEntity)
             {
-                ((IAuditEntity)entity).CreatedDate = DateTime.UtcNow.AddHours(8);
-                ((IAuditEntity)entity).LastModifiedDate = DateTime.UtcNow.AddHours(8);
+                ((IAuditEntity)entity).CreatedDate = DateTime.UtcNow.AddHours(7);
+                ((IAuditEntity)entity).LastModifiedDate = DateTime.UtcNow.AddHours(7);
             }
             _entities.Add(entity);
         }
@@ -52,7 +52,6 @@ namespace KL_Repository.Generic
             {
                 query = query.Include(includeProperty);
             }
-
             if (orderBy != null)
             {
                 return orderBy(query);
@@ -84,7 +83,7 @@ namespace KL_Repository.Generic
         {
             if (entity is IAuditEntity)
             {
-                ((IAuditEntity)entity).LastModifiedDate = DateTime.UtcNow.AddHours(8);
+                ((IAuditEntity)entity).LastModifiedDate = DateTime.UtcNow.AddHours(7);
             }
             _entities.Update(entity);
         }

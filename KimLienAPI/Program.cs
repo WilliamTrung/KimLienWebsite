@@ -23,7 +23,7 @@ builder.Services.AddControllers()
 
 builder.Services.AddDbContext<KimLienContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
+    options.UseSqlServer(builder.Configuration["Database:Default"]);
 });
 builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(KL_SP_MappingConfig.AutoMapperAssembly)));
 builder.JwtConfiguration();

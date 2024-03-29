@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using KL_Repository.UnitOfWork;
+using Microsoft.IdentityModel.Tokens;
 using Models.Entities;
 using Models.ServiceModels.Categories;
 using Models.ServiceModels.Product.Operation;
@@ -63,8 +64,8 @@ namespace KL_ManagementFeature
                     else 
                     {
                         //add parent
-                        if (category.ParentId != null)
-                        {
+                        if (category.ParentId != null && !product.ProductCategories.Any(c => c.CategoryId == category.ParentId))
+                        {                            
                             var productParentCategory = new ProductCategory()
                             {
                                 CategoryId = (Guid)category.ParentId,
@@ -162,7 +163,7 @@ namespace KL_ManagementFeature
         public async Task AddImage(Guid productId, List<string> images)
         {
             var product = GetProductById(productId);
-            var current_images = product.Pictures.Split(",");
+            var current_images = product.Pictures.Split(",").TakeWhile(c => !c.IsNullOrEmpty());
             var new_images = current_images.Concat(images);
             string pictures = string.Empty;
             new_images.ToList().ForEach(image => { pictures += image + ","; });
@@ -175,7 +176,8 @@ namespace KL_ManagementFeature
         {
             var product = GetProductById(productId);
             var current_images = product.Pictures.Split(",").ToList();
-            if(current_images.Count != images.ToList().Count)
+            current_images.RemoveAt(current_images.Count -1);
+            if(current_images.Count != images.Length)
             {
                 throw new InvalidDataException("Adjusted images array mismatch!");
             }
@@ -198,6 +200,7 @@ namespace KL_ManagementFeature
             var product = GetProductById(productId);
             var current_images = product.Pictures.Split(",").ToList();
             current_images.Remove(imageUrl);
+            current_images.RemoveAll(c => c.Equals(string.Empty));
             string pictures = string.Empty;
             current_images.ForEach(image => { pictures += image + ","; });
             product.Pictures = pictures;

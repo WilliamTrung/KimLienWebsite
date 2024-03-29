@@ -46,21 +46,49 @@ namespace KL_Service.ProductService
 
         public async Task<Guid> AddProduct(ProductAddApiModel model)
         {
-            List<string> imageUrls = new List<string>();
-            foreach (var image in model.Pictures)
+            //List<string> imageUrls = new List<string>();
+            //foreach (var image in model.Pictures)
+            //{
+            //    string url = await _imageContainer.UploadFile(image);
+            //    imageUrls.Add(url);
+            //}
+            //ProductAddModel addModel = new ProductAddModel() { 
+            //    Categories = model.Categories,
+            //    Name = model.Name,
+            //    Pictures = imageUrls    
+            //};
+            //return await _productManagementFeature.AddProduct(addModel);
+            Guid added;
+            try
             {
-                string url = await _imageContainer.UploadFile(image);
-                imageUrls.Add(url);
+                ProductAddModel addModel = new ProductAddModel()
+                {
+                    Categories = model.Categories,
+                    Name = model.Name,
+                    Pictures = new List<string>()
+                };
+                added = await _productManagementFeature.AddProduct(addModel);
+            } catch
+            {
+                throw new Exception("Error at adding product to database");
+            }            
+            try
+            {
+                List<string> imageUrls = new List<string>();
+                foreach (var image in model.Pictures)
+                {
+                    string url = await _imageContainer.UploadFile(image);
+                    imageUrls.Add(url);
+                }
+                await _productManagementFeature.AddImage(added, imageUrls);
+            } catch
+            {
+                throw new Exception("Error at uploading image to server");
             }
-            ProductAddModel addModel = new ProductAddModel() { 
-                Categories = model.Categories,
-                Name = model.Name,
-                Pictures = imageUrls    
-            };
-            return await _productManagementFeature.AddProduct(addModel);
+            return added;
         }
 
-       
+
         public IEnumerable<CategoryAdminViewModel> GetMainCategories(Guid productId)
         {
             return _productManagementFeature.GetMainCategories(productId);
@@ -113,8 +141,7 @@ namespace KL_Service.ProductService
                     imageUrls.Add(url);
                 }
                 await _productManagementFeature.AddImage(productId, imageUrls);
-            }
-            
+            }           
         }
     }
 }

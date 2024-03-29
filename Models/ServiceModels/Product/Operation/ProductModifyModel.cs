@@ -8,7 +8,7 @@ namespace Models.ServiceModels.Product.Operation
 {
     public class ProductModifyModel
     {
-        public Guid Id { get; }
+        public Guid Id { get; set; }
         public string? Name { get; set; } = null!;
         public bool? IsDeleted { get; set; }
         
