@@ -23,6 +23,10 @@ namespace KL_SP_MappingConfig
         private void Map_Product_ProductCustomerViewModel()
         {
             CreateMap<Product, ProductCustomerViewModel>()
+                 .ForMember(c => c.Pictures, o =>
+                 {
+                     o.Ignore();
+                 })
                 .AfterMap<Map_Product_ProductCustomerViewModel>();
         }
         private void Map_ProductAddModel_Product()
@@ -52,6 +56,7 @@ namespace KL_SP_MappingConfig
             destination.Name = source.Name;
             destination.LastModifiedDate = source.LastModifiedDate;
             var pictures = source.Pictures.Split(',').ToList();
+            pictures.Remove(string.Empty);
             destination.Pictures = pictures;
             destination.ViewCount = source.ViewCount;
             destination.Categories = source.ProductCategories.Select(c => c.Category.Name).ToList();

@@ -32,12 +32,34 @@ namespace KL_ProductCustomerFeature
         }
         public IEnumerable<CategoryCustomerModel> GetCategories()
         {
+            ////init result
+            //List<CategoryCustomerModel> result = new List<CategoryCustomerModel>();
+            ////get parent
+            //var categories = _uow.CategoryRepository.Get().ToList();
+            //var groups = categories.GroupBy(c => c.ParentId);
+            //var parents = groups.Where(c => c.Key == null);
+            //foreach (var category in parents)
+            //{
+            //    if (category == null)
+            //    {
+            //        continue;
+            //    }
+            //    else
+            //    {
+            //        var model = _mapper.Map<CategoryCustomerModel>(category);
+            //        var children = groups.Where(c => c.Key == category.Key);
+            //        var childrenModels = _mapper.Map<List<CategoryCustomerModel>>(children);
+            //        model.Children = childrenModels;
+            //        result.Add(model);
+            //    }
+            //}            
+            //return result;
             //init result
             List<CategoryCustomerModel> result = new List<CategoryCustomerModel>();
             //get parent
-            var categories = _uow.CategoryRepository.Get();
+            var categories = _uow.CategoryRepository.Get().ToList();
             var groups = categories.GroupBy(c => c.ParentId);
-            var parents = groups.Where(c => c.Key == null);
+            var parents = groups.Single(c => c.Key == null);
             foreach (var category in parents)
             {
                 if (category == null)
@@ -47,18 +69,21 @@ namespace KL_ProductCustomerFeature
                 else
                 {
                     var model = _mapper.Map<CategoryCustomerModel>(category);
-                    var children = groups.Where(c => c.Key == category.Key);
-                    var childrenModels = _mapper.Map<List<CategoryCustomerModel>>(children);
-                    model.Children = childrenModels;
+                    var children = groups.SingleOrDefault(c => c.Key == category.Id);
+                    if (children != null)
+                    {
+                        var childrenModels = _mapper.Map<List<CategoryCustomerModel>>(children);
+                        model.Children = childrenModels;
+                    }
                     result.Add(model);
                 }
-            }            
+            }
             return result;
         }
 
         public ProductCustomerViewModel GetProduct(Guid productId)
         {
-            var product = _uow.ProductRepository.GetFirst(c => c.Id == productId, nameof(Product.ProductCategories));
+            var product = _uow.ProductRepository.GetFirst(c => c.Id == productId, nameof(Product.ProductCategories), $"{nameof(Product.ProductCategories)}.{nameof(ProductCategory.Category)}");
             var result = _mapper.Map<ProductCustomerViewModel>(product);
             return result;
         }
@@ -72,13 +97,12 @@ namespace KL_ProductCustomerFeature
                 Expression<Func<Product, bool>> nameFilter = product => product.Name.Contains(name);
                 filter = filter == null ? nameFilter : Expression.Lambda<Func<Product, bool>>(Expression.AndAlso(filter.Body, nameFilter.Body), filter.Parameters);
             }
-            if(categories != null)
+           
+            var products = _uow.ProductRepository.Get(filter, c => c.OrderBy(c => c.Name), nameof(Product.ProductCategories), $"{nameof(Product.ProductCategories)}.{nameof(ProductCategory.Category)}").ToList();
+            if (categories != null)
             {
-                //append categories filter for filter expression
-                Expression<Func<Product, bool>> categoriesFilter = product => product.ProductCategories.All(c => categories.Any(e => e == c.Category.Name));
-                filter = filter == null ? categoriesFilter : Expression.Lambda<Func<Product, bool>>(Expression.AndAlso(filter.Body, categoriesFilter.Body), filter.Parameters);
+                products = products.Where(product => product.ProductCategories.Any(c => categories.Any(e => c.Category.Name.ToLower().Contains(e.ToLower())))).ToList();
             }
-            var products = _uow.ProductRepository.Get(filter, c => c.OrderBy(c => c.Name), nameof(Product.ProductCategories));
             var result = _mapper.Map<List<ProductCustomerViewModel>>(products);
             return result;
         }

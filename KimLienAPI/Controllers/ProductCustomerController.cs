@@ -8,7 +8,7 @@ using Models.Enum;
 
 namespace KimLienAPI.Controllers
 {
-    [Authorize(Role.General)]
+    //[Authorize(Role.General)]
     [Route("api/customer")]
     [ApiController]
     public class ProductCustomerController : ODataController
@@ -20,11 +20,18 @@ namespace KimLienAPI.Controllers
         }
         [HttpGet]
         [EnableQuery]
-        [Route("products")]
-        public IActionResult GetProductCustomerView(ProductQuery? query)
+        [Route("product")]
+        public IActionResult GetProductCustomerView([FromQuery]ProductQuery? query)
         {
             var products = _productCustomerService.GetProducts(name: query?.Name, categories: query?.Categories);
             return Ok(products);
+        }
+        [HttpGet]
+        [Route("product/{id}")]
+        public IActionResult GetProductById(Guid id)
+        {
+            var product = _productCustomerService.GetProduct(id);
+            return Ok(product);
         }
         [HttpGet]
         [EnableQuery]
