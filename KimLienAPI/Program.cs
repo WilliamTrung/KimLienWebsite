@@ -36,11 +36,15 @@ builder.AddManagementService();
 builder.AddAuthFeature();
 builder.AddAuthService();
 
-
+builder.ConfigPolicy();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+} else
 {
     app.UseSwagger();
     app.UseSwaggerUI();
@@ -49,7 +53,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.UseCors(PolicyConfiguration.LocalPolicy);
 app.MapControllers();
 
 app.Run();
