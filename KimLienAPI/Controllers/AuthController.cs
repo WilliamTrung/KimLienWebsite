@@ -17,8 +17,6 @@ namespace KimLienAPI.Controllers
         [HttpPost]
         public IActionResult Login(LoginRequestModel loginRequest)
         {
-            loginRequest.Id = Guid.Parse("fbea9802-b624-42ea-82bf-5fe58a88474d");
-            loginRequest.Password = "123";
             var token = _authService.GetToken(loginRequest);
             return Ok(token);
         }

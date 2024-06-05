@@ -2,17 +2,32 @@
 {
     public static class PolicyConfiguration
     {
-        public static string LocalPolicy = "LocalPolicy";
-        public static void ConfigPolicy(this WebApplicationBuilder builder)
+        public const string LocalPolicy = "LocalPolicy";
+        public const string AnonymousPolicy = "AnonymousPolicy";
+        public static void ConfigPolicy(this WebApplicationBuilder builder, string policy)
         {
-            builder.Services.AddCors(option =>
+          switch (policy)
             {
-                option.AddPolicy(LocalPolicy, policy =>
-                {
-                    policy.AllowAnyMethod().AllowAnyHeader();
-                    policy.WithOrigins("http://localhost:3000");
-                });
-            });
+                case LocalPolicy:
+                    builder.Services.AddCors(option =>
+                    {
+                        option.AddPolicy(policy, policy =>
+                        {
+                            policy.AllowAnyMethod().AllowAnyHeader();
+                            policy.WithOrigins("http://localhost:3000");
+                        });
+                    });
+                    break;
+                case AnonymousPolicy:
+                    builder.Services.AddCors(option =>
+                    {
+                        option.AddPolicy(policy, policy =>
+                        {
+                            policy.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin();
+                        });
+                    });
+                    break;
+            }
         }
     }
 }

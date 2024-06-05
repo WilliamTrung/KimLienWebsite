@@ -9,15 +9,16 @@ namespace KL_Core
         DbSet<Category> Categories { get; set; }
         DbSet<Product> Products { get; set; }
         DbSet<ProductCategory> ProductCategories { get; set; }
-        public KimLienContext(DbContextOptions<KimLienContext> options)
+        public KimLienContext(DbContextOptions<KimLienContext> options) : base(options)
         {
+            
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if(optionsBuilder != null)
-            {
-                optionsBuilder.UseSqlServer("server=WILLIAMTRUNG\\MYSQL;database=kimliendb_rework;uid=sa;pwd=123;TrustServerCertificate=True");
-            }            
+            //if(optionsBuilder != null)
+            //{
+            //    optionsBuilder.UseSqlServer("server=localhost;database=kimliendb_rework;uid=sa;pwd=123;TrustServerCertificate=True");
+            //}            
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -20,7 +20,6 @@ builder.Services.AddControllers()
     {
         options.EnableQueryFeatures();
     });
-
 builder.Services.AddDbContext<KimLienContext>(options =>
 {
     options.UseSqlServer(builder.Configuration["Database:Default"]);
@@ -36,7 +35,8 @@ builder.AddManagementService();
 builder.AddAuthFeature();
 builder.AddAuthService();
 
-builder.ConfigPolicy();
+builder.ConfigPolicy(PolicyConfiguration.LocalPolicy);
+builder.ConfigPolicy(PolicyConfiguration.AnonymousPolicy);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -53,7 +53,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseCors(PolicyConfiguration.LocalPolicy);
+app.UseCors(PolicyConfiguration.AnonymousPolicy);
 app.MapControllers();
-
+app.Services.EnsureSqlDatabase();
 app.Run();
