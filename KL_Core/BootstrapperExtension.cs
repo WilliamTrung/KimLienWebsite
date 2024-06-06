@@ -21,13 +21,30 @@ namespace KL_Core
                     isNewDb = dbContext.Database.EnsureCreated();
                     if(isNewDb)
                     {
+                        var guid = Guid.Parse("FBEA9802-B624-42EA-82BF-5FE58A88474D");
                         var user = new User
                         {
-                            Id = Guid.NewGuid(),
+                            Id = guid,
                             Password = "123",
                             Role = Role.Administrator,
                         };
                         dbContext.Add(user);
+                        dbContext.SaveChanges();
+                    } else
+                    {
+                        var guid = Guid.Parse("FBEA9802-B624-42EA-82BF-5FE58A88474D");
+                        var user = dbContext.Find<User>(guid);
+                        if(user == null)
+                        {
+                            user = new User
+                            {
+                                Id = guid,
+                                Password = "123",
+                                Role = Role.Administrator,
+                            };
+                            dbContext.Add(user);
+                            dbContext.SaveChanges();
+                        }
                     }
                 }
             }

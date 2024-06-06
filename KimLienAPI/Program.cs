@@ -22,7 +22,11 @@ builder.Services.AddControllers()
     });
 builder.Services.AddDbContext<KimLienContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration["Database:Default"]);
+#if RELEASE
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
+#else
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Local"));
+#endif
 });
 builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(KL_SP_MappingConfig.AutoMapperAssembly)));
 builder.JwtConfiguration();
@@ -55,5 +59,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseCors(PolicyConfiguration.AnonymousPolicy);
 app.MapControllers();
+app.UseExceptionHandler("/error");
 app.Services.EnsureSqlDatabase();
 app.Run();
