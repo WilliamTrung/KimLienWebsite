@@ -13,7 +13,7 @@ namespace KL_Service.CustomerService
     public interface IProductCustomerService
     {
         IEnumerable<ProductCustomerViewModel> GetProducts(string? name, string[]? categories);
-        ProductCustomerViewModel GetProduct(Guid productId);
+        Task<ProductCustomerViewModel> GetProductAsync(Guid productId);
         IEnumerable<ProductCustomerViewModel> GetProductsByCategories(string[] categories);
         IEnumerable<CategoryCustomerModel> GetCategories();       
     }
@@ -31,9 +31,9 @@ namespace KL_Service.CustomerService
             return result;
         }
 
-        public ProductCustomerViewModel GetProduct(Guid productId)
+        public async Task<ProductCustomerViewModel> GetProductAsync(Guid productId)
         {
-            return _customerFeature.GetProduct(productId);
+            return await _customerFeature.GetProductAsync(productId);
         }
 
         public IEnumerable<ProductCustomerViewModel> GetProducts(string? name, string[]? categories)

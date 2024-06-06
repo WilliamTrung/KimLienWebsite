@@ -17,7 +17,8 @@ namespace KL_ProductCustomerFeature
     {
         IEnumerable<ProductCustomerViewModel> GetProducts(string? name, string[]? categories);
         IEnumerable<ProductCustomerViewModel> GetProductsByCategories(string[] categories);
-        ProductCustomerViewModel GetProduct(Guid productId);
+        Task<ProductCustomerViewModel> GetProductAsync(Guid productId);
+        Task ViewCountIncrement(Product? product);
         IEnumerable<CategoryCustomerModel> GetCategories();       
     }
     #region implementation
@@ -81,10 +82,11 @@ namespace KL_ProductCustomerFeature
             return result;
         }
 
-        public ProductCustomerViewModel GetProduct(Guid productId)
+        public async Task<ProductCustomerViewModel> GetProductAsync(Guid productId)
         {
             var product = _uow.ProductRepository.GetFirst(c => c.Id == productId, nameof(Product.ProductCategories), $"{nameof(Product.ProductCategories)}.{nameof(ProductCategory.Category)}");
             var result = _mapper.Map<ProductCustomerViewModel>(product);
+            await ViewCountIncrement(product);
             return result;
         }
 
@@ -110,6 +112,16 @@ namespace KL_ProductCustomerFeature
         public IEnumerable<ProductCustomerViewModel> GetProductsByCategories(string[] categories)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task ViewCountIncrement(Product? product)
+        {
+            if(product != null)
+            {
+                product.ViewCount++;
+                _uow.ProductRepository.Update(product);
+                await _uow.SaveAsync();
+            }
         }
     }
     #endregion

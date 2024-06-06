@@ -28,9 +28,9 @@ namespace KimLienAPI.Controllers
         }
         [HttpGet]
         [Route("product/{id}")]
-        public IActionResult GetProductById(Guid id)
+        public async Task<IActionResult> GetProductByIdAsync(Guid id)
         {
-            var product = _productCustomerService.GetProduct(id);
+            var product = await _productCustomerService.GetProductAsync(id);
             return Ok(product);
         }
         [HttpGet]
