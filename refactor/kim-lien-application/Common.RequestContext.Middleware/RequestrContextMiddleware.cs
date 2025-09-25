@@ -1,0 +1,36 @@
+using Common.RequestContext.Abstractions;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
+
+namespace Common.RequestContext.Middleware
+{
+    public class RequestrContextMiddleware : IMiddleware
+    {
+        private readonly IRequestContext _requestContext;
+        public RequestrContextMiddleware(IRequestContext requestContext)
+        {
+            _requestContext = requestContext;
+        }
+        public async Task InvokeAsync(HttpContext context, RequestDelegate next)
+        {
+            // Authentication should already have run: app.UseAuthentication()
+            var user = context.User;
+            var data = new RequestContextData
+            {
+                UserId = user?.FindFirst(ClaimTypes.Name)?.Value ?? user?.FindFirst(ClaimTypes.NameIdentifier)?.Value,
+                Email = user?.FindFirst(ClaimTypes.Email)?.Value,
+                IpAddress = GetClientIp(context),
+                RequestId = context.Request.Headers[nameof(RequestContextData.RequestId)]
+            };
+            _requestContext.Set(data);                             // store in scoped holder
+            await next.Invoke(context);
+        }
+        private static string? GetClientIp(HttpContext http)
+        {
+            var ip = http.Connection.RemoteIpAddress;
+            if (ip is null) return null;
+            if (ip.IsIPv4MappedToIPv6) ip = ip.MapToIPv4();
+            return ip.ToString();
+        }
+    }
+}
