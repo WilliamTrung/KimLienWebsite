@@ -2,7 +2,7 @@ using Common.Kernel.Models.Abstractions;
 using Common.Kernel.Models.Implementations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Common.Domain.Entities
+namespace Common.Domain.Authen.Entities
 {
     public class User : BaseEntity<Guid>, IAuditEntity
     {
@@ -19,7 +19,5 @@ namespace Common.Domain.Entities
         public User Creator { get; set; } = null!;
         [ForeignKey(nameof(ModifiedBy))]
         public User? Modifier { get; set; }
-        public virtual ICollection<ProductFavor> ProductFavors { get; set; } = new List<ProductFavor>();
-        public virtual ICollection<ProductViewCredential> ProductViewCredentials { get; set; } = new List<ProductViewCredential>();
     }
 }

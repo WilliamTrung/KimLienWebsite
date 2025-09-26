@@ -1,3 +1,4 @@
+using Common.Domain.Authen.Entities;
 using Common.Kernel.Parameters;
 using System.ComponentModel.DataAnnotations.Schema;
 

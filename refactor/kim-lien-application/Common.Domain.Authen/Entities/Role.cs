@@ -3,7 +3,7 @@ using Common.Kernel.Models.Implementations;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Common.Domain.Entities
+namespace Common.Domain.Authen.Entities
 {
     public class Role : BaseEntity<int>, IAuditEntity
     {
