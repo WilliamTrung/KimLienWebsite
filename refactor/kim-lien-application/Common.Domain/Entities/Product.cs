@@ -25,6 +25,6 @@ namespace Common.Domain.Entities
     public static class ProductExtension
     {
         public static List<Category> Categories(this Product product) => product.ProductCategories?.Select(pc => pc.Category).ToList() ?? new List<Category>();
-        public static List<ProductViewCredential> ProductViewCredentials(this Product product) => product.ProductViews?.Select(pc => pc.ProductViewCredentials).ToList() ?? new List<ProductViewCredential>();
+        public static List<ProductViewCredential> ProductViewCredentials(this Product product) => product.ProductViews?.SelectMany(pc => pc.ProductViewCredentials).ToList() ?? new List<ProductViewCredential>();
     }
 }
