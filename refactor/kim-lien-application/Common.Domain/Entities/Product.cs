@@ -21,6 +21,7 @@ namespace Common.Domain.Entities
         public bool IsDeleted { get; set; }
         public virtual ICollection<ProductCategory> ProductCategories { get; set; } = new List<ProductCategory>();
         public virtual ICollection<ProductView> ProductViews { get; set; } = new List<ProductView>();
+        public virtual ICollection<ProductFavor> ProductFavors { get; set; } = new List<ProductFavor>();
     }
     public static class ProductExtension
     {
