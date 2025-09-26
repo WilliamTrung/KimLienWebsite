@@ -77,6 +77,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authen.Infrastructure", "Au
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authen.Api", "Authen.Api\Authen.Api.csproj", "{3CFD64CE-3CC4-4A44-A000-2CAFFA6B051C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Extension.Jwt", "Common.Extension.Jwt\Common.Extension.Jwt.csproj", "{C7451518-F82B-4884-99DD-C0D81E18282C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -171,6 +173,10 @@ Global
 		{3CFD64CE-3CC4-4A44-A000-2CAFFA6B051C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3CFD64CE-3CC4-4A44-A000-2CAFFA6B051C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3CFD64CE-3CC4-4A44-A000-2CAFFA6B051C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7451518-F82B-4884-99DD-C0D81E18282C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7451518-F82B-4884-99DD-C0D81E18282C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7451518-F82B-4884-99DD-C0D81E18282C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7451518-F82B-4884-99DD-C0D81E18282C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -211,6 +217,7 @@ Global
 		{C26B3BB3-E1FF-42E0-BA9B-3CC447959324} = {8437CBA4-7631-4715-990C-C109CC6F6A61}
 		{BD6CF441-4EB9-4ACD-8D88-BEB24B42AE90} = {8437CBA4-7631-4715-990C-C109CC6F6A61}
 		{3CFD64CE-3CC4-4A44-A000-2CAFFA6B051C} = {8437CBA4-7631-4715-990C-C109CC6F6A61}
+		{C7451518-F82B-4884-99DD-C0D81E18282C} = {65FE9769-AA6E-4DE1-9926-8B5ED1B6DB87}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {38DBB258-A888-46B9-A8EB-CEC7B2D25BBB}

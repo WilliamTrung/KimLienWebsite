@@ -11,12 +11,13 @@ namespace Common.DomainException.Middleware
     {
         public async Task InvokeAsync(HttpContext handler, RequestDelegate next)
         {
+            object? response = null;
+            int httpStatusCode = (int)HttpStatusCode.OK;
             if (((int)HttpStatusCode.InternalServerError).Equals(handler.Response.StatusCode))
             {
                 handler.Response.ContentType = System.Net.Mime.MediaTypeNames.Application.Json; // Set response content type to JSON
                 var contextFeature = handler.Features.Get<IExceptionHandlerFeature>(); // Get the exception feature
-                var httpStatusCode = (int)HttpStatusCode.BadRequest; // Default to BadRequest status code
-                object response = null; // Initialize response object
+                httpStatusCode = (int)HttpStatusCode.BadRequest; // Default to BadRequest status code
 
                 // Handle specific domain exceptions
                 if (contextFeature.Error is DomainException domainException)
@@ -50,16 +51,16 @@ namespace Common.DomainException.Middleware
                         StatusCode = HttpStatusCode.InternalServerError,
                     };
                 }
+            }
 
-                // If a response was created, set the status code and write the response to the body
-                if (response is not null)
+            // If a response was created, set the status code and write the response to the body
+            if (response is not null)
+            {
+                handler.Response.StatusCode = httpStatusCode; // Set the HTTP status code
+                await handler.Response.WriteAsync(JsonConvert.SerializeObject(response, new JsonSerializerSettings()
                 {
-                    handler.Response.StatusCode = httpStatusCode; // Set the HTTP status code
-                    await handler.Response.WriteAsync(JsonConvert.SerializeObject(response, new JsonSerializerSettings()
-                    {
-                        Formatting = Formatting.None, // Minimize formatting for the JSON
-                    }));
-                }
+                    Formatting = Formatting.None, // Minimize formatting for the JSON
+                }));
             }
         }
     }

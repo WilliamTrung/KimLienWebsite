@@ -10,6 +10,6 @@ namespace Common.Domain.Entities
         [ForeignKey(nameof(ProductId))]
         public Product Product { get; set; } = null!;
         [ForeignKey(nameof(UserId))]
-        public User User { get; set; } = null!;
+        public User User { get; set; } = default!;
     }
 }
