@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Authen.Domain\Authen.Domain.csproj" />
+    <ProjectReference Include="..\Common.Extension.Jwt\Common.Extension.Jwt.csproj" />
+  </ItemGroup>
+
 </Project>
