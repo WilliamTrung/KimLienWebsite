@@ -52,7 +52,6 @@ namespace Common.DomainException.Middleware
                     };
                 }
             }
-
             // If a response was created, set the status code and write the response to the body
             if (response is not null)
             {
