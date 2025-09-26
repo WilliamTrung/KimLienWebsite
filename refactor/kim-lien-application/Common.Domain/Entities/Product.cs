@@ -1,6 +1,7 @@
 ﻿using Common.Kernel.Models.Abstractions;
 using Common.Kernel.Models.Implementations;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Common.Domain.Entities
 {
@@ -13,11 +14,14 @@ namespace Common.Domain.Entities
 
         [Required]
         public string Pictures { get; set; } = null!; // Comma-separated list of picture URLs
-        [Required]
         public DateTime CreatedDate { get; set; }
-        [Required]
-        public DateTime ModifiedDate { get; set; }
-        [Required]
+        public DateTime? ModifiedDate { get; set; }
+        public Guid? ModifiedBy { get; set; }
+        public Guid CreatedBy { get; set; }
+        [ForeignKey(nameof(CreatedBy))]
+        public User Creator { get; set; } = null!;
+        [ForeignKey(nameof(ModifiedBy))]
+        public User? Modifier { get; set; }
         public bool IsDeleted { get; set; }
         public virtual ICollection<ProductCategory> ProductCategories { get; set; } = new List<ProductCategory>();
         public virtual ICollection<ProductView> ProductViews { get; set; } = new List<ProductView>();

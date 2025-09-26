@@ -16,7 +16,13 @@ namespace Common.Domain.Entities
         public Category? Parent { get; set; }
         public virtual IList<ProductCategory> ProductCategories { get; set; } = new List<ProductCategory>();
         public DateTime CreatedDate { get; set; }
-        public DateTime ModifiedDate { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public Guid? ModifiedBy { get; set; }
+        public Guid CreatedBy { get; set; }
+        [ForeignKey(nameof(CreatedBy))]
+        public User Creator { get; set; } = null!;
+        [ForeignKey(nameof(ModifiedBy))]
+        public User? Modifier { get; set; }
     }
     public static class CategoryExtension
     {
