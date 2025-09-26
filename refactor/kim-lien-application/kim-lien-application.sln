@@ -77,8 +77,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authen.Infrastructure", "Au
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authen.Api", "Authen.Api\Authen.Api.csproj", "{3CFD64CE-3CC4-4A44-A000-2CAFFA6B051C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Domain.Authen", "Common.Domain.Authen\Common.Domain.Authen.csproj", "{370256EA-771B-43B4-8D1A-2D631C764A74}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -173,10 +171,6 @@ Global
 		{3CFD64CE-3CC4-4A44-A000-2CAFFA6B051C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3CFD64CE-3CC4-4A44-A000-2CAFFA6B051C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3CFD64CE-3CC4-4A44-A000-2CAFFA6B051C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{370256EA-771B-43B4-8D1A-2D631C764A74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{370256EA-771B-43B4-8D1A-2D631C764A74}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{370256EA-771B-43B4-8D1A-2D631C764A74}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{370256EA-771B-43B4-8D1A-2D631C764A74}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -217,7 +211,6 @@ Global
 		{C26B3BB3-E1FF-42E0-BA9B-3CC447959324} = {8437CBA4-7631-4715-990C-C109CC6F6A61}
 		{BD6CF441-4EB9-4ACD-8D88-BEB24B42AE90} = {8437CBA4-7631-4715-990C-C109CC6F6A61}
 		{3CFD64CE-3CC4-4A44-A000-2CAFFA6B051C} = {8437CBA4-7631-4715-990C-C109CC6F6A61}
-		{370256EA-771B-43B4-8D1A-2D631C764A74} = {4559645B-D94B-4317-98F0-BE4DC1EEEC70}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {38DBB258-A888-46B9-A8EB-CEC7B2D25BBB}

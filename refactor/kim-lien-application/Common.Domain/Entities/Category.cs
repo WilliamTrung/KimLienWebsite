@@ -1,5 +1,4 @@
-﻿using Common.Domain.Authen.Entities;
-using Common.Kernel.Models.Abstractions;
+﻿using Common.Kernel.Models.Abstractions;
 using Common.Kernel.Models.Implementations;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;

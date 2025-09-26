@@ -1,4 +1,3 @@
-using Common.Domain.Authen.Entities;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Common.Domain.Entities
