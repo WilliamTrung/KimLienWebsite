@@ -1,11 +1,10 @@
 ﻿using Common.Kernel.Models.Abstractions;
 using Common.Kernel.Models.Implementations;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Common.Domain.Entities
 {
-    public class Product : BaseEntity, IAuditEntity, IDeleteEntity
+    public class Product : BaseEntity<Guid>, IAuditEntity, IDeleteEntity
     {
         [Required]
         public string Name { get; set; } = null!;
@@ -21,7 +20,11 @@ namespace Common.Domain.Entities
         [Required]
         public bool IsDeleted { get; set; }
         public virtual ICollection<ProductCategory> ProductCategories { get; set; } = new List<ProductCategory>();
-        [NotMapped]
-        public List<Category> Categories => ProductCategories?.Select(pc => pc.Category).ToList() ?? new List<Category>();
+        public virtual ICollection<ProductView> ProductViews { get; set; } = new List<ProductView>();
+    }
+    public static class ProductExtension
+    {
+        public static List<Category> Categories(this Product product) => product.ProductCategories?.Select(pc => pc.Category).ToList() ?? new List<Category>();
+        public static List<ProductViewCredential> ProductViewCredentials(this Product product) => product.ProductViews?.Select(pc => pc.ProductViewCredentials).ToList() ?? new List<ProductViewCredential>();
     }
 }

@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Common.Domain.Entities
 {
-    public class Category : BaseEntity
+    public class Category : BaseEntity<Guid>
     {
         [Required]
         public string Name { get; set; } = null!;
@@ -14,7 +14,9 @@ namespace Common.Domain.Entities
         [ForeignKey(nameof(ParentId))]
         public Category? Parent { get; set; }
         public virtual IList<ProductCategory> ProductCategories { get; set; } = new List<ProductCategory>();
-        [NotMapped]
-        public List<Product> Products => ProductCategories?.Select(pc => pc.Product).ToList() ?? new List<Product>();
+    }
+    public static class CategoryExtension
+    {
+        public static List<Product> Products(this Category category) => category.ProductCategories?.Select(pc => pc.Product).ToList() ?? new List<Product>();
     }
 }

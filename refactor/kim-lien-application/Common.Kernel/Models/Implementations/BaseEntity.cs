@@ -3,10 +3,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Common.Kernel.Models.Implementations
 {
-    public class BaseEntity
+    public class BaseEntity<TKey>
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { set; get; }
+        public TKey Id { set; get; }
     }
 }
