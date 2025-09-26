@@ -1,11 +1,12 @@
-﻿using Common.Kernel.Models.Implementations;
+﻿using Common.Kernel.Models.Abstractions;
+using Common.Kernel.Models.Implementations;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Common.Domain.Entities
 {
-    public class Category : BaseEntity<Guid>
+    public class Category : BaseEntity<Guid>, IAuditEntity
     {
         [Required]
         public string Name { get; set; } = null!;
@@ -14,6 +15,8 @@ namespace Common.Domain.Entities
         [ForeignKey(nameof(ParentId))]
         public Category? Parent { get; set; }
         public virtual IList<ProductCategory> ProductCategories { get; set; } = new List<ProductCategory>();
+        public DateTime CreatedDate { get; set; }
+        public DateTime ModifiedDate { get; set; }
     }
     public static class CategoryExtension
     {

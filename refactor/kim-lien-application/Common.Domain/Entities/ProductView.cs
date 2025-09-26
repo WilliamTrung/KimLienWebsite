@@ -1,5 +1,4 @@
 using Common.Kernel.Models.Implementations;
-using Common.Kernel.Parameters;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Common.Domain.Entities
