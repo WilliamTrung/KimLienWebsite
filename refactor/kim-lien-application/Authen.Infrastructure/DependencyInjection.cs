@@ -1,4 +1,6 @@
+using Authen.Application.Abstractions;
 using Authen.Infrastructure.Data;
+using Authen.Infrastructure.Services;
 using Common.Domain.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -12,6 +14,11 @@ namespace Authen.Infrastructure
 {
     public static class DependencyInjection
     {
+        public static void AddAuthService(IServiceCollection services, IConfiguration cfg)
+        {
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IRefreshTokenService, RefreshTokenService>();
+        }
         public static void AddAuthDbContext(IServiceCollection services, IConfiguration cfg)
         {
             services.AddDbContext<AuthenIdentityDbContext>(o =>
