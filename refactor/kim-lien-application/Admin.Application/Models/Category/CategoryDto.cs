@@ -1,12 +1,15 @@
-﻿using Common.Kernel.Models.Abstractions;
-using Common.Kernel.Models.Implementations;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Common.Domain.Entities
+namespace Admin.Application.Models.Category
 {
-    public class Category : BaseEntity<Guid>, IAuditEntity, IDeleteEntity
+    public class CategoryDto
     {
         [Required]
         public string Name { get; set; } = null!;
@@ -23,10 +26,5 @@ namespace Common.Domain.Entities
         public User Creator { get; set; } = null!;
         [ForeignKey(nameof(ModifiedBy))]
         public User? Modifier { get; set; }
-        public bool IsDeleted { get; set; }
-    }
-    public static class CategoryExtension
-    {
-        public static List<Product> Products(this Category category) => category.ProductCategories?.Select(pc => pc.Product).ToList() ?? new List<Product>();
     }
 }

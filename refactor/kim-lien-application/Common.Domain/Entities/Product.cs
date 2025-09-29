@@ -29,7 +29,25 @@ namespace Common.Domain.Entities
     }
     public static class ProductExtension
     {
-        public static List<Category> Categories(this Product product) => product.ProductCategories?.Select(pc => pc.Category).ToList() ?? new List<Category>();
+        public static List<Category> Categories(this Product product)
+        {
+            if (product.ProductCategories is null || !product.ProductCategories.Any()) {
+                return new List<Category>();
+            }
+            else
+            {
+                return product.ProductCategories.SelectMany(pc => GetCategories(pc.Category)).Distinct().ToList();
+            }
+        }
+        private static List<Category> GetCategories(Category category)
+        {
+            var categories = new List<Category> { category };
+            if (category.Parent != null)
+            {
+                categories.AddRange(GetCategories(category.Parent));
+            }
+            return categories;
+        }
         public static List<ProductViewCredential> ProductViewCredentials(this Product product) => product.ProductViews?.SelectMany(pc => pc.ProductViewCredentials).ToList() ?? new List<ProductViewCredential>();
     }
 }
