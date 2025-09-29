@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR" Version="13.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Authen.Domain\Authen.Domain.csproj" />
     <ProjectReference Include="..\Common.Extension.Jwt\Common.Extension.Jwt.csproj" />
   </ItemGroup>

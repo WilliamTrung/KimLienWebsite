@@ -20,7 +20,8 @@ namespace Common.RequestContext.Middleware
                 UserId = user?.FindFirst(ClaimTypes.Name)?.Value ?? user?.FindFirst(ClaimTypes.NameIdentifier)?.Value,
                 Email = user?.FindFirst(ClaimTypes.Email)?.Value,
                 IpAddress = GetClientIp(context),
-                RequestId = context.Request.Headers[nameof(RequestContextData.RequestId)]
+                RequestId = context.Request.Headers["request-id"],
+                UserAgent = context.Request.Headers["user-agent"],
             };
             _requestContext.Set(data);                             // store in scoped holder
             await next.Invoke(context);

@@ -2,6 +2,7 @@ using Authen.Application.Abstractions;
 using Authen.Application.Models;
 using Common.Domain.Entities;
 using Common.Extension.Jwt;
+using Common.RequestContext.Abstractions;
 using Microsoft.AspNetCore.Identity;
 
 namespace Authen.Infrastructure.Services
@@ -9,6 +10,7 @@ namespace Authen.Infrastructure.Services
     public sealed class AuthService(
         UserManager<User> users,
         IRefreshTokenService refreshSvc,
+        IRequestContext context,
         JwtSettings jwt)
         : IAuthService
     {
@@ -20,8 +22,10 @@ namespace Authen.Infrastructure.Services
                 throw new InvalidOperationException(string.Join("; ", result.Errors.Select(e => e.Description)));
         }
 
-        public async Task<TokenPair> LoginAsync(LoginDto dto, string? ip, string? ua, CancellationToken ct)
+        public async Task<TokenPair> LoginAsync(LoginDto dto, CancellationToken ct)
         {
+            var ip = context.Data.IpAddress;
+            var ua = context.Data.UserAgent;
             var user = await users.FindByEmailAsync(dto.Email);
             if (user is null || !await users.CheckPasswordAsync(user, dto.Password))
                 throw new UnauthorizedAccessException("invalid_credentials");
@@ -34,8 +38,10 @@ namespace Authen.Infrastructure.Services
             return new TokenPair { AccessToken = access, ExpiresAtUtc = exp, RefreshToken = refresh };
         }
 
-        public async Task<TokenPair> RefreshAsync(RefreshDto dto, string? ip, string? ua, CancellationToken ct)
+        public async Task<TokenPair> RefreshAsync(RefreshDto dto, CancellationToken ct)
         {
+            var ip = context.Data.IpAddress;
+            var ua = context.Data.UserAgent;
             var (user, current) = await refreshSvc.ValidateAsync(dto.RefreshToken, ct);
 
             // rotate by creating the next token in same family

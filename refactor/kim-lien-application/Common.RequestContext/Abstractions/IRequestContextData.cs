@@ -6,5 +6,6 @@ namespace Common.RequestContext.Abstractions
         string? UserId { get; set; }
         string? Email { get; set; }
         string? RequestId { get; set; }
+        string? UserAgent { get; set; }
     }
 }

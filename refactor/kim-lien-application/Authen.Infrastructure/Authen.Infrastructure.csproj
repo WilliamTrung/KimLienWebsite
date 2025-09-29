@@ -20,6 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Authen.Application\Authen.Application.csproj" />
     <ProjectReference Include="..\Authen.Domain\Authen.Domain.csproj" />
+    <ProjectReference Include="..\Common.RequestContext\Common.RequestContext.csproj" />
   </ItemGroup>
 
 </Project>
