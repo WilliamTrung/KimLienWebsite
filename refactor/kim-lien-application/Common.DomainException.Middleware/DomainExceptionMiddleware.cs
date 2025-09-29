@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System.Net;
+using Common.DomainException.Abstractions;
 
 namespace Common.DomainException.Middleware
 {
@@ -20,7 +21,7 @@ namespace Common.DomainException.Middleware
                 httpStatusCode = (int)HttpStatusCode.BadRequest; // Default to BadRequest status code
 
                 // Handle specific domain exceptions
-                if (contextFeature.Error is DomainException domainException)
+                if (contextFeature.Error is CException domainException)
                 {
                     if (domainException is IResultException resultException)
                     {
