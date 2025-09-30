@@ -3,7 +3,7 @@
     public class ModifyCategoryDto
     {
         public Guid Id { get; set; }
-        public string? Name { get; set; }
+        public string Name { get; set; } = null!;
         public Guid? ParentId { get; set; }
     }
 }
