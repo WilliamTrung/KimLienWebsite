@@ -24,6 +24,7 @@ namespace Common.Domain.Entities
         public User Creator { get; set; } = null!;
         [ForeignKey(nameof(ModifiedBy))]
         public User? Modifier { get; set; }
+        public string Status { get; set; } = null!;
         public bool IsDeleted { get; set; }
         public virtual ICollection<ProductCategory> ProductCategories { get; set; } = new List<ProductCategory>();
         public virtual ICollection<ProductView> ProductViews { get; set; } = new List<ProductView>();

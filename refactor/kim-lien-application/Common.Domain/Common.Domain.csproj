@@ -8,9 +8,11 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.20" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Common.Extension.Json\Common.Extension.Json.csproj" />
     <ProjectReference Include="..\Common.Kernel\Common.Kernel.csproj" />
   </ItemGroup>
 
