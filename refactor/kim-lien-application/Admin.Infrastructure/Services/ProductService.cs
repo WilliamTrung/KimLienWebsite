@@ -7,14 +7,7 @@ using Common.DomainException.Abstractions;
 using Common.Infrastructure.Pagination;
 using Common.Kernel.Request.Pagination;
 using Common.Kernel.Response.Pagination;
-using Common.RequestContext.Abstractions;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.ConstrainedExecution;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Admin.Infrastructure.Services
 {

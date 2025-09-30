@@ -32,7 +32,7 @@ namespace Common.Domain.Entities
         [NotMapped]
         private List<AssetDto>? _assets;
         [NotMapped]
-        public List<AssetDto> PictureUrls
+        public List<AssetDto> PictureAssets
         {
             get
             {
