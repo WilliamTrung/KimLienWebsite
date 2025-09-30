@@ -87,6 +87,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Api", "Common.Api\Co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Infrastructure.Pagination", "Common.Infrastructure.Pagination\Common.Infrastructure.Pagination.csproj", "{1F370E55-7D5E-43C9-BD3E-91E9A9A9D454}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{92C3893D-8C61-4076-BD42-A06BEE7E9CBE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -242,6 +244,7 @@ Global
 		{5FF7498A-EDF0-42AC-92B2-FB0E0873970D} = {3D581503-96C8-4FBA-A11C-394BFF3C26E2}
 		{63C53110-D29A-482E-89A4-8BAD6E963BA0} = {5FF7498A-EDF0-42AC-92B2-FB0E0873970D}
 		{1F370E55-7D5E-43C9-BD3E-91E9A9A9D454} = {B2029657-4BC2-406E-9712-908A41B92516}
+		{92C3893D-8C61-4076-BD42-A06BEE7E9CBE} = {3D581503-96C8-4FBA-A11C-394BFF3C26E2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {38DBB258-A888-46B9-A8EB-CEC7B2D25BBB}
