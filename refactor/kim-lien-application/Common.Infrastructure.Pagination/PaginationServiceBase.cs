@@ -2,11 +2,10 @@ using AutoMapper;
 using Common.Kernel.Request.Pagination;
 using Common.Kernel.Response.Pagination;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 
 namespace Common.Infrastructure.Pagination
 {
-    public class PaginationServiceBase<TEntity, TResponse>(IMapper mapper, DbContext dbContext)
+    public abstract class PaginationServiceBase<TEntity, TResponse>(IMapper mapper, DbContext dbContext)
         where TEntity : class
         where TResponse : class
     {
@@ -24,7 +23,7 @@ namespace Common.Infrastructure.Pagination
             }
             set { _query = value; }
         }
-        public virtual async Task<PaginationResponse<TResponse>> ToPaginationResponse(PaginationRequest request)
+        protected virtual async Task<PaginationResponse<TResponse>> ToPaginationResponse(PaginationRequest request)
         {
             var countByFilter = await Query.CountAsync();
             var paginationQuery = Query.ToPaginationQuery(request.PageIndex, request.PageSize);
@@ -43,6 +42,24 @@ namespace Common.Infrastructure.Pagination
                 RowCount = countByFilter,
             };
             return response;
+        }
+        protected virtual async Task<PaginationResponse<TResponse>> ToPaginationResponse(PaginationRequest request, IQueryable<TEntity> query)
+        {
+            Query = query;
+            return await ToPaginationResponse(request);
+        }
+    }
+    public abstract class PaginationServiceBase<TEntity, TRequest, TResponse>(IMapper mapper, DbContext dbContext) 
+        : PaginationServiceBase<TEntity, TResponse>(mapper, dbContext)
+        where TEntity : class
+        where TResponse : class
+        where TRequest : PaginationRequest
+    {
+        protected virtual async Task<PaginationResponse<TResponse>> ToPaginationResponse(TRequest request, Func<TRequest, IQueryable<TEntity>> queryFunc)
+            
+        {
+            Query = queryFunc.Invoke(request);
+            return await ToPaginationResponse(request);
         }
     }
 }
