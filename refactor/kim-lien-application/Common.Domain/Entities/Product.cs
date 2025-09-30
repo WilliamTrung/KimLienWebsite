@@ -1,7 +1,10 @@
-﻿using Common.Kernel.Models.Abstractions;
+﻿using Common.Extension;
+using Common.Kernel.Models.Abstractions;
 using Common.Kernel.Models.Implementations;
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json;
 
 namespace Common.Domain.Entities
 {
@@ -12,8 +15,7 @@ namespace Common.Domain.Entities
         [Required]
         public string Description { get; set; } = null!;
 
-        [Required]
-        public string Pictures { get; set; } = null!; // Comma-separated list of picture URLs
+        public JsonDocument? Pictures { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public Guid? ModifiedBy { get; set; }
@@ -26,6 +28,32 @@ namespace Common.Domain.Entities
         public virtual ICollection<ProductCategory> ProductCategories { get; set; } = new List<ProductCategory>();
         public virtual ICollection<ProductView> ProductViews { get; set; } = new List<ProductView>();
         public virtual ICollection<ProductFavor> ProductFavors { get; set; } = new List<ProductFavor>();
+        [NotMapped]
+        private List<AssetDto>? _assets;
+        [NotMapped]
+        public List<AssetDto> PictureUrls
+        {
+            get
+            {
+                if (_assets is null)
+                {
+                    if (Pictures is null)
+                    {
+                        _assets = new List<AssetDto>();
+                    }
+                    else
+                    {
+                        _assets = JsonConvert.DeserializeObject<List<AssetDto>>(Pictures.RootElement.GetRawText()) ?? new List<AssetDto>();
+                    }
+                }
+                return _assets;
+            }
+            set
+            {
+                Pictures = value.ToDocument();
+                _assets = value;
+            }
+        }
     }
     public static class ProductExtension
     {

@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace Common.Extension
 {
@@ -19,6 +20,15 @@ namespace Common.Extension
             }
 
             return result;
+        }
+
+        public static JsonDocument ToDocument(this object value)
+        {
+            if (value is string stringValue)
+            {
+                return JsonDocument.Parse(stringValue);
+            }
+            return System.Text.Json.JsonSerializer.SerializeToDocument(value);
         }
     }
 }
