@@ -9,6 +9,7 @@ namespace Common.Infrastructure.Pagination
         where TEntity : class
         where TResponse : class
     {
+        protected readonly IMapper _mapper = mapper;
         protected DbSet<TEntity> Entities => dbContext.Set<TEntity>();
         private IQueryable<TEntity>? _query { get; set; }
         protected IQueryable<TEntity> Query
@@ -17,9 +18,9 @@ namespace Common.Infrastructure.Pagination
             {
                 if(_query is null)
                 {
-                    _query = Entities.AsQueryable().AsNoTracking();
+                    _query = Entities.AsQueryable();
                 }
-                return _query;
+                return _query.AsNoTracking();
             }
             set { _query = value; }
         }
@@ -33,7 +34,7 @@ namespace Common.Infrastructure.Pagination
                 Query = Query.ApplySorting(request.SortField, request.Asc ?? false); 
             }
             var result = await Query.ToListAsync();
-            var responseData = mapper.Map<List<TResponse>>(result);
+            var responseData = _mapper.Map<List<TResponse>>(result);
             var response = new PaginationResponse<TResponse>
             {
                 Results = responseData,

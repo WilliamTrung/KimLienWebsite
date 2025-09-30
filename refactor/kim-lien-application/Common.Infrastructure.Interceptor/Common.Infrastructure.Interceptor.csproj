@@ -7,14 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="15.0.1" />
-    <PackageReference Include="MediatR" Version="13.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.20" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Admin.Domain\Admin.Domain.csproj" />
-    <ProjectReference Include="..\Common.Domain\Common.Domain.csproj" />
     <ProjectReference Include="..\Common.Kernel\Common.Kernel.csproj" />
+    <ProjectReference Include="..\Common.RequestContext\Common.RequestContext.csproj" />
   </ItemGroup>
 
 </Project>
