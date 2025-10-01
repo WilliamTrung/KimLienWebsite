@@ -97,12 +97,7 @@ namespace Admin.Infrastructure.Services
             ApplyInclude();
             if (request.Filter is not null)
             {
-                if (!string.IsNullOrWhiteSpace(request.Filter.Name))
-                {
-                    Query = Query.Where(x => EF.Functions.Like(EF.Functions.Unaccent(x.Name).ToLower().Trim(), 
-                                                EF.Functions.Unaccent(request.Filter.Name).ToLower().Trim())
-                                        );
-                }
+                Query = Query.QuerySlug<Product, Guid>(request.Filter.Value, QueryName);
             }
             return Query;
         }

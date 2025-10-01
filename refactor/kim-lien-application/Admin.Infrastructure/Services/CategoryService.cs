@@ -78,19 +78,17 @@ namespace Admin.Infrastructure.Services
                 {
                     query = query.And(x => x.ParentId == null);
                 }
-                if (!string.IsNullOrWhiteSpace(filter.Name))
-                {
-                    var filterName = PredicateBuilder.New<Category>();
-                    if (!string.IsNullOrWhiteSpace(request.Filter.Name) && Guid.TryParse(request.Filter.Name, out var id))
-                    {
-                        filterName = filterName.Or(x => x.Id == id);
-                    }
-                    filterName = filterName.Or(x => EF.Functions.Like(EF.Functions.Unaccent(x.Name).ToLower().Trim(),
-                                                EF.Functions.Unaccent(filter.Name).ToLower().Trim())
-                                        );
-                    query = query.And(filterName);
-                } 
+                query = query.And(QueryableExtension.BuildSlugQuery<Category, Guid>(filter.Value, BuildQueryName));
             }
+            return query;
+        }
+        private static Expression<Func<Category, bool>> BuildQueryName(string categoryName)
+        {
+            var query = PredicateBuilder.New<Category>(x =>
+                            EF.Functions.ILike(
+                                EF.Functions.Unaccent(x.Name).ToLower().Trim(),
+                                EF.Functions.Unaccent($"%{categoryName}%")
+                            ));
             return query;
         }
         private static IQueryable<Category> QueryName(IQueryable<Category> query, string categoryName)

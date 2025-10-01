@@ -1,4 +1,3 @@
-using Admin.Application.Commands.Category;
 using Admin.Application.Commands.Product;
 using Admin.Application.Models.Product;
 using Common.Api;

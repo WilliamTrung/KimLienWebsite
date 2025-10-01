@@ -2,7 +2,7 @@
 {
     public class CategoryFilterModel
     {
-        public string? Name { get; set; }
+        public List<string>? Value { get; set; }
         public string? ParentId { get; set; }
     }
 }
