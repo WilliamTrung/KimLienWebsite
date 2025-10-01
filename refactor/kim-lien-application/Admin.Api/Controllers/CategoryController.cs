@@ -31,10 +31,14 @@ namespace Admin.Api.Controllers
         }
 
         [HttpGet]
-        [Route("detail")]
-        public async Task<IActionResult> GetDetail([FromQuery] GetCategoryDetailCommand request, CancellationToken ct)
+        [Route("{slug}")]
+        public async Task<IActionResult> GetDetail([FromRoute] string slug, CancellationToken ct)
         {
-            var result = await sender.Send(request, ct);
+            var command = new GetCategoryDetailCommand
+            {
+                Value = slug,
+            };
+            var result = await sender.Send(command, ct);
             return this.CreateOk(result);
         }
         [HttpDelete]

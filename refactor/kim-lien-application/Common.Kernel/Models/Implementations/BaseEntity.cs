@@ -8,5 +8,7 @@ namespace Common.Kernel.Models.Implementations
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public TKey Id { set; get; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public long Slug { get; set; }
     }
 }

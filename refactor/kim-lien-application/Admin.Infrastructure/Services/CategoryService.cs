@@ -3,10 +3,13 @@ using Admin.Application.Models.Category;
 using Admin.Infrastructure.Data;
 using AutoMapper;
 using Common.Domain.Entities;
+using Common.Infrastructure;
 using Common.Infrastructure.Pagination;
 using Common.Kernel.Request.Pagination;
 using Common.Kernel.Response.Pagination;
+using LinqKit;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Admin.Infrastructure.Services
 {
@@ -31,16 +34,7 @@ namespace Admin.Infrastructure.Services
         public async Task<CategoryDto> GetDetail(GetDetailCategoryRequest request, CancellationToken ct)
         {
             ApplyInclude();
-            if (!string.IsNullOrWhiteSpace(request.Id) && Guid.TryParse(request.Id, out var id))
-            {
-                Query = Query.Where(x => x.Id == id);
-            }
-            if (!string.IsNullOrWhiteSpace(request.Name))
-            {
-                Query = Query.Where(x => EF.Functions.Like(EF.Functions.Unaccent(x.Name).ToLower().Trim(),
-                                            EF.Functions.Unaccent(request.Name).ToLower().Trim())
-                                    );
-            }
+            Query = Query.QuerySlug<Category, Guid>(request.Value, QueryName);
             var category = await Query.FirstOrDefaultAsync();
             var response = _mapper.Map<CategoryDto>(category);
             return response;
@@ -69,20 +63,43 @@ namespace Admin.Infrastructure.Services
         {
             Query = Query.Include(x => x.Parent);
         }
-        private IQueryable<Category> QueryRequest(PaginationRequest<CategoryFilterModel> request)
+        private Expression<Func<Category, bool>> QueryRequest(PaginationRequest<CategoryFilterModel> request)
         {
-            ApplyInclude(); 
-            var query = Query;
+            ApplyInclude();
+            var query = PredicateBuilder.New<Category>();
             if (request.Filter is not null)
             {
                 var filter = request.Filter;
+                if (!string.IsNullOrWhiteSpace(request.Filter.ParentId) && Guid.TryParse(request.Filter.ParentId, out var parentId))
+                {
+                    query = query.And(x => x.ParentId == parentId);
+                }
+                else
+                {
+                    query = query.And(x => x.ParentId == null);
+                }
                 if (!string.IsNullOrWhiteSpace(filter.Name))
                 {
-                    query = query.Where(x => EF.Functions.Like(EF.Functions.Unaccent(x.Name).ToLower().Trim(),
+                    var filterName = PredicateBuilder.New<Category>();
+                    if (!string.IsNullOrWhiteSpace(request.Filter.Name) && Guid.TryParse(request.Filter.Name, out var id))
+                    {
+                        filterName = filterName.Or(x => x.Id == id);
+                    }
+                    filterName = filterName.Or(x => EF.Functions.Like(EF.Functions.Unaccent(x.Name).ToLower().Trim(),
                                                 EF.Functions.Unaccent(filter.Name).ToLower().Trim())
                                         );
+                    query = query.And(filterName);
                 } 
             }
+            return query;
+        }
+        private static IQueryable<Category> QueryName(IQueryable<Category> query, string categoryName)
+        {
+            query = query.Where(x =>
+                            EF.Functions.ILike(
+                                EF.Functions.Unaccent(x.Name).ToLower().Trim(),
+                                EF.Functions.Unaccent($"%{categoryName}%")
+                            ));
             return query;
         }
     }

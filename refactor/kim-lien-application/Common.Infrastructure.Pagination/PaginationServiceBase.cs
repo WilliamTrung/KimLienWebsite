@@ -2,6 +2,7 @@ using AutoMapper;
 using Common.Kernel.Request.Pagination;
 using Common.Kernel.Response.Pagination;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Common.Infrastructure.Pagination
 {
@@ -60,6 +61,12 @@ namespace Common.Infrastructure.Pagination
             
         {
             Query = queryFunc.Invoke(request);
+            return await ToPaginationResponse(request);
+        }
+        protected virtual async Task<PaginationResponse<TResponse>> ToPaginationResponse(TRequest request, Func<TRequest, Expression<Func<TEntity, bool>>> queryFunc)
+
+        {
+            Query = Query.Where(queryFunc.Invoke(request));
             return await ToPaginationResponse(request);
         }
     }

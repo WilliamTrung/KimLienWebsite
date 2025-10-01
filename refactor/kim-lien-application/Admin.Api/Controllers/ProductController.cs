@@ -1,5 +1,6 @@
 using Admin.Application.Commands.Category;
 using Admin.Application.Commands.Product;
+using Admin.Application.Models.Product;
 using Common.Api;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -32,10 +33,14 @@ namespace Admin.Api.Controllers
         }
 
         [HttpGet]
-        [Route("detail")]
-        public async Task<IActionResult> GetDetail([FromQuery] GetCategoryDetailCommand request, CancellationToken ct)
+        [Route("{slug}")]
+        public async Task<IActionResult> GetDetail([FromRoute]string slug, CancellationToken ct)
         {
-            var result = await sender.Send(request, ct);
+            var command = new GetDetailProductRequest
+            {
+                Value = slug,
+            };
+            var result = await sender.Send(command, ct);
             return this.CreateOk(result);
         }
         [HttpDelete]

@@ -4,6 +4,7 @@ using Admin.Infrastructure.Data;
 using AutoMapper;
 using Common.Domain.Entities;
 using Common.DomainException.Abstractions;
+using Common.Infrastructure;
 using Common.Infrastructure.Pagination;
 using Common.Kernel.Request.Pagination;
 using Common.Kernel.Response.Pagination;
@@ -33,16 +34,7 @@ namespace Admin.Infrastructure.Services
         public async Task<ProductDto> GetDetail(GetDetailProductRequest request, CancellationToken ct)
         {
             ApplyInclude();
-            if(!string.IsNullOrWhiteSpace(request.Id) && Guid.TryParse(request.Id, out var id))
-            {
-                Query = Query.Where(x => x.Id == id);
-            }
-            if (!string.IsNullOrWhiteSpace(request.Name))
-            {
-                Query = Query.Where(x => EF.Functions.Like(EF.Functions.Unaccent(x.Name).ToLower().Trim(),
-                                            EF.Functions.Unaccent(request.Name).ToLower().Trim())
-                                    );
-            }
+            Query = Query.QuerySlug<Product, Guid>(request.Value, QueryName);
             var product = await Query.FirstOrDefaultAsync();
             var response = _mapper.Map<ProductDto>(product);
             return response;
@@ -113,6 +105,15 @@ namespace Admin.Infrastructure.Services
                 }
             }
             return Query;
+        }
+        private static IQueryable<Product> QueryName(IQueryable<Product> query, string productName)
+        {
+            query = query.Where(x =>
+                            EF.Functions.ILike(
+                                EF.Functions.Unaccent(x.Name).ToLower().Trim(),
+                                EF.Functions.Unaccent($"%{productName}%")
+                            ));
+            return query;
         }
     }
 }

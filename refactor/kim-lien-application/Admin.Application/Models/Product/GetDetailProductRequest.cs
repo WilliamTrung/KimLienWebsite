@@ -2,7 +2,6 @@ namespace Admin.Application.Models.Product
 {
     public class GetDetailProductRequest
     {
-        public string? Id { get; set; }
-        public string? Name { get; set; }
+        public string Value { get; set; } = null!;
     }
 }
