@@ -14,7 +14,7 @@ namespace Common.Api
             });
         }
 
-        public static IActionResult CreateOkForResponse<T>(this ControllerBase controller, T result)
+        public static IActionResult CreateOk<T>(this ControllerBase controller, T result)
         {
             return controller.Ok(new ActionResponse<T>() // Returns a 200 OK response with the provided result
             {

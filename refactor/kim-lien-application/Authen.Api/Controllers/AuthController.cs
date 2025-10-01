@@ -1,15 +1,9 @@
-using Authen.Application.Abstractions;
 using Authen.Application.Commands;
 using Authen.Application.Models;
 using AutoMapper;
 using Common.Api;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Authen.Api.Controllers
 {
@@ -39,7 +33,7 @@ namespace Authen.Api.Controllers
         {
             var command = mapper.Map<LoginCommand>(request);
             var result = await mediator.Send(command, ct);
-            return this.CreateOkForResponse(result);
+            return this.CreateOk(result);
         }
         [HttpPost]
         [Route("refresh")]
@@ -47,7 +41,7 @@ namespace Authen.Api.Controllers
         {
             var command = mapper.Map<RefreshCommand>(request);
             var result = await mediator.Send(command, ct);
-            return this.CreateOkForResponse(result);
+            return this.CreateOk(result);
         }
     }
 }
