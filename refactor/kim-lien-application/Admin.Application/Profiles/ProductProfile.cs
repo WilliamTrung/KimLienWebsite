@@ -1,3 +1,4 @@
+using Admin.Application.Commands.Product;
 using Admin.Application.Models.Product;
 using AutoMapper;
 using Common.Domain.Entities;
@@ -8,11 +9,11 @@ namespace Admin.Application.Profiles
     {
         public ProductProfile() 
         {
-            CreateMap<ModifyProductDto, Product>()
+            CreateMap<ModifyProductCommand, Product>()
                 .ForMember(d => d.Id, opt => opt.Ignore())
                 .ForMember(d => d.PictureAssets, opt => opt.MapFrom(s => s.Images))
                 ;
-            CreateMap<CreateProductDto, Product>()
+            CreateMap<CreateProductCommand, Product>()
                 .ForMember(d => d.ProductCategories, 
                     opt => opt.MapFrom(s => s.CategoryIds.Select(x => new ProductCategory
                     {

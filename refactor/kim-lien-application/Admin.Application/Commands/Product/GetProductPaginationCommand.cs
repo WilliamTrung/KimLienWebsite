@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Admin.Application.Commands.Product
 {
-    public class GetProductPaginationCommand : PaginationRequest<ProductFilterModel>, IRequest<PaginationResponse<List<ProductDto>>>
+    public class GetProductPaginationCommand : PaginationRequest<ProductFilterModel>, IRequest<PaginationResponse<ProductDto>>
     {
     }
 }

@@ -1,4 +1,5 @@
-﻿using Admin.Application.Models.Category;
+﻿using Admin.Application.Commands.Category;
+using Admin.Application.Models.Category;
 using AutoMapper;
 using Common.Domain.Entities;
 
@@ -8,10 +9,10 @@ namespace Admin.Application.Profiles
     {
         public CategoryProfile()
         {
-            CreateMap<ModifyCategoryDto, Category>()
+            CreateMap<ModifyCategoryCommand, Category>()
               .ForMember(d => d.Id, opt => opt.Ignore())
               ;
-            CreateMap<CreateCategoryDto, Category>()
+            CreateMap<CreateCategoryCommand, Category>()
                 ;
             CreateMap<Category, CategoryDto>()
                 ;

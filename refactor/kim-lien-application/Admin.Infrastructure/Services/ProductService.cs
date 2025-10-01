@@ -25,7 +25,7 @@ namespace Admin.Infrastructure.Services
             return product.Id;
         }
 
-        public async Task DeleteProduct(Guid id, CancellationToken ct)
+        public async Task Delete(Guid id, CancellationToken ct)
         {
             await dbContext.Products.Where(x => x.Id == id).ExecuteDeleteAsync(ct);
         }
