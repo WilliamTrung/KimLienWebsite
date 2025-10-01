@@ -1,9 +1,10 @@
+using Common.Kernel.Models.Abstractions;
 using Common.Kernel.Parameters;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Common.Domain.Entities
 {
-    public class ProductViewCredential
+    public class ProductViewCredential : IAuditEntity
     {
         public ProductViewType ViewType { get; set; }
         public Guid ProductViewId { get; set; }
@@ -14,5 +15,9 @@ namespace Common.Domain.Entities
         public ProductView ProductView { get; set; } = null!;
         [ForeignKey(nameof(UserId))]
         public User? User { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public Guid? ModifiedBy { get; set; }
+        public Guid CreatedBy { get; set; }
     }
 }

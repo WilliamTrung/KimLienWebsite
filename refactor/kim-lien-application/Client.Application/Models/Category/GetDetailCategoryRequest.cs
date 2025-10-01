@@ -1,4 +1,4 @@
-namespace Client.Application.Abstractions.Models.Category
+namespace Client.Application.Models.Category
 {
     public class GetDetailCategoryRequest
     {

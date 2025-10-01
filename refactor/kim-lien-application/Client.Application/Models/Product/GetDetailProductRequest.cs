@@ -1,4 +1,4 @@
-namespace Client.Application.Abstractions.Models.Product
+namespace Client.Application.Models.Product
 {
     public class GetDetailProductRequest
     {

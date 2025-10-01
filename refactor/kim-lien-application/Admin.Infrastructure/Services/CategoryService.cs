@@ -9,6 +9,7 @@ using Common.Kernel.Request.Pagination;
 using Common.Kernel.Response.Pagination;
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace Admin.Infrastructure.Services
@@ -54,11 +55,36 @@ namespace Admin.Infrastructure.Services
             {
                 throw new Exception($"Category not found for id: {request.Id}");
             }
-            _mapper.Map(request, category);
-            dbContext.Update(category);
-            await dbContext.SaveChangesAsync(ct);
+            try
+            {
+                //Begin transaction because multiple operations are involved
+                if (request.ParentId != category.ParentId)
+                {
+                    var productsWithCategory = await dbContext.ProductCategories
+                        .Where(p => p.CategoryId == category.Id).ToListAsync();
+                    var productIds = productsWithCategory.Select(p => p.ProductId).ToList();
+                    var categoriesParentChange = await dbContext.Categories.FromSqlRaw(CategoryExtension.QueryParents, new { childId = category.Id }).ToListAsync();
+                    var categories = categoriesParentChange.Select(c => c.Id).ToList();
+
+                    await dbContext.ProductCategories.Where(x =>
+                        //here I want to delete all product categories that belong to the category being modified and its parents
+                        productIds.Contains(x.ProductId) && categories.Contains(x.CategoryId)
+                    ).ExecuteDeleteAsync();
+                }
+                _mapper.Map(request, category);
+                dbContext.Update(category);
+                await dbContext.SaveChangesAsync(ct);
+                //End transaction then commit
+
+            }
+            catch (Exception ex)
+            {
+                //Rollback transaction
+
+                throw;
+            }
         }
-        
+
         private void ApplyInclude()
         {
             Query = Query.Include(x => x.Parent);

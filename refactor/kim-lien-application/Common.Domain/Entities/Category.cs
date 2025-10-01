@@ -27,12 +27,10 @@ namespace Common.Domain.Entities
     }
     public static class CategoryExtension
     {
-        public static readonly string QueryChildren = 
-            "$@WITH tree AS (SELECT * FROM [Categories] " +
-            "WHERE [Id] = {parentId}" +
-                "UNION ALL SELECT c.* FROM [Categories] c " +
-                    "JOIN tree t ON c.[ParentId] = t.[Id]) " +
-                "SELECT * FROM tree WHERE [Id] <> {parentId};";
+        public static readonly string QueryChildren =
+            "$@WITH tree AS (SELECT * FROM [Categories] WHERE [Id] = {parentId} UNION ALL SELECT c.* FROM [Categories] c JOIN tree t ON c.[ParentId] = t.[Id]) SELECT * FROM tree WHERE [Id] <> {parentId};";
+        public static readonly string QueryParents = 
+            "$@WITH tree AS (SELECT * FROM [Categories] WHERE [Id] = {childId} UNION ALL SELECT c.* FROM [Categories] c JOIN tree t ON c.[Id] = t.[ParentId]) SELECT * FROM tree WHERE [Id] <> {childId};";
         public static List<Product> Products(this Category category) => category.ProductCategories?.Select(pc => pc.Product).ToList() ?? new List<Product>();
         
     }
