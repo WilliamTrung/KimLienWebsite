@@ -1,4 +1,4 @@
-namespace Admin.Application
+namespace Authen.Application
 {
     public class Marker
     {
