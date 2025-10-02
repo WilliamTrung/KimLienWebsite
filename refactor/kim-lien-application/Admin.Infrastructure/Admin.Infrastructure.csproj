@@ -16,6 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Admin.Application\Admin.Application.csproj" />
     <ProjectReference Include="..\Common.Domain\Common.Domain.csproj" />
+    <ProjectReference Include="..\Common.Infrastructure.DbContext\Common.Infrastructure.DbContext.csproj" />
     <ProjectReference Include="..\Common.Infrastructure.Interceptor\Common.Infrastructure.Interceptor.csproj" />
     <ProjectReference Include="..\Common.Infrastructure.Pagination\Common.Infrastructure.Pagination.csproj" />
     <ProjectReference Include="..\Common.Infrastructure\Common.Infrastructure.csproj" />

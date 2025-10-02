@@ -3,18 +3,22 @@ using Admin.Application.Models.Category;
 using Admin.Infrastructure.Data;
 using AutoMapper;
 using Common.Domain.Entities;
+using Common.DomainException.Abstractions;
 using Common.Infrastructure;
+using Common.Infrastructure.DbContext;
 using Common.Infrastructure.Pagination;
 using Common.Kernel.Request.Pagination;
 using Common.Kernel.Response.Pagination;
 using LinqKit;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
+using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
 
 namespace Admin.Infrastructure.Services
 {
     public class CategoryService(AdminDbContext dbContext,
+        ILogger<CategoryService> logger,
         IMapper mapper)
         : PaginationServiceBase<Category, PaginationRequest<CategoryFilterModel>, CategoryDto>(mapper, dbContext)
         , ICategoryService
@@ -48,43 +52,59 @@ namespace Admin.Infrastructure.Services
 
         public async Task Update(ModifyCategoryDto request, CancellationToken ct)
         {
+            try
+            {
+                await dbContext.ExecuteTransactionAsync(request, ModifyCategory, ct);
+            }
+            catch (Exception ex)
+            {
+                logger.LogInformation(ex, "Error modify category. Request: {@Request}", request);
+                throw;
+            }
+        }
+        private async Task ModifyCategory(ModifyCategoryDto request, CancellationToken ct)
+        {
             var category = await dbContext.Categories.Where(x => x.Id == request.Id)
                                                      .Include(x => x.Parent)
                                                      .FirstOrDefaultAsync();
             if (category is null)
             {
-                throw new Exception($"Category not found for id: {request.Id}");
+                throw new CException($"Category not found for id: {request.Id}");
             }
-            try
+            if (request.ParentId != category.ParentId)
             {
-                //Begin transaction because multiple operations are involved
-                if (request.ParentId != category.ParentId)
+                //get all the products attach to current category
+                var productsWithCategory = await dbContext.ProductCategories
+                                .Where(p => p.CategoryId == category.Id).ToListAsync();
+                var productIds = productsWithCategory.Select(p => p.ProductId).ToList();
+                List<Guid> categories = new List<Guid>();
+                if (category.ParentId is not null)
                 {
-                    var productsWithCategory = await dbContext.ProductCategories
-                        .Where(p => p.CategoryId == category.Id).ToListAsync();
-                    var productIds = productsWithCategory.Select(p => p.ProductId).ToList();
+                    //get all the parent of current category
                     var categoriesParentChange = await dbContext.Categories.FromSqlRaw(CategoryExtension.QueryParents, new { childId = category.Id }).ToListAsync();
-                    var categories = categoriesParentChange.Select(c => c.Id).ToList();
-
-                    await dbContext.ProductCategories.Where(x =>
-                        //here I want to delete all product categories that belong to the category being modified and its parents
-                        productIds.Contains(x.ProductId) && categories.Contains(x.CategoryId)
-                    ).ExecuteDeleteAsync();
+                    categories = categoriesParentChange.Select(c => c.Id).ToList();
                 }
-                _mapper.Map(request, category);
-                dbContext.Update(category);
-                await dbContext.SaveChangesAsync(ct);
-                //End transaction then commit
+                else if (request.ParentId is not null) // case current category has no parent, update new parent
+                {
+                    //assign new parentId -> map all parents to all attached products
+                    //get all the parent of new parent category
+                    var categoriesParentChange = await dbContext.Categories.FromSqlRaw(CategoryExtension.QueryParents, new { childId = request.ParentId }).ToListAsync();
+                    categories = categoriesParentChange.Select(c => c.Id).ToList();
+                    categories.Add(request.ParentId.Value);
+                }
 
+                if (categories.Any() && productIds.Any())
+                {
+                    await dbContext.ProductCategories.Where(x =>
+                                    //here I want to delete all product categories that belong to the category being modified and its parents
+                                    productIds.Contains(x.ProductId) && categories.Contains(x.CategoryId)
+                                ).ExecuteDeleteAsync();
+                }
             }
-            catch (Exception ex)
-            {
-                //Rollback transaction
-
-                throw;
-            }
+            _mapper.Map(request, category);
+            dbContext.Update(category);
+            await dbContext.SaveChangesAsync(ct);
         }
-
         private void ApplyInclude()
         {
             Query = Query.Include(x => x.Parent);
