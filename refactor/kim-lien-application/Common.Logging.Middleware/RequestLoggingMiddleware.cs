@@ -1,6 +1,7 @@
 ﻿using Common.Extension.Logging;
 using Common.RequestContext.Abstractions;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using System.Text;
@@ -26,10 +27,11 @@ namespace Common.Logging.Middleware
             // Enable buffering to read the request body multiple times
             context.Request.EnableBuffering();
             var requestBody = await ReadRequestBody(context.Request); // Read the request body
-
+            var t = context.Request.GetDisplayUrl();
+            var te = context.Request.GetEncodedUrl();
             // Log request details
             _logger.LogDataInformation($"RequestId Start: {_requestContext.Data.RequestId} " +
-                $"| Uri: {GetUri(context.Request)} " +
+                $"| Uri: {context.Request.GetDisplayUrl()} " +
                 $"| Token: {(context.Request.Headers.TryGetValue("authorization", out var token) ? token : string.Empty)} " +
                 $"| Request: {requestBody} ");
 
@@ -56,7 +58,7 @@ namespace Common.Logging.Middleware
 
                     // Log response details
                     _logger.LogDataInformation($"RequestId End: {_requestContext.Data.RequestId} " +
-                        $"| Uri: {GetUri(context.Request)} " +
+                        $"| Uri: {context.Request.GetEncodedUrl()} " +
                         $"| StatusCode:{context.Response.StatusCode} " +
                         $"| Response: {responseBodyText} " +
                         $"| Duration: {stopwatch.ElapsedMilliseconds}");
@@ -80,15 +82,6 @@ namespace Common.Logging.Middleware
             var body = await reader.ReadToEndAsync(); // Read the body content
             request.Body.Position = 0; // Reset the position for further processing
             return body; // Return the body content as a string
-        }
-        static Uri GetUri(HttpRequest request)
-        {
-            var builder = new UriBuilder();
-            builder.Scheme = request.Scheme;
-            builder.Host = request.Host.Value;
-            builder.Path = request.Path;
-            builder.Query = request.QueryString.ToUriComponent();
-            return builder.Uri;
         }
     }
 }

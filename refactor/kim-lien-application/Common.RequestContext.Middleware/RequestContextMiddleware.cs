@@ -4,10 +4,10 @@ using System.Security.Claims;
 
 namespace Common.RequestContext.Middleware
 {
-    public class RequestrContextMiddleware : IMiddleware
+    public class RequestContextMiddleware : IMiddleware
     {
         private readonly IRequestContext _requestContext;
-        public RequestrContextMiddleware(IRequestContext requestContext)
+        public RequestContextMiddleware(IRequestContext requestContext)
         {
             _requestContext = requestContext;
         }
