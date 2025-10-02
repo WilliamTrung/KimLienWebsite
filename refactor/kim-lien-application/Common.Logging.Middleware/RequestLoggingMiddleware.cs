@@ -27,8 +27,7 @@ namespace Common.Logging.Middleware
             // Enable buffering to read the request body multiple times
             context.Request.EnableBuffering();
             var requestBody = await ReadRequestBody(context.Request); // Read the request body
-            var t = context.Request.GetDisplayUrl();
-            var te = context.Request.GetEncodedUrl();
+
             // Log request details
             _logger.LogDataInformation($"RequestId Start: {_requestContext.Data.RequestId} " +
                 $"| Uri: {context.Request.GetDisplayUrl()} " +
