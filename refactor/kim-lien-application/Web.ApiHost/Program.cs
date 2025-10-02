@@ -40,6 +40,7 @@ builder.Configuration
 builder.Host.UseSerilog((ctx, logCfg) => logCfg.ReadFrom.Configuration(builder.Configuration));
 // Add services to the container.
 builder.Services.AddHttpClient();
+builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddScoped<IRequestContext, RequestContext>();
 builder.Services.AddScoped<RequestContextMiddleware>();
 builder.Services.AddScoped<RequestLoggingMiddleware>();
@@ -52,6 +53,7 @@ builder.Services.AddHttpContextAccessor();
 
 var moduleAssemblies = AssemblyHelper.GetModuleAssemblies();
 builder.Services.AddModuleControllers(moduleAssemblies);
+builder.Services.AddModuleDI(builder.Configuration, moduleAssemblies);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Admin.Api.Controllers
 {
     [ApiController]
-    [Route("/api/manage/category")]
+    [Route("/api/management/category")]
     public class CategoryController(ISender sender) : ControllerBase
     {
         [HttpPost]

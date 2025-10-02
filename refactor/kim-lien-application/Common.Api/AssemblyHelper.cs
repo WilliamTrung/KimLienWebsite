@@ -25,7 +25,6 @@ namespace Common.Api
                 .GetAssemblies()
                 .Where(a => a.GetName().Name.EndsWith(".Api"))
                 .ToDictionary(a => a.GetName().Name!, a => a, StringComparer.OrdinalIgnoreCase);
-
             foreach (var name in _moduleApiNames)
             {
                 if (!loaded.TryGetValue(name, out var asm))

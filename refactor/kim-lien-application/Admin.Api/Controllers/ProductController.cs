@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Admin.Api.Controllers
 {
     [ApiController]
-    [Route("/api/manage/product")]
+    [Route("/api/management/product")]
     public class ProductController(ISender sender) : ControllerBase
     {
         [HttpPost]
