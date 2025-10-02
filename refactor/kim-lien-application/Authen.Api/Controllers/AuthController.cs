@@ -2,9 +2,10 @@ using Authen.Application.Commands;
 using Authen.Application.Models;
 using AutoMapper;
 using Common.Api;
+using Common.Kernel.Constants;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-
+using Common.Kernel.Extensions;
 namespace Authen.Api.Controllers
 {
     [ApiController]
@@ -42,6 +43,13 @@ namespace Authen.Api.Controllers
             var command = mapper.Map<RefreshCommand>(request);
             var result = await mediator.Send(command, ct);
             return this.CreateOk(result);
+        }
+        [HttpGet]
+        [Route("region")]
+        public Task<IActionResult> GetRegion(CancellationToken ct)
+        {
+            var result = typeof(Region).GetValues<string>();
+            return Task.FromResult(this.CreateOk(result));
         }
     }
 }

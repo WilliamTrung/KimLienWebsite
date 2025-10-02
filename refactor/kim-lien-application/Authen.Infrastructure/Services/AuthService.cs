@@ -16,7 +16,13 @@ namespace Authen.Infrastructure.Services
     {
         public async Task RegisterAsync(RegisterDto dto, CancellationToken ct)
         {
-            var user = new User { UserName = dto.Email, Email = dto.Email, DisplayName = dto.DisplayName };
+            var user = new User { 
+                UserName = dto.Email,
+                Email = dto.Email,
+                DisplayName = dto.DisplayName ?? dto.Email, 
+                PhoneNumber = dto.PhoneNumber,
+                Region = dto.Region 
+            };
             var result = await users.CreateAsync(user, dto.Password);
             if (!result.Succeeded)
                 throw new InvalidOperationException(string.Join("; ", result.Errors.Select(e => e.Description)));

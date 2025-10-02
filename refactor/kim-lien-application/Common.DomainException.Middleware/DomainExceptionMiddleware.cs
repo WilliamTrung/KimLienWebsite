@@ -5,63 +5,76 @@ using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System.Net;
 using Common.DomainException.Abstractions;
+using Microsoft.Extensions.Logging;
 
 namespace Common.DomainException.Middleware
 {
-    public class DomainExceptionMiddleware : IMiddleware
+    public sealed class DomainExceptionMiddleware : IMiddleware
     {
-        public async Task InvokeAsync(HttpContext handler, RequestDelegate next)
-        {
-            object? response = null;
-            int httpStatusCode = (int)HttpStatusCode.OK;
-            if (((int)HttpStatusCode.InternalServerError).Equals(handler.Response.StatusCode))
-            {
-                handler.Response.ContentType = System.Net.Mime.MediaTypeNames.Application.Json; // Set response content type to JSON
-                var contextFeature = handler.Features.Get<IExceptionHandlerFeature>(); // Get the exception feature
-                httpStatusCode = (int)HttpStatusCode.BadRequest; // Default to BadRequest status code
+        private readonly ILogger<DomainExceptionMiddleware> _log;
+        public DomainExceptionMiddleware(ILogger<DomainExceptionMiddleware> log) => _log = log;
 
-                // Handle specific domain exceptions
-                if (contextFeature.Error is CException domainException)
-                {
-                    if (domainException is IResultException resultException)
-                    {
-                        response = new ActionResponse<object>() // Create a response for a result exception
-                        {
-                            Data = resultException.Result,
-                            Message = domainException.Message,
-                            Code = domainException.ErrorCode.GetValueOrDefault(),
-                            StatusCode = domainException.HttpStatusCode,
-                        };
-                    }
-                    else
-                    {
-                        response = new ActionResponse() // Create a response for a general domain exception
-                        {
-                            Message = domainException.Message,
-                            Code = domainException.ErrorCode.GetValueOrDefault(),
-                            StatusCode = domainException.HttpStatusCode,
-                        };
-                    }
-                }
-                else if (contextFeature.Error is not null) // Handle non-domain exceptions
-                {
-                    response = new ActionResponse() // Create a response for general exceptions
-                    {
-                        Message = contextFeature.Error.Message,
-                        Code = (int)ResponseCode.System,
-                        StatusCode = HttpStatusCode.InternalServerError,
-                    };
-                }
-            }
-            // If a response was created, set the status code and write the response to the body
-            if (response is not null)
+        public async Task InvokeAsync(HttpContext ctx, RequestDelegate next)
+        {
+            try
             {
-                handler.Response.StatusCode = httpStatusCode; // Set the HTTP status code
-                await handler.Response.WriteAsync(JsonConvert.SerializeObject(response, new JsonSerializerSettings()
+                // Let the rest of the pipeline run (controllers, etc.)
+                await next(ctx);
+            }
+            catch (OperationCanceledException) when (ctx.RequestAborted.IsCancellationRequested)
+            {
+                await WriteProblem(ctx, 499, "Client closed request");
+            }
+            catch (CException ex)
+            {
+                _log.LogWarning(ex, "Domain exception");
+                var payload = ex is IResultException rex
+                    ? new ActionResponse<object?>
+                    {
+                        Data = rex.Result,
+                        Message = ex.Message,
+                        Code = ex.ErrorCode.GetValueOrDefault(),
+                        StatusCode = ex.HttpStatusCode
+                    }
+                    : new ActionResponse
+                    {
+                        Message = ex.Message,
+                        Code = ex.ErrorCode.GetValueOrDefault(),
+                        StatusCode = ex.HttpStatusCode
+                    };
+
+                await WriteJson(ctx, (int)ex.HttpStatusCode, payload);
+            }
+            catch (Exception ex)
+            {
+                _log.LogError(ex, "Unhandled exception");
+                var payload = new ActionResponse
                 {
-                    Formatting = Formatting.None, // Minimize formatting for the JSON
-                }));
+                    Message = "An unexpected error occurred.",
+                    Code = (int)ResponseCode.System,
+                    StatusCode = HttpStatusCode.InternalServerError
+                };
+                await WriteJson(ctx, StatusCodes.Status500InternalServerError, payload);
             }
         }
+
+        private static async Task WriteProblem(HttpContext ctx, int status, string title)
+        {
+            if (ctx.Response.HasStarted) return;
+            ctx.Response.StatusCode = status;
+            ctx.Response.ContentType = "application/problem+json";
+            await ctx.Response.WriteAsync($$"""{"title":"{{title}}","status":{{status}}}""");
+        }
+
+        private static async Task WriteJson(HttpContext ctx, int status, object payload)
+        {
+            if (ctx.Response.HasStarted) return;
+            ctx.Response.StatusCode = status;
+            ctx.Response.ContentType = "application/json";
+            await ctx.Response.WriteAsync(
+                Newtonsoft.Json.JsonConvert.SerializeObject(payload,
+                    new Newtonsoft.Json.JsonSerializerSettings { Formatting = Newtonsoft.Json.Formatting.None }));
+        }
     }
+
 }
