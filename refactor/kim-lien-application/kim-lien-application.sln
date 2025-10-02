@@ -99,6 +99,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Kernel.RedisService"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Kernel.KafkaService", "Common.Kernel.KafkaService\Common.Kernel.KafkaService.csproj", "{6C92B53A-507C-40D3-8665-8E5D6BD05C14}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.ApiHost", "Web.ApiHost\Web.ApiHost.csproj", "{FBEAD640-FF66-4474-A578-8BE734993400}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -229,6 +231,10 @@ Global
 		{6C92B53A-507C-40D3-8665-8E5D6BD05C14}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6C92B53A-507C-40D3-8665-8E5D6BD05C14}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6C92B53A-507C-40D3-8665-8E5D6BD05C14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBEAD640-FF66-4474-A578-8BE734993400}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBEAD640-FF66-4474-A578-8BE734993400}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBEAD640-FF66-4474-A578-8BE734993400}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBEAD640-FF66-4474-A578-8BE734993400}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -280,6 +286,7 @@ Global
 		{9BFD45DE-912A-42CC-9D0F-860466293EE1} = {B2029657-4BC2-406E-9712-908A41B92516}
 		{319A59DA-4DB8-4ADE-BA28-F389998957FB} = {E4916F6E-55D5-4D4C-ACE3-D301FBFDEE85}
 		{6C92B53A-507C-40D3-8665-8E5D6BD05C14} = {E4916F6E-55D5-4D4C-ACE3-D301FBFDEE85}
+		{FBEAD640-FF66-4474-A578-8BE734993400} = {250AE75D-9FD9-45A6-A5D2-FC09D5B555EC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {38DBB258-A888-46B9-A8EB-CEC7B2D25BBB}
