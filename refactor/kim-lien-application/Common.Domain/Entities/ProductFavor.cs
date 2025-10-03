@@ -1,9 +1,10 @@
 using Common.Kernel.Models.Abstractions;
+using Common.Kernel.Models.Implementations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Common.Domain.Entities
 {
-    public class ProductFavor : IAuditEntity
+    public class ProductFavor : BaseEntity<Guid>, IAuditEntity, IDeleteEntity
     {
         public Guid ProductId { get; set; }
         public Guid UserId { get; set; }
@@ -16,5 +17,6 @@ namespace Common.Domain.Entities
         public DateTime? ModifiedDate { get; set; }
         public Guid? ModifiedBy { get; set; }
         public Guid CreatedBy { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

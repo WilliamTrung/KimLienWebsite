@@ -8,6 +8,7 @@ namespace Common.Api
         private static readonly string[] _moduleApiNames = [
             "Admin.Api",
             "Authen.Api",
+            "CentralData.MigrateDbContext"
             ];
 
         /// <summary>

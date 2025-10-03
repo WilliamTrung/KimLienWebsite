@@ -4,9 +4,11 @@ using Common.Logging.Middleware;
 using Common.RequestContext;
 using Common.RequestContext.Abstractions;
 using Common.RequestContext.Middleware;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Serilog;
 using System.Reflection;
+using Web.ApiHost;
 
 var builder = WebApplication.CreateBuilder(args);
 // I. Configs builder
@@ -46,6 +48,9 @@ builder.Services.AddScoped<RequestContextMiddleware>();
 builder.Services.AddScoped<RequestLoggingMiddleware>();
 builder.Services.AddScoped<DomainExceptionMiddleware>();
 //Add configuration as IOptions here
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+    ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+builder.Services.AddSingleton(_ => new Npgsql.NpgsqlConnection(connectionString));
 //++
 
 builder.Services.AddHealthChecks();
@@ -59,7 +64,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAuthorization();
 var app = builder.Build();
-
+app.EnsureDatabaseMigrated();
 // IMPORTANT: order
 app.UseHttpsRedirection();
 

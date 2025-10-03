@@ -16,6 +16,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.20">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
     <PackageReference Include="Serilog" Version="4.3.0" />
     <PackageReference Include="Serilog.AspNetCore" Version="8.0.3" />
@@ -26,6 +30,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Admin.Api\Admin.Api.csproj" />
     <ProjectReference Include="..\Authen.Api\Authen.Api.csproj" />
+    <ProjectReference Include="..\CentralData.MigrateDbContext\CentralData.MigrateDbContext.csproj" />
     <ProjectReference Include="..\Common.Api\Common.Api.csproj" />
     <ProjectReference Include="..\Common.DomainException.Middleware\Common.DomainException.Middleware.csproj" />
     <ProjectReference Include="..\Common.Logging.Middleware\Common.Logging.Middleware.csproj" />

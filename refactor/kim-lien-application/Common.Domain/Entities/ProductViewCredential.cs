@@ -1,10 +1,11 @@
 using Common.Kernel.Models.Abstractions;
+using Common.Kernel.Models.Implementations;
 using Common.Kernel.Parameters;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Common.Domain.Entities
 {
-    public class ProductViewCredential : IAuditEntity
+    public class ProductViewCredential : BaseEntity<Guid>, IAuditEntity
     {
         public ProductViewType ViewType { get; set; }
         public Guid ProductViewId { get; set; }
