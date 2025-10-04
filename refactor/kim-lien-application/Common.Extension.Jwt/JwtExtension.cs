@@ -2,6 +2,7 @@ using Common.Domain.Entities;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
 namespace Common.Extension.Jwt
 {
     public static class JwtExtension
@@ -11,7 +12,7 @@ namespace Common.Extension.Jwt
         {
             var now = DateTime.UtcNow;
             var expires = now.AddMinutes(s.AccessMinutes);
-            var key = new SymmetricSecurityKey(Convert.FromBase64String(s.KeyB64));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(s.Key));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var claims = new List<Claim>

@@ -23,7 +23,7 @@ namespace Common.Kernel.Response.Pagination
         {
             get
             {
-                return (CurrentPage - 1) * PageSize + 1;
+                return CurrentPage * PageSize + 1;
             }
         }
 
@@ -31,7 +31,7 @@ namespace Common.Kernel.Response.Pagination
         {
             get
             {
-                return Math.Min(CurrentPage * PageSize, RowCount);
+                return Math.Min((CurrentPage + 1) * PageSize, RowCount);
             }
         }
     }

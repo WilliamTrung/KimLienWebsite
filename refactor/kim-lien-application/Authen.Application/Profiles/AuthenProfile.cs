@@ -9,6 +9,7 @@ namespace Authen.Application.Profiles
         public AuthenProfile()
         {
             CreateMap<RegisterDto, RegisterCommand>();
+            CreateMap<LoginDto, LoginCommand>();
         }
     }
 }

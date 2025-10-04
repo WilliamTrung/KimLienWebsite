@@ -113,7 +113,7 @@ namespace Admin.Infrastructure.Services
         private Expression<Func<Category, bool>> QueryRequest(PaginationRequest<CategoryFilterModel> request)
         {
             ApplyInclude();
-            var query = PredicateBuilder.New<Category>();
+            var query = PredicateBuilder.New<Category>(x => true);
             if (request.Filter is not null)
             {
                 var filter = request.Filter;

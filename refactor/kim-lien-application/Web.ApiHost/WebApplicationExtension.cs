@@ -15,7 +15,7 @@ namespace Web.ApiHost
             {
                 var globalDbContext = services.GetRequiredService<CentralData.MigrateDbContext.GlobalDbContext>();
                 globalDbContext.Database.Migrate();
-                services.ScanAdministrator().Wait();
+                //services.ScanAdministrator().Wait();
             }
             catch (Exception ex)
             {

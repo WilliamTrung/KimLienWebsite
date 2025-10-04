@@ -21,7 +21,7 @@ namespace Common.Infrastructure.Pagination
             pageSize = Math.Clamp(pageSize, Constant.MinPageSizeValue, Constant.MaxPageSizeValue);
 
             return (queryable
-                .Skip((pageIndex - 1) * pageSize)
+                .Skip(pageIndex * pageSize)
                 .Take(pageSize), 
                 pageIndex, 
                 pageSize);
