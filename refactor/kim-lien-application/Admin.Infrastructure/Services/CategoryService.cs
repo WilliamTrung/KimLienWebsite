@@ -7,6 +7,7 @@ using Common.DomainException.Abstractions;
 using Common.Infrastructure;
 using Common.Infrastructure.DbContext;
 using Common.Infrastructure.Pagination;
+using Common.Kernel.Dependencies;
 using Common.Kernel.Request.Pagination;
 using Common.Kernel.Response.Pagination;
 using LinqKit;
@@ -21,7 +22,7 @@ namespace Admin.Infrastructure.Services
         ILogger<CategoryService> logger,
         IMapper mapper)
         : PaginationServiceBase<Category, PaginationRequest<CategoryFilterModel>, CategoryDto>(mapper, dbContext)
-        , ICategoryService
+        , ICategoryService, IScoped
     {
         public async Task<Guid> Create(CreateCategoryDto request, CancellationToken ct)
         {

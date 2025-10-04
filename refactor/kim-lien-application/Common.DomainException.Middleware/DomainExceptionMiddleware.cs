@@ -50,7 +50,11 @@ namespace Common.DomainException.Middleware
                 _log.LogError(ex, "Unhandled exception");
                 var payload = new ActionResponse
                 {
-                    Message = "An unexpected error occurred.",
+#if !DEBUG
+                    Message = "An unexpected error occurred.", 
+#else
+                    Message = ex.Message,
+#endif
                     Code = (int)ResponseCode.System,
                     StatusCode = HttpStatusCode.InternalServerError
                 };

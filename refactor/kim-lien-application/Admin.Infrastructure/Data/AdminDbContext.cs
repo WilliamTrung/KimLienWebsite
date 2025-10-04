@@ -5,6 +5,11 @@ namespace Admin.Infrastructure.Data
 {
     public class AdminDbContext : DbContext
     {
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<ProductCategory>().HasKey(x => new { x.ProductId, x.CategoryId });
+            base.OnModelCreating(modelBuilder);
+        }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<ProductView> ProductViews { get; set; }
         public virtual DbSet<ProductViewCredential> ProductViewCredentials { get; set; }
@@ -13,13 +18,8 @@ namespace Admin.Infrastructure.Data
         public virtual DbSet<ProductCategory> ProductCategories { get; set; }
 
 
-        public AdminDbContext(DbContextOptions options) : base(options)
+        public AdminDbContext(DbContextOptions<AdminDbContext> options) : base(options)
         {
         }
-
-        public AdminDbContext()
-        {
-        }
-
     }
 }

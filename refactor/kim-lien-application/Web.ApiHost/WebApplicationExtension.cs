@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Common.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Web.ApiHost
 {
@@ -10,18 +12,32 @@ namespace Web.ApiHost
             var services = scope.ServiceProvider;
             try
             {
-                //var authenDbContext = services.GetRequiredService<Authen.Infrastructure.Data.AuthenIdentityDbContext>();
-                //authenDbContext.Database.Migrate();
-                //var adminDbContext = services.GetRequiredService<Admin.Infrastructure.Data.AdminDbContext>();
-                //adminDbContext.Database.Migrate();
                 var globalDbContext = services.GetRequiredService<CentralData.MigrateDbContext.GlobalDbContext>();
                 globalDbContext.Database.Migrate();
+                Task.Run(() => SeedRolesAsync(services));
             }
             catch (Exception ex)
             {
                 var logger = services.GetRequiredService<ILogger<WebApplication>>();
                 logger.LogError(ex, "An error occurred while migrating the database.");
                 throw;
+            }
+        }
+        public static async Task SeedRolesAsync(IServiceProvider services)
+        {
+            using var scope = services.CreateScope();
+            var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<Role>>();
+
+            foreach (var roleName in new[] { "Default", "Administrator" })
+            {
+                if (!await roleManager.RoleExistsAsync(roleName))
+                {
+                    await roleManager.CreateAsync(new Role
+                    {
+                        Name = roleName,
+                        NormalizedName = roleName.ToUpperInvariant()
+                    });
+                }
             }
         }
     }

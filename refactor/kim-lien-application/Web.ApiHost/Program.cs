@@ -1,5 +1,6 @@
 using Common.Api;
 using Common.DomainException.Middleware;
+using Common.Extension.Jwt;
 using Common.Logging.Middleware;
 using Common.RequestContext;
 using Common.RequestContext.Abstractions;
@@ -41,6 +42,7 @@ builder.Configuration
 // 2. Serilog
 builder.Host.UseSerilog((ctx, logCfg) => logCfg.ReadFrom.Configuration(builder.Configuration));
 // Add services to the container.
+builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
 builder.Services.AddHttpClient();
 builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddScoped<IRequestContext, RequestContext>();

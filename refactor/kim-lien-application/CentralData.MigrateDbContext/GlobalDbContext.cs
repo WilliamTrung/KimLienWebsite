@@ -1,10 +1,11 @@
 ﻿using Authen.Domain.Entities;
 using Common.Domain.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace CentralData.MigrateDbContext
 {
-    public class GlobalDbContext : DbContext
+    public class GlobalDbContext : IdentityDbContext<User, Role, Guid>
     {
         public GlobalDbContext(DbContextOptions<GlobalDbContext> options) : base(options)
         {
@@ -19,6 +20,7 @@ namespace CentralData.MigrateDbContext
                 e.HasOne(x => x.User).WithMany().HasForeignKey(x => x.UserId);
             });
             modelBuilder.Entity<ProductCategory>().HasKey(x => new { x.ProductId, x.CategoryId });
+            base.OnModelCreating(modelBuilder);
         }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<ProductView> ProductViews { get; set; }
@@ -26,6 +28,6 @@ namespace CentralData.MigrateDbContext
         public virtual DbSet<ProductFavor> ProductFavors { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<ProductCategory> ProductCategories { get; set; }
-        public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
     }
 }

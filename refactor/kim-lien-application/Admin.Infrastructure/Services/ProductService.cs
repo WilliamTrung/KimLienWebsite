@@ -6,6 +6,7 @@ using Common.Domain.Entities;
 using Common.DomainException.Abstractions;
 using Common.Infrastructure;
 using Common.Infrastructure.Pagination;
+using Common.Kernel.Dependencies;
 using Common.Kernel.Request.Pagination;
 using Common.Kernel.Response.Pagination;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +16,7 @@ namespace Admin.Infrastructure.Services
     public class ProductService(AdminDbContext dbContext, 
         IMapper mapper) 
         : PaginationServiceBase<Product, PaginationRequest<ProductFilterModel>, ProductDto>(mapper, dbContext)
-        , IProductService
+        , IProductService, IScoped
     {
 
         public async Task<Guid> CreateProduct(CreateProductDto request, CancellationToken ct)

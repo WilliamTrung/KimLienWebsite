@@ -2,8 +2,10 @@ using Authen.Application.Abstractions;
 using Authen.Application.Models;
 using Common.Domain.Entities;
 using Common.Extension.Jwt;
+using Common.Kernel.Dependencies;
 using Common.RequestContext.Abstractions;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 
 namespace Authen.Infrastructure.Services
 {
@@ -11,9 +13,10 @@ namespace Authen.Infrastructure.Services
         UserManager<User> users,
         IRefreshTokenService refreshSvc,
         IRequestContext context,
-        JwtSettings jwt)
-        : IAuthService
+        IOptions<JwtSettings> jwtSetting)
+        : IAuthService, IScoped
     {
+        private readonly JwtSettings jwt = jwtSetting.Value;
         public async Task RegisterAsync(RegisterDto dto, CancellationToken ct)
         {
             var user = new User { 

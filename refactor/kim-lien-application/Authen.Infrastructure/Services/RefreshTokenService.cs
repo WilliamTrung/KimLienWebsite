@@ -3,12 +3,13 @@ using Authen.Domain.Entities;
 using Authen.Infrastructure.Data;
 using Common.Domain.Entities;
 using Common.Extension.Jwt;
+using Common.Kernel.Dependencies;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 
 namespace Authen.Infrastructure.Services
 {
-    public sealed class RefreshTokenService(AuthenIdentityDbContext db) : IRefreshTokenService
+    public sealed class RefreshTokenService(AuthenIdentityDbContext db) : IRefreshTokenService, IScoped
     {
         static string Hash(string token)
         {

@@ -14,29 +14,24 @@ namespace Authen.Infrastructure
 {
     public static class DependencyInjection
     {
-        public static void AddAuthService(IServiceCollection services, IConfiguration cfg)
-        {
-            services.AddScoped<IAuthService, AuthService>();
-            services.AddScoped<IRefreshTokenService, RefreshTokenService>();
-        }
-        public static void AddAuthDbContext(IServiceCollection services, IConfiguration cfg)
+        public static void AddAuthDbContext(this IServiceCollection services, IConfiguration cfg)
         {
             services.AddDbContext<AuthenIdentityDbContext>(o =>
                 o.UseNpgsql(cfg.GetConnectionString("DefaultDatabase"))); // or UseNpgsql/UseSqlite
 
             services
-                .AddIdentityCore<User>(opt =>
+                .AddIdentityCore<Common.Domain.Entities.User>(opt =>
                 {
                     opt.User.RequireUniqueEmail = true;
                     opt.Password.RequiredLength = 8;
                     opt.Lockout.MaxFailedAccessAttempts = 5;
                     opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
                 })
-                .AddRoles<Role>()
+                .AddRoles<Common.Domain.Entities.Role>()
                 .AddEntityFrameworkStores<AuthenIdentityDbContext>()
                 .AddDefaultTokenProviders(); // email confirmation, reset, 2FA
         }
-        public static void AddAuthenProvider(IServiceCollection services, IConfiguration cfg)
+        public static void AddAuthenProvider(this IServiceCollection services, IConfiguration cfg)
         {
             var key = Encoding.UTF8.GetBytes(cfg["Jwt:Key"]!);
             var issuer = cfg["Jwt:Issuer"]!;

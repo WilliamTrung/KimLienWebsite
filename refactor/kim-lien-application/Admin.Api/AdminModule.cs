@@ -18,7 +18,7 @@ namespace Admin.Api
             AddDbContext<AdminDbContext>(services, configuration);
             services.AddAutoMapper(typeof(Application.Marker).Assembly);
             services.AddValidatorsFromAssembly(typeof(Application.Marker).Assembly);
-            services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(Application.Marker).Assembly));
+            services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(Infrastructure.Marker).Assembly));
 
             // 2. Bulk conventions via Scrutor
             services.AddMarkedServices(

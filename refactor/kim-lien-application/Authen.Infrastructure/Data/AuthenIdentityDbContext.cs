@@ -1,12 +1,9 @@
 using Authen.Domain.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Role = Common.Domain.Entities.Role;
-using User = Common.Domain.Entities.User;
-
 namespace Authen.Infrastructure.Data
 {
-    public class AuthenIdentityDbContext : IdentityDbContext<User, Role, Guid>
+    public class AuthenIdentityDbContext : IdentityDbContext<Common.Domain.Entities.User, Common.Domain.Entities.Role, Guid>
     {
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -19,11 +16,7 @@ namespace Authen.Infrastructure.Data
             });
             base.OnModelCreating(builder);
         }
-        public AuthenIdentityDbContext(DbContextOptions options) : base(options)
-        {
-        }
-
-        protected AuthenIdentityDbContext()
+        public AuthenIdentityDbContext(DbContextOptions<AuthenIdentityDbContext> options) : base(options)
         {
         }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
