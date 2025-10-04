@@ -1,5 +1,10 @@
 ﻿namespace Common.Kernel.Constants
 {
+    public static class Roles
+    {
+        public const string Default = "Default";
+        public const string Administrator = "Administrator";
+    }
     public static class Region
     {
         public const string VietNam = "VN";
