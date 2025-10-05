@@ -1,11 +1,14 @@
 using Admin.Application.Commands.Category;
 using Common.Api;
+using Common.Kernel.Constants;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Admin.Api.Controllers
 {
     [ApiController]
+    [Authorize(Roles = Roles.Administrator)]
     [Route("/api/management/category")]
     public class CategoryController(ISender sender) : ControllerBase
     {

@@ -1,12 +1,15 @@
 using Admin.Application.Commands.Product;
 using Admin.Application.Models.Product;
 using Common.Api;
+using Common.Kernel.Constants;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Admin.Api.Controllers
 {
     [ApiController]
+    [Authorize(Roles = Roles.Administrator)]
     [Route("/api/management/product")]
     public class ProductController(ISender sender) : ControllerBase
     {
