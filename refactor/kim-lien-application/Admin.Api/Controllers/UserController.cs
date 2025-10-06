@@ -19,13 +19,13 @@ namespace Admin.Api.Controllers
             await sender.Send(request, ct);
             return this.CreateOk();
         }
-        [HttpPut]
-        [Route("modify")]
-        public async Task<IActionResult> Modify([FromBody] ModifyUserCommand request, CancellationToken ct)
-        {
-            await sender.Send(request, ct);
-            return this.CreateOk();
-        }
+        //[HttpPut]
+        //[Route("modify")]
+        //public async Task<IActionResult> Modify([FromBody] ModifyUserCommand request, CancellationToken ct)
+        //{
+        //    await sender.Send(request, ct);
+        //    return this.CreateOk();
+        //}
         [HttpGet]
         public async Task<IActionResult> GetPagination([FromQuery] QueryUserCommand request, CancellationToken ct)
         {
