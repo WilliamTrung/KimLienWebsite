@@ -20,16 +20,24 @@ namespace Authen.Infrastructure
             var userManager = services.GetRequiredService<UserManager<User>>();
             foreach (var email in _adminEmails)
             {
-                var user = new User
+                var user = await userManager.FindByEmailAsync(email);
+                if (user is null)
                 {
-                    UserName = email,
-                    Email = email,
-                    DisplayName = email,
-                    PhoneNumber = "0908941761",
-                    Region = "vn"
-                };
-                await userManager.CreateAsync(user, _defaultPassword);
-                await userManager.AddToRolesAsync(user, new List<string> { Roles.Administrator });
+                    user = new User
+                    {
+                        UserName = email,
+                        Email = email,
+                        DisplayName = email,
+                        PhoneNumber = "0908941761",
+                        Region = "vn"
+                    };
+                    await userManager.CreateAsync(user, _defaultPassword);
+                }
+                var check = await userManager.IsInRoleAsync(user, Roles.Administrator);
+                if (!check)
+                {
+                    await userManager.AddToRolesAsync(user, new List<string> { Roles.Administrator });
+                }
             }
         }
         private static async Task SeedRolesAsync(this IServiceProvider services)
