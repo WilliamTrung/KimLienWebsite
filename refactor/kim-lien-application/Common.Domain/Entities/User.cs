@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Microsoft.AspNetCore.Identity;
 
 namespace Common.Domain.Entities
@@ -6,5 +7,6 @@ namespace Common.Domain.Entities
     {
         public string? DisplayName { get; set; }
         public string Region { get; set; } = null!;
+        public JsonDocument? Asset { get; set; }
     }
 }
