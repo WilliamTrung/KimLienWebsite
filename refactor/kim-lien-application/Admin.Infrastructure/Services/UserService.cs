@@ -6,6 +6,7 @@ using Admin.Infrastructure.Data;
 using AutoMapper;
 using Common.Domain.Entities;
 using Common.Infrastructure.Pagination;
+using Common.Kernel.Dependencies;
 using Common.Kernel.Response.Pagination;
 using LinqKit;
 using Microsoft.AspNetCore.Identity;
@@ -13,7 +14,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Admin.Infrastructure.Services
 {
-    public class UserService : PaginationServiceBase<User, QueryUserCommand, UserDto>, IUserService
+    public class UserService : PaginationServiceBase<User, QueryUserCommand, UserDto>, IUserService, IScoped
     {
         private readonly AdminDbContext _dbContext;
         private readonly DbSet<User> _users;
