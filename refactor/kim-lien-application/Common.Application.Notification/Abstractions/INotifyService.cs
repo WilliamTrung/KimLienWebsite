@@ -2,6 +2,6 @@
 {
     public interface INotifyService
     {
-        public Task PublishNotification(string title, string message, List<string> userIds, object? payload = null, CancellationToken ct = default);
+        public Task PublishNotification(string title, string message, List<string> receivers, object? payload = null, CancellationToken ct = default);
     }
 }
