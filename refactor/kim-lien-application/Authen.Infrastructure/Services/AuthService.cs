@@ -13,6 +13,7 @@ namespace Authen.Infrastructure.Services
         UserManager<User> users,
         IRefreshTokenService refreshSvc,
         IRequestContext context,
+        SignInManager<User> signInMgr,
         IOptions<JwtSettings> jwtSetting)
         : IAuthService, IScoped
     {
@@ -30,34 +31,49 @@ namespace Authen.Infrastructure.Services
             if (!result.Succeeded)
                 throw new InvalidOperationException(string.Join("; ", result.Errors.Select(e => e.Description)));
         }
-
         public async Task<TokenPair> LoginAsync(LoginDto dto, CancellationToken ct)
         {
             var ip = context.Data.IpAddress;
             var ua = context.Data.UserAgent;
+
             var user = await users.FindByEmailAsync(dto.Email);
-            if (user is null || !await users.CheckPasswordAsync(user, dto.Password))
+            if (user is null)
                 throw new UnauthorizedAccessException("invalid_credentials");
 
-            var roles = await users.GetRolesAsync(user);
-            var (access, exp) = JwtExtension.IssueAccess(user, roles, jwt);
+            // Uses lockout policy configured in Identity options
+            var result = await signInMgr.CheckPasswordSignInAsync(
+                user, dto.Password, lockoutOnFailure: true);
 
-            var (refresh, _) = await refreshSvc.CreateAsync(user, familyId: null, ip, ua, jwt, ct);
+            if (result.Succeeded)
+            {
+                var roles = await users.GetRolesAsync(user);
+                var (access, exp) = JwtExtension.IssueAccess(user, roles, jwt);
+                var (refresh, _) = await refreshSvc.CreateAsync(user, familyId: null, ip, ua, jwt, ct);
 
-            return new TokenPair { AccessToken = access, ExpiresAtUtc = exp, RefreshToken = refresh };
+                // For cookie auth you could call: await signInMgr.SignInAsync(user, isPersistent:false);
+                return new TokenPair { AccessToken = access, ExpiresAtUtc = exp, RefreshToken = refresh };
+            }
+
+            if (result.IsLockedOut) throw new UnauthorizedAccessException("user_locked_out");
+            if (result.RequiresTwoFactor) throw new UnauthorizedAccessException("requires_2fa");
+            if (result.IsNotAllowed) throw new UnauthorizedAccessException("not_allowed");
+
+            throw new UnauthorizedAccessException("invalid_credentials");
         }
 
         public async Task<TokenPair> RefreshAsync(RefreshDto dto, CancellationToken ct)
         {
             var ip = context.Data.IpAddress;
             var ua = context.Data.UserAgent;
+
             var (user, current) = await refreshSvc.ValidateAsync(dto.RefreshToken, ct);
 
-            // rotate by creating the next token in same family
+            // rotate within same family
             var (newRefresh, _) = await refreshSvc.CreateAsync(user, current.FamilyId, ip, ua, jwt, ct);
+            current.ConsumedUtc = DateTime.UtcNow;
 
-            current.ConsumedUtc = DateTime.UtcNow; // mark used
-                                                   // If your RefreshTokenService.RotateAsync handles both, call that instead.
+            // optional: validate security stamp to ensure access token is not issued for revoked users
+            // if (!await signInMgr.CanSignInAsync(user)) throw new UnauthorizedAccessException("not_allowed");
 
             var roles = await users.GetRolesAsync(user);
             var (access, exp) = JwtExtension.IssueAccess(user, roles, jwt);
@@ -68,7 +84,14 @@ namespace Authen.Infrastructure.Services
         public async Task LogoutAsync(RefreshDto dto, CancellationToken ct)
         {
             var (user, current) = await refreshSvc.ValidateAsync(dto.RefreshToken, ct);
+
+            // Revoke the entire refresh-token family
             await refreshSvc.RevokeFamilyAsync(current.FamilyId, user.Id, ct);
+
+            // If you also use cookie auth anywhere:
+            await signInMgr.SignOutAsync();
+            // Optionally invalidate all access via security stamp:
+            await users.UpdateSecurityStampAsync(user);
         }
     }
 }
