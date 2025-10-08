@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Common.Application.Storage\Common.Application.Storage.csproj" />
+    <ProjectReference Include="..\Common.Infrastructure.MediatR\Common.Infrastructure.MediatR.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,6 @@
 ﻿namespace Common.Application.Storage.Models
 {
-    public sealed class FileUpload
+    public class FileUpload
     {
         // Choose ONE of Content / Bytes / LocalPath. Prefer Stream via UploadStreamAsync for big files.
         public byte[]? Bytes { get; init; }
@@ -10,5 +10,6 @@
         public string DestinationKey { get; init; } = null!; // e.g. "products/123/photo.jpg"
         public IDictionary<string, string>? Metadata { get; init; }
         public bool PublicRead { get; init; } = false;       // expose via public URL?
+        public IDictionary<string, string>? Tags { get; init; }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System.Net;
-using Azure;
+﻿using Azure;
 using Azure.Storage;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
@@ -8,6 +7,9 @@ using Common.Application.Storage.Abstraction;
 using Common.Application.Storage.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System.Net;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Common.Infrastructure.Storage.Azure.Implementations
 {
@@ -70,9 +72,11 @@ namespace Common.Infrastructure.Storage.Azure.Implementations
             {
                 var headers = new BlobHttpHeaders { ContentType = file.ContentType };
                 var meta = file.Metadata ?? new Dictionary<string, string>();
+                var tags = file.Tags ?? new Dictionary<string, string>();
 
                 var resp = await blob.UploadAsync(stream, new BlobUploadOptions
                 {
+                    Tags = tags,
                     HttpHeaders = headers,
                     Metadata = meta,
                     TransferOptions = new StorageTransferOptions { MaximumConcurrency = 4 }
@@ -106,9 +110,11 @@ namespace Common.Infrastructure.Storage.Azure.Implementations
 
             var headers = new BlobHttpHeaders { ContentType = options.ContentType };
             var meta = options.Metadata ?? new Dictionary<string, string>();
+            var tags = options.Tags ?? new Dictionary<string, string>();
 
             var resp = await blob.UploadAsync(content, new BlobUploadOptions
             {
+                Tags = tags,
                 HttpHeaders = headers,
                 Metadata = meta
             }, ct);
@@ -159,8 +165,14 @@ namespace Common.Infrastructure.Storage.Azure.Implementations
                 var sas = src.GenerateSasUri(BlobSasPermissions.Read, DateTimeOffset.UtcNow.AddMinutes(10));
                 sourceUri = sas;
             }
-
-            var op = await dest.StartCopyFromUriAsync(sourceUri, cancellationToken: ct);
+            var srcProps = await src.GetPropertiesAsync();
+            var srcTags = (await src.GetTagsAsync()).Value.Tags; // IDictionary<string,string>
+            var copyOptions = new BlobCopyFromUriOptions
+            {
+                Metadata = new Dictionary<string, string>(srcProps.Value.Metadata),
+                Tags = new Dictionary<string, string>(srcTags)
+            };
+            var op = await dest.StartCopyFromUriAsync(sourceUri, copyOptions, cancellationToken: ct);
             // Optionally wait until completed:
             var props = await dest.GetPropertiesAsync(cancellationToken: ct);
 
@@ -236,6 +248,122 @@ namespace Common.Infrastructure.Storage.Azure.Implementations
                 if (limit.HasValue && list.Count >= limit.Value) break;
             }
             return list;
+        }
+        public async Task<IDictionary<string, string>> GetTagsAsync(string fileUrlOrKey, CancellationToken ct = default)
+        {
+            var blob = await GetBlobClientAsync(fileUrlOrKey, ct);
+
+            try
+            {
+                var resp = await blob.GetTagsAsync(cancellationToken: ct);
+                // Return a case-insensitive copy to make downstream checks friendlier
+                return new Dictionary<string, string>(resp.Value.Tags, StringComparer.OrdinalIgnoreCase);
+            }
+            catch (RequestFailedException ex) when (ex.Status == 404)
+            {
+                // Blob not found → treat as empty tag set
+                return new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            }
+        }
+
+        public async Task RemoveTagsAsync(string fileUrlOrKey, IEnumerable<string> tagKeys, CancellationToken ct = default)
+        {
+            var keys = (tagKeys ?? Array.Empty<string>()).ToArray();
+            if (keys.Length == 0) return;
+
+            var blob = await GetBlobClientAsync(fileUrlOrKey, ct);
+
+            try
+            {
+                // Fetch current tags
+                var current = new Dictionary<string, string>(
+                    (await blob.GetTagsAsync(cancellationToken: ct)).Value.Tags,
+                    StringComparer.OrdinalIgnoreCase);
+
+                var changed = false;
+                foreach (var k in keys)
+                {
+                    if (current.Remove(k)) changed = true;
+                }
+
+                if (changed)
+                {
+                    // Overwrite with remaining tags
+                    await blob.SetTagsAsync(current, cancellationToken: ct);
+                }
+                // If nothing changed, no call made
+            }
+            catch (RequestFailedException ex) when (ex.Status == 404)
+            {
+                // Blob not found → nothing to remove; no-op
+            }
+        }
+
+       public async Task<int> DeleteByTagsAsync(
+            IReadOnlyDictionary<string, string> tags,
+            bool matchAny = false,
+            CancellationToken ct = default)
+       {
+            if (tags is null || tags.Count == 0) return 0;
+            string where = BuildWhereClause(_opt.Container, tags, matchAny);
+
+            int deleted = 0;
+            await foreach (var item in _svc.FindBlobsByTagsAsync(where, ct))
+            {
+                ct.ThrowIfCancellationRequested();
+
+                var container = _svc.GetBlobContainerClient(item.BlobContainerName);
+                var blob = container.GetBlobClient(item.BlobName);
+
+                try
+                {
+                    var resp = await blob.DeleteIfExistsAsync(
+                        DeleteSnapshotsOption.IncludeSnapshots,
+                        conditions: null,
+                        cancellationToken: ct);
+
+                    if (resp.Value) deleted++;
+                }
+                catch (RequestFailedException)
+                {
+                    // log or ignore as needed
+                }
+            }
+            return deleted;
+        }
+
+        private static string BuildWhereClause(
+            string containerName,
+            IReadOnlyDictionary<string, string> tags,
+            bool matchAny)
+        {
+            // @container = 'my-container' AND (key1 = 'val1' AND/OR key2 = 'val2' ...)
+            var sb = new StringBuilder();
+            sb.Append($"@container = '{Escape(containerName)}' AND (");
+
+            var sep = matchAny ? " OR " : " AND ";
+            bool first = true;
+            foreach (var kv in tags)
+            {
+                if (!first) sb.Append(sep);
+                first = false;
+
+                var k = QuoteKey(kv.Key);       // handle special chars in tag keys
+                var v = $"'{Escape(kv.Value)}'"; // escape single quotes in values
+                sb.Append($"{k} = {v}");
+            }
+            sb.Append(')');
+            return sb.ToString();
+        }
+
+        private static string Escape(string s) => s.Replace("'", "''");
+
+        // Tag keys can be bare identifiers if [A-Za-z_][A-Za-z0-9_]*; otherwise quote with "
+        private static string QuoteKey(string key)
+        {
+            return Regex.IsMatch(key, "^[A-Za-z_][A-Za-z0-9_]*$")
+                ? key
+                : $"\"{key.Replace("\"", "\"\"")}\"";
         }
     }
 }

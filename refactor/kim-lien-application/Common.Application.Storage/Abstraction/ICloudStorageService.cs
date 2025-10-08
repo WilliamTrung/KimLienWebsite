@@ -1,4 +1,4 @@
-using Common.Application.Storage.Models;
+﻿using Common.Application.Storage.Models;
 
 namespace Common.Application.Storage.Abstraction
 {
@@ -28,5 +28,18 @@ namespace Common.Application.Storage.Abstraction
 
         // Optional: list by prefix/folder
         Task<IReadOnlyList<CloudFileInfo>> ListAsync(string prefix, int? limit = null, CancellationToken ct = default);
+        // ── Tags (generic) ────────────────────────────────────────────────────────
+        Task<IDictionary<string, string>> GetTagsAsync(string fileUrlOrKey, CancellationToken ct = default);
+        Task RemoveTagsAsync(string fileUrlOrKey, IEnumerable<string> tagKeys, CancellationToken ct = default);
+        /// <summary>
+        /// Deletes blobs that match the given tags.
+        /// If <paramref name="matchAny"/> is false (default), all provided tag pairs must match (AND).
+        /// If true, any matching tag pair will be deleted (OR).
+        /// Returns number of blobs deleted.
+        /// </summary>
+        Task<int> DeleteByTagsAsync(
+            IReadOnlyDictionary<string, string> tags,
+            bool matchAny = false,
+            CancellationToken ct = default);
     }
 }
