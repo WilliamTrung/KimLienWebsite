@@ -14,6 +14,7 @@ namespace Common.Infrastructure.Storage.Azure
         IConfiguration config,
         string sectionName = "AzureBlob")
         {
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly));
             services.Configure<AzureBlobOption>(config.GetSection(sectionName));
 
             services.AddSingleton(provider =>
