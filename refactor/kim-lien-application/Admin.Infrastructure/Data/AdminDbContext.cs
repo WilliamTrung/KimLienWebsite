@@ -16,6 +16,8 @@ namespace Admin.Infrastructure.Data
         public virtual DbSet<ProductFavor> ProductFavors { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<ProductCategory> ProductCategories { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Role> Roles { get; set; }
 
 
         public AdminDbContext(DbContextOptions<AdminDbContext> options) : base(options)

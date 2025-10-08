@@ -10,6 +10,7 @@ namespace Authen.Application.Profiles
         {
             CreateMap<RegisterDto, RegisterCommand>();
             CreateMap<LoginDto, LoginCommand>();
+            CreateMap<RefreshDto, RefreshCommand>();
         }
     }
 }

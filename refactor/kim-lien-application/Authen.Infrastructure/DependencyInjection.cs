@@ -28,6 +28,7 @@ namespace Authen.Infrastructure
                     opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
                 })
                 .AddRoles<Common.Domain.Entities.Role>()
+                .AddSignInManager<SignInManager<User>>()
                 .AddEntityFrameworkStores<AuthenIdentityDbContext>()
                 .AddDefaultTokenProviders(); // email confirmation, reset, 2FA
         }

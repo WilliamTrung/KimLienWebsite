@@ -24,7 +24,7 @@ namespace Admin.Infrastructure.Services
             UserManager<User> userManager) : base(mapper, dbContext)
         {
             _userManager = userManager;
-            _users = dbContext.Set<User>();
+            _users = dbContext.Users;
             _dbContext = dbContext;
         }
 
