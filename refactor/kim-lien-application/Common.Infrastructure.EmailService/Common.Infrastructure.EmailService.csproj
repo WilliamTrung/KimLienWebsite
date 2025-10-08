@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Common.Application.Notification\Common.Application.Notification.csproj" />
+    <ProjectReference Include="..\Common.Infrastructure.MediatR\Common.Infrastructure.MediatR.csproj" />
   </ItemGroup>
 
 </Project>
