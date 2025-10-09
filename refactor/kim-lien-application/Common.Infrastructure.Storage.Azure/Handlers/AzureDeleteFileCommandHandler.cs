@@ -10,7 +10,7 @@ namespace Common.Infrastructure.Storage.Azure.Handlers
 
         public async Task Handle(AzureDeleteFileCommand request, CancellationToken cancellationToken)
         {
-            await _storageService.DeleteAsync(request.FileDestination, cancellationToken);
+            await Resolve(request).DeleteAsync(request.FileDestination, cancellationToken);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Common.Infrastructure.Storage.Azure.Handlers
 
         public async Task Handle(AzureDeleteBatchCommand request, CancellationToken cancellationToken)
         {
-            await _storageService.DeleteManyAsync(request.FileDestinations, cancellationToken);
+            await Resolve(request).DeleteManyAsync(request.FileDestinations, cancellationToken);
         }
     }
 }

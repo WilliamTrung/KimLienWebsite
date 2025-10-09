@@ -9,7 +9,7 @@ namespace Common.Infrastructure.Storage.Azure.Handlers
         }
         public async Task<IReadOnlyList<CloudFileResult>> Handle(Commands.AzureUploadBatchCommand request, CancellationToken cancellationToken)
         {
-            return await _storageService.UploadAsync(request, cancellationToken);
+            return await Resolve(request).UploadAsync(request, cancellationToken);
         }
     }
 }

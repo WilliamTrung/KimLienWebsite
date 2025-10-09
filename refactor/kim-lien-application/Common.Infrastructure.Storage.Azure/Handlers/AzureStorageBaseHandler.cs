@@ -1,15 +1,20 @@
 ﻿using Common.Application.Storage.Abstraction;
-using Common.Infrastructure.Storage.Azure.Implementations;
+using Common.Infrastructure.Storage.Azure.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Common.Infrastructure.Storage.Azure.Handlers
 {
-    public abstract class AzureStorageBaseHandler
+    public abstract class AzureStorageBaseHandler(IServiceProvider service)
     {
-        protected readonly ICloudStorageService _storageService;
-        public AzureStorageBaseHandler(IServiceProvider service)
+        private ICloudStorageService? _storageServiceCache;
+        protected ICloudStorageService Resolve(IAzureCommand command)
         {
-            _storageService = service.GetRequiredKeyedService<ICloudStorageService>(nameof(AzureStorageService));
+            if (_storageServiceCache is null)
+            {
+                _storageServiceCache = service.GetKeyedService<ICloudStorageService>(command.ProfileKey)
+                        ?? throw new InvalidOperationException($"Cloud storage service with key '{command.ProfileKey}' is not registered."); 
+            }
+            return _storageServiceCache;
         }
     }
 }

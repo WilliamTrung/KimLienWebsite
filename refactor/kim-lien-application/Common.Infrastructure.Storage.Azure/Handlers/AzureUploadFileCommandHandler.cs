@@ -7,7 +7,7 @@
         }
         public async Task<Common.Application.Storage.Models.CloudFileResult> Handle(Commands.AzureUploadFileCommand request, CancellationToken cancellationToken)
         {
-            return await _storageService.UploadAsync(request, cancellationToken);
+            return await Resolve(request).UploadAsync(request, cancellationToken);
         }
     }
 }

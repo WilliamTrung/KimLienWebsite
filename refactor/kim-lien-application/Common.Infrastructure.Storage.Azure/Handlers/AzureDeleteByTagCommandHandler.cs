@@ -7,7 +7,7 @@
         }
         public async Task<int> Handle(Commands.AzureDeleteByTagCommand request, CancellationToken cancellationToken)
         {
-            return await _storageService.DeleteByTagsAsync(request.Tags, request.MatchAny, cancellationToken);
+            return await Resolve(request).DeleteByTagsAsync(request.Tags, request.MatchAny, cancellationToken);
         }
     }
 }

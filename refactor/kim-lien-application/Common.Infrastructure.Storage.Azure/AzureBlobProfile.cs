@@ -1,6 +1,6 @@
 ﻿namespace Common.Infrastructure.Storage.Azure
 {
-    public sealed class AzureBlobOption
+    public sealed class AzureBlobProfile
     {
         /// <summary>Azure Storage connection string.</summary>
         public string ConnectionString { get; set; } = default!;

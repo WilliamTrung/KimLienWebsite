@@ -16,12 +16,12 @@ namespace Common.Infrastructure.Storage.Azure.Implementations
     public sealed class AzureStorageService : ICloudStorageService
     {
         private readonly BlobServiceClient _svc;
-        private readonly AzureBlobOption _opt;
+        private readonly AzureBlobProfile _opt;
         private readonly ILogger<AzureStorageService> _log;
 
         public AzureStorageService(
             BlobServiceClient serviceClient,
-            IOptions<AzureBlobOption> opt,
+            IOptions<AzureBlobProfile> opt,
             ILogger<AzureStorageService> log)
         {
             _svc = serviceClient;
