@@ -20,6 +20,20 @@ namespace Admin.Application.Profiles
                         CategoryId = x,
                     })))
                 .ForMember(d => d.PictureAssets, opt => opt.MapFrom(s => s.Images))
+                .AfterMap((src, dest) =>
+                {
+                    var now = DateTime.UtcNow;
+                    dest.CreatedDate = now;
+
+                    if (dest.PictureAssets != null)
+                    {
+                        foreach (var a in dest.PictureAssets)
+                        {
+                            // assumes AssetDto has a writable CreatedAt (or CreatedDate) property
+                            a.CreatedAt = now;   // change to a.CreatedDate if that¡¯s your property name
+                        }
+                    }
+                })
                 ;
             CreateMap<Product, ProductDto>()
                 .ForMember(d => d.Categories, opt => opt.MapFrom(s => s.Categories()))
