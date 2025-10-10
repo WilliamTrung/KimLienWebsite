@@ -5,7 +5,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Common.Infrastructure.Storage.Azure
 {
@@ -17,6 +16,7 @@ namespace Common.Infrastructure.Storage.Azure
         string sectionName = "AzureBlob",
         string profileName = "Profiles")
         {
+            services.AddAutoMapper(typeof(Marker).Assembly);
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly));
             var profilesSection = config.GetSection($"{sectionName}:{profileName}");
             foreach (var child in profilesSection.GetChildren())

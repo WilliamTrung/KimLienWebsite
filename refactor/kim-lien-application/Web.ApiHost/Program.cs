@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Serilog;
 using System.Reflection;
+using Common.Infrastructure.Storage.Azure;
 using Web.ApiHost;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -49,6 +50,7 @@ builder.Services.AddScoped<IRequestContext, RequestContext>();
 builder.Services.AddScoped<RequestContextMiddleware>();
 builder.Services.AddScoped<RequestLoggingMiddleware>();
 builder.Services.AddScoped<DomainExceptionMiddleware>();
+builder.Services.AddAzureBlobStorage(builder.Configuration);
 //Add configuration as IOptions here
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");

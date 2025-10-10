@@ -9,13 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Controllers\**" />
-    <Content Remove="Controllers\**" />
-    <EmbeddedResource Remove="Controllers\**" />
-    <None Remove="Controllers\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.20">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -33,6 +26,7 @@
     <ProjectReference Include="..\CentralData.MigrateDbContext\CentralData.MigrateDbContext.csproj" />
     <ProjectReference Include="..\Common.Api\Common.Api.csproj" />
     <ProjectReference Include="..\Common.DomainException.Middleware\Common.DomainException.Middleware.csproj" />
+    <ProjectReference Include="..\Common.Infrastructure.Storage.Azure\Common.Infrastructure.Storage.Azure.csproj" />
     <ProjectReference Include="..\Common.Logging.Middleware\Common.Logging.Middleware.csproj" />
     <ProjectReference Include="..\Common.RequestContext.Middleware\Common.RequestContext.Middleware.csproj" />
   </ItemGroup>
