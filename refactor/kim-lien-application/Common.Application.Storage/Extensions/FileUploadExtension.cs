@@ -21,13 +21,14 @@ namespace Common.Application.Storage.Extensions
             bool publicRead = false,
             IDictionary<string, string>? metadata = null,
             IDictionary<string, string>? tags = null,
-            long inMemoryThresholdBytes = 5 * 1024 * 1024, // 5 MB default
+            long inMemoryThresholdBytes = 5 * 1024 * 1024, // 5 MB default,
+            bool autoGenerateFileName = false,
             CancellationToken cancellationToken = default)
         {
             if (file is null) throw new ArgumentNullException(nameof(file));
             if (string.IsNullOrWhiteSpace(destinationPrefix)) throw new ArgumentException("Destination prefix is required.", nameof(destinationPrefix));
 
-            var originalName = Path.GetFileName(file.FileName ?? "file");
+            var originalName = autoGenerateFileName ? Guid.NewGuid().ToString() : Path.GetFileName(file.FileName ?? "file");
             var safeName = SanitizeFileName(originalName);
             var destinationKey = $"{destinationPrefix.TrimEnd('/')}/{safeName}";
 

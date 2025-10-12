@@ -12,18 +12,22 @@ namespace Web.ApiHost.Controllers
     public class FileUploadController(ISender sender) : ControllerBase
     {
         [HttpPost]
-        public async Task<IActionResult> UploadFile([FromForm]IFormFile fileData, CancellationToken ct)
+        public async Task<IActionResult> UploadFile([FromForm] FileData file)
         {
             var (tags, metadata) = TagHelper.BuildDeletedTags(DateTimeOffset.UtcNow);
-            var fileUpload = await fileData.ToFileUploadAsync(
+            var fileUpload = await file.File.ToFileUploadAsync(
                 destinationPrefix: "general"
                 , publicRead: true
                 , tags: tags
                 , metadata: metadata
-                , cancellationToken: ct);
+                , autoGenerateFileName: true);
             var command = new AzureUploadFileCommand();
-            var result = await sender.Send(command, ct);
+            var result = await sender.Send(command);
             return this.CreateOk(result);
         }
+    }
+    public class FileData
+    {
+        public IFormFile File { get; set; } = null!;
     }
 }
