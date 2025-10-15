@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Common.Extension.Json\Common.Extension.Json.csproj" />
+  </ItemGroup>
+
 </Project>
