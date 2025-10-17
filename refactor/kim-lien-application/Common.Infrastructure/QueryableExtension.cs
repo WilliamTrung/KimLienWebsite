@@ -31,7 +31,7 @@ namespace Common.Infrastructure
                 var qItem = baseQuery.QuerySlug<TEntity, TKey>(s!, nameFilter);
                 combined = combined.Union(qItem); // OR semantics, distinct rows
             }
-            return query;
+            return combined;
         }
         /// <summary>
         /// Slug lookup:

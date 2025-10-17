@@ -66,7 +66,8 @@ namespace Common.Infrastructure.Pagination
         protected virtual async Task<PaginationResponse<TResponse>> ToPaginationResponse(TRequest request, Func<TRequest, Expression<Func<TEntity, bool>>> queryFunc)
 
         {
-            Query = Query.Where(queryFunc.Invoke(request));
+            var filterQuery = queryFunc.Invoke(request);
+            Query = Query.Where(filterQuery);
             return await ToPaginationResponse(request);
         }
     }

@@ -1,9 +1,7 @@
-using Admin.Application.Abstractions;
-using Admin.Application.Models.Product;
-using Admin.Infrastructure.Data;
-using AutoMapper;
+﻿using AutoMapper;
+using Client.Application.Abstractions;
+using Client.Application.Models.Product;
 using Common.Domain.Entities;
-using Common.DomainException.Abstractions;
 using Common.Infrastructure;
 using Common.Infrastructure.Pagination;
 using Common.Kernel.Dependencies;
@@ -12,25 +10,13 @@ using Common.Kernel.Request.Pagination;
 using Common.Kernel.Response.Pagination;
 using Microsoft.EntityFrameworkCore;
 
-namespace Admin.Infrastructure.Services
+namespace Client.Infrastructure.Services
 {
-    public class ProductService(AdminDbContext dbContext, 
-        IMapper mapper) 
-        : PaginationServiceBase<Product, PaginationRequest<ProductFilterModel>, ProductDto>(mapper, dbContext)
+    public class ProductService : PaginationServiceBase<Product, PaginationRequest<ProductFilterModel>, ProductDto>
         , IProductService, IScoped
     {
-
-        public async Task<Guid> CreateProduct(CreateProductDto request, CancellationToken ct)
+        public ProductService(IMapper mapper, DbContext dbContext) : base(mapper, dbContext)
         {
-            var product = _mapper.Map<Product>(request);
-            dbContext.Add(product);
-            await dbContext.SaveChangesAsync(ct);
-            return product.Id;
-        }
-
-        public async Task Delete(Guid id, CancellationToken ct)
-        {
-            await dbContext.Products.Where(x => x.Id == id).ExecuteDeleteAsync(ct);
         }
 
         public async Task<ProductDto> GetDetail(GetDetailProductRequest request, CancellationToken ct)
@@ -46,45 +32,6 @@ namespace Admin.Infrastructure.Services
         {
             var result = await ToPaginationResponse(request, QueryRequest);
             return result;
-        }
-
-        public async Task ModifyProduct(ModifyProductDto request, CancellationToken ct)
-        {
-            if (Guid.TryParse(request.Id, out var id))
-            {
-                var product = await dbContext.Products.Where(x => x.Id == id)
-                    .Include(x => x.ProductCategories)
-                    .FirstOrDefaultAsync();
-                if (product is null)
-                {
-                    throw new CException($"Product not found for id: {id}");
-                }
-                _mapper.Map(request, product);
-                dbContext.Update(product);
-                var toAdd = request.CategoryIds.Except(product.ProductCategories.Select(x => x.CategoryId)).ToList();
-                var toRemove = product.ProductCategories.ExceptBy(request.CategoryIds, x => x.CategoryId).Select(x => x.CategoryId).ToList();
-                if (toRemove.Count > 0)
-                {
-                    await dbContext.Set<ProductCategory>()
-                        .Where(pc => pc.ProductId == product.Id && toRemove.Contains(pc.CategoryId))
-                        .ExecuteDeleteAsync(ct);
-                }
-
-                if (toAdd.Count > 0)
-                {
-                    var links = toAdd.Select(id => new ProductCategory
-                    {
-                        ProductId = product.Id,
-                        CategoryId = id
-                    });
-                    dbContext.AddRange(links);
-                }
-                await dbContext.SaveChangesAsync(ct);
-            }
-            else
-            {
-                throw new CException($"Invalid id: {request.Id}");
-            }
         }
         private void ApplyInclude()
         {
@@ -112,7 +59,6 @@ namespace Admin.Infrastructure.Services
                             ));
             return query;
         }
-
         private static IQueryable<Product> QueryCategory(IQueryable<Product> query, string categoryValue)
         {
             categoryValue = categoryValue.RemoveSpace().RemoveValue("-").RemoveAccent();
