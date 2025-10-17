@@ -89,6 +89,30 @@ namespace Common.Kernel.Extensions
 
             return result;
         }
+        /// <summary>
+        /// Check if the value of object is in the values of the given static type
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static bool IsValueInType<T>(this T obj, Type type)
+        {
+            if (obj is null) return false;
+            //check all the property in type (type here must be a static class which contains const/static readonly fields)
+            //then compare the value of obj with the value of each property
+            //if match return true else return false
+            var properties = type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.FlattenHierarchy)
+                                 .Where(f => (f.IsLiteral && !f.IsInitOnly) || (f.IsStatic && f.IsInitOnly) && f.FieldType == typeof(T));
+            foreach (var prop in properties)
+            {
+                var value = prop.GetValue(null);
+                if (value is T tValue && EqualityComparer<T>.Default.Equals(obj, tValue))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
         // ---- helpers ----
 

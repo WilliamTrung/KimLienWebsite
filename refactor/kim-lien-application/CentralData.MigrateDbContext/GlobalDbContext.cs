@@ -20,6 +20,7 @@ namespace CentralData.MigrateDbContext
                 e.HasOne(x => x.User).WithMany().HasForeignKey(x => x.UserId);
             });
             modelBuilder.Entity<ProductCategory>().HasKey(x => new { x.ProductId, x.CategoryId });
+            modelBuilder.HasPostgresExtension("unaccent"); // Npgsql
             base.OnModelCreating(modelBuilder);
         }
         public virtual DbSet<Product> Products { get; set; }

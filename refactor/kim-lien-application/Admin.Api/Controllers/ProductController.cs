@@ -38,7 +38,7 @@ namespace Admin.Api.Controllers
         [Route("{slug}")]
         public async Task<IActionResult> GetDetail([FromRoute]string slug, CancellationToken ct)
         {
-            var command = new GetDetailProductRequest
+            var command = new GetProductDetailCommand
             {
                 Value = slug,
             };
@@ -50,6 +50,18 @@ namespace Admin.Api.Controllers
         public async Task<IActionResult> Delete([FromBody] DeleteProductCommand request, CancellationToken ct)
         {
             await sender.Send(request, ct);
+            return this.CreateOk();
+        }
+        [HttpPatch]
+        [Route("update-status/{id}")]
+        public async Task<IActionResult> UpdateStatus([FromRoute]string id ,[FromBody] UpdateProductStatusRequest request, CancellationToken ct)
+        {
+            var updateStatusCommand = new UpdateProductStatusCommand
+            {
+                Id = id,
+                Status = request.Status,
+            };
+            await sender.Send(updateStatusCommand, ct);
             return this.CreateOk();
         }
     }

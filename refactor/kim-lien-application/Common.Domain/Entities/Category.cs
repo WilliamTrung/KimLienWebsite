@@ -6,7 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Common.Domain.Entities
 {
-    public class Category : BaseEntity<Guid>, IAuditEntity, IDeleteEntity
+    public class Category : BaseEntity<Guid>, IAuditEntity, IDeleteEntity, IQueryEntity
     {
         [Required]
         public string Name { get; set; } = null!;
@@ -24,6 +24,7 @@ namespace Common.Domain.Entities
         [ForeignKey(nameof(ModifiedBy))]
         public User? Modifier { get; set; }
         public bool IsDeleted { get; set; }
+        public string BareName { get; set; } = null!;
     }
     public static class CategoryExtension
     {

@@ -10,6 +10,7 @@ namespace Admin.Infrastructure
         public static void RegisterInterceptors(this IServiceCollection services, IConfiguration? cfg = null)
         {
             services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
+            services.AddScoped<ISaveChangesInterceptor, QueryEntityInterceptor>();
         }
     }
 }

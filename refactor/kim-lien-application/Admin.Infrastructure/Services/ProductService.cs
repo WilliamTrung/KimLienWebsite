@@ -7,6 +7,7 @@ using Common.DomainException.Abstractions;
 using Common.Infrastructure;
 using Common.Infrastructure.Pagination;
 using Common.Kernel.Dependencies;
+using Common.Kernel.Extensions;
 using Common.Kernel.Request.Pagination;
 using Common.Kernel.Response.Pagination;
 using Microsoft.EntityFrameworkCore;
@@ -62,9 +63,6 @@ namespace Admin.Infrastructure.Services
                 dbContext.Update(product);
                 var toAdd = request.CategoryIds.Except(product.ProductCategories.Select(x => x.CategoryId)).ToList();
                 var toRemove = product.ProductCategories.ExceptBy(request.CategoryIds, x => x.CategoryId).Select(x => x.CategoryId).ToList();
-
-                if (toAdd.Count == 0 && toRemove.Count == 0) return;
-
                 if (toRemove.Count > 0)
                 {
                     await dbContext.Set<ProductCategory>()
@@ -80,8 +78,8 @@ namespace Admin.Infrastructure.Services
                         CategoryId = id
                     });
                     dbContext.AddRange(links);
-                    await dbContext.SaveChangesAsync(ct);
                 }
+                await dbContext.SaveChangesAsync(ct);
             }
             else
             {
@@ -91,7 +89,8 @@ namespace Admin.Infrastructure.Services
         private void ApplyInclude()
         {
             Query = Query.Include(x => x.ProductCategories)
-                            .ThenInclude(x => x.Category);
+                            .ThenInclude(x => x.Category)
+                            .ThenInclude(x => x.Parent);
         }
         private IQueryable<Product> QueryRequest(PaginationRequest<ProductFilterModel> request)
         {
@@ -104,9 +103,10 @@ namespace Admin.Infrastructure.Services
         }
         private static IQueryable<Product> QueryName(IQueryable<Product> query, string productName)
         {
+            productName = productName.RemoveSpace().RemoveValue("-").RemoveAccent();
             query = query.Where(x =>
                             EF.Functions.ILike(
-                                EF.Functions.Unaccent(x.Name).ToLower().Trim(),
+                                x.BareName,
                                 EF.Functions.Unaccent($"%{productName}%")
                             ));
             return query;

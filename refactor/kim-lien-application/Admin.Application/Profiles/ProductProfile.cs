@@ -2,6 +2,7 @@ using Admin.Application.Commands.Product;
 using Admin.Application.Models.Product;
 using AutoMapper;
 using Common.Domain.Entities;
+using Common.Kernel.Constants;
 
 namespace Admin.Application.Profiles
 {
@@ -14,6 +15,7 @@ namespace Admin.Application.Profiles
                 .ForMember(d => d.PictureAssets, opt => opt.MapFrom(s => s.Images))
                 ;
             CreateMap<CreateProductCommand, Product>()
+                .ForMember(d => d.Status, opt => opt.MapFrom(s => ProductStatus.Inactive))
                 .ForMember(d => d.ProductCategories, 
                     opt => opt.MapFrom(s => s.CategoryIds.Select(x => new ProductCategory
                     {

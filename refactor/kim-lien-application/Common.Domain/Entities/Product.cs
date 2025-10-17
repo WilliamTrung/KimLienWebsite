@@ -8,8 +8,9 @@ using System.Text.Json;
 
 namespace Common.Domain.Entities
 {
-    public class Product : BaseEntity<Guid>, IAuditEntity, IDeleteEntity
+    public class Product : BaseEntity<Guid>, IAuditEntity, IDeleteEntity, IQueryEntity
     {
+        public string BareName { get; set; } = null!;
         [Required]
         public string Name { get; set; } = null!;
         [Required]

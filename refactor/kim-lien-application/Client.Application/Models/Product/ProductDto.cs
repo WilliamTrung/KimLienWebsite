@@ -1,4 +1,5 @@
-﻿using Common.Kernel.Models.Implementations;
+﻿using Common.Kernel.Extensions;
+using Common.Kernel.Models.Implementations;
 
 namespace Client.Application.Models.Product
 {
@@ -12,6 +13,6 @@ namespace Client.Application.Models.Product
         [Newtonsoft.Json.JsonIgnore]
         [System.Text.Json.Serialization.JsonIgnore]
         public long Slug { get; set; }
-        public string SlugRoute => $"{Name.ToLower().Replace(" ", "-")}_{Slug}";
+        public string SlugRoute => $"{Name.RemoveAccent().ToLower().Replace(" ", "-")}_{Slug}";
     }
 }

@@ -29,5 +29,11 @@
         public const int MaxPageSizeValue = 1000;
         public const string DEFAULT_CURRENCY_CODE = "VND";
     }
+    public static class ProductStatus
+    {
+        public const string Inactive = "Inactive";
+        public const string Active = "Active";
+        public const string Archived = "Archived";
+    }
 
 }
