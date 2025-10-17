@@ -8,6 +8,7 @@ using Common.Infrastructure;
 using Common.Infrastructure.DbContext;
 using Common.Infrastructure.Pagination;
 using Common.Kernel.Dependencies;
+using Common.Kernel.Extensions;
 using Common.Kernel.Request.Pagination;
 using Common.Kernel.Response.Pagination;
 using LinqKit;
@@ -140,9 +141,10 @@ namespace Admin.Infrastructure.Services
         }
         private static IQueryable<Category> QueryName(IQueryable<Category> query, string categoryName)
         {
+            categoryName = categoryName.RemoveSpace().RemoveValue("-").RemoveAccent();
             query = query.Where(x =>
                             EF.Functions.ILike(
-                                EF.Functions.Unaccent(x.Name).ToLower().Trim(),
+                                x.BareName,
                                 EF.Functions.Unaccent($"%{categoryName}%")
                             ));
             return query;
