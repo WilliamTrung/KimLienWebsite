@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Client.Application.Models.Product;
+using MediatR;
 
 namespace Client.Application.Commands.Product
 {
-    public class GetDetailProductCommand
+    public class GetDetailProductCommand : GetDetailProductRequest, IRequest<ProductDto>
     {
     }
 }

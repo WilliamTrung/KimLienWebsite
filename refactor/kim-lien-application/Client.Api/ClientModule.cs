@@ -1,21 +1,20 @@
-using Admin.Infrastructure;
-using Admin.Infrastructure.Data;
+﻿using Client.Infrastructure;
+using Client.Infrastructure.Data;
 using Common.Api;
 using Common.Api.Abstractions;
-//using FluentValidation;
+using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
-namespace Admin.Api
+namespace Client.Api
 {
-    public class AdminModule : BaseModule, IModule
+    public class ClientModule : BaseModule, IModule
     {
-        public string Name => "Admin";
+        public string Name => "Client";
 
         public void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
             services.RegisterInterceptors();
-            AddDbContext<AdminDbContext>(services, configuration);
+            AddDbContext<ClientDbContext>(services, configuration);
             services.AddAutoMapper(typeof(Application.Marker).Assembly);
             services.AddValidatorsFromAssembly(typeof(Application.Marker).Assembly);
             services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(Infrastructure.Marker).Assembly));
