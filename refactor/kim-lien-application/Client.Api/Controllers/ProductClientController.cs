@@ -7,7 +7,7 @@ namespace Client.Api.Controllers
 {
     [ApiController]
     [Route("/api/product")]
-    public class ProductController(ISender sender) : ControllerBase
+    public class ProductClientController(ISender sender) : ControllerBase
     {
         [HttpGet]
         public async Task<IActionResult> GetPagination([FromQuery] GetPaginationProductCommand request, CancellationToken ct)

@@ -7,7 +7,7 @@ namespace Client.Api.Controllers
 {
     [ApiController]
     [Route("/api/category")]
-    public class CategoryController(ISender sender) : ControllerBase
+    public class CategoryClientController(ISender sender) : ControllerBase
     {
         [HttpGet]
         public async Task<IActionResult> GetPagination([FromQuery] GetPaginationCategoryCommand request, CancellationToken ct)

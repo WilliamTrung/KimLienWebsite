@@ -24,6 +24,7 @@
     <ProjectReference Include="..\Admin.Api\Admin.Api.csproj" />
     <ProjectReference Include="..\Authen.Api\Authen.Api.csproj" />
     <ProjectReference Include="..\CentralData.MigrateDbContext\CentralData.MigrateDbContext.csproj" />
+    <ProjectReference Include="..\Client.Api\Client.Api.csproj" />
     <ProjectReference Include="..\Common.Api\Common.Api.csproj" />
     <ProjectReference Include="..\Common.DomainException.Middleware\Common.DomainException.Middleware.csproj" />
     <ProjectReference Include="..\Common.Infrastructure.Storage.Azure\Common.Infrastructure.Storage.Azure.csproj" />

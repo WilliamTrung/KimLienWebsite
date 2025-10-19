@@ -2,7 +2,7 @@ using Admin.Infrastructure;
 using Admin.Infrastructure.Data;
 using Common.Api;
 using Common.Api.Abstractions;
-//using FluentValidation;
+using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

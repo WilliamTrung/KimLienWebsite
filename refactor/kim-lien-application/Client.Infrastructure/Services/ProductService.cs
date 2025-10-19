@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Client.Application.Abstractions;
 using Client.Application.Models.Product;
+using Client.Infrastructure.Data;
 using Common.Domain.Entities;
 using Common.Infrastructure;
 using Common.Infrastructure.Pagination;
@@ -15,7 +16,7 @@ namespace Client.Infrastructure.Services
     public class ProductService : PaginationServiceBase<Product, PaginationRequest<ProductFilterModel>, ProductDto>
         , IProductService, IScoped
     {
-        public ProductService(IMapper mapper, DbContext dbContext) : base(mapper, dbContext)
+        public ProductService(IMapper mapper, ClientDbContext dbContext) : base(mapper, dbContext)
         {
         }
 
