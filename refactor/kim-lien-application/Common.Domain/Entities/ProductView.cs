@@ -5,6 +5,7 @@ namespace Common.Domain.Entities
 {
     public class ProductView : BaseEntity<Guid>
     {
+        public int ViewCount { get; set; }
         public Guid ProductId { get; set; }
         public string IpAddress { get; set; } = null!;
         [ForeignKey(nameof(ProductId))]

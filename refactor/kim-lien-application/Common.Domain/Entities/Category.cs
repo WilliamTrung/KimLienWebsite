@@ -1,4 +1,5 @@
-﻿using Common.Kernel.Models.Abstractions;
+﻿using Common.Infrastructure.Interceptor.TenantQuery.Model;
+using Common.Kernel.Models.Abstractions;
 using Common.Kernel.Models.Implementations;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -6,7 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Common.Domain.Entities
 {
-    public class Category : BaseEntity<Guid>, IAuditEntity, IDeleteEntity, IQueryEntity
+    public class Category : BaseEntity<Guid>, IAuditEntity, IDeleteEntity, IQueryEntity, ITenantEntity
     {
         [Required]
         public string Name { get; set; } = null!;
@@ -25,6 +26,7 @@ namespace Common.Domain.Entities
         public User? Modifier { get; set; }
         public bool IsDeleted { get; set; }
         public string BareName { get; set; } = null!;
+        public string TenantId { get; set; } = null!;
     }
     public static class CategoryExtension
     {

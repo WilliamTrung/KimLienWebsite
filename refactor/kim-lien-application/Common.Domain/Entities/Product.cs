@@ -1,4 +1,5 @@
 ﻿using Common.Extension;
+using Common.Infrastructure.Interceptor.TenantQuery.Model;
 using Common.Kernel.Models.Abstractions;
 using Common.Kernel.Models.Implementations;
 using Newtonsoft.Json;
@@ -8,7 +9,7 @@ using System.Text.Json;
 
 namespace Common.Domain.Entities
 {
-    public class Product : BaseEntity<Guid>, IAuditEntity, IDeleteEntity, IQueryEntity
+    public class Product : BaseEntity<Guid>, IAuditEntity, IDeleteEntity, IQueryEntity, ITenantEntity
     {
         public string BareName { get; set; } = null!;
         [Required]
@@ -56,6 +57,8 @@ namespace Common.Domain.Entities
                 _assets = value;
             }
         }
+
+        public string TenantId { get; set; } = null!;
     }
     public static class ProductExtension
     {
