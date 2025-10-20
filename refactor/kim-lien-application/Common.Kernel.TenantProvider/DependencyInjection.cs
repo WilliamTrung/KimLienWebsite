@@ -12,5 +12,10 @@ namespace Common.Kernel.TenantProvider
             tenantProvider.SetTenantId(tenantId);
             services.AddSingleton<Abstractions.ITenantProvider>(tenantProvider);
         }
+
+        public static void RegisterTenantProvider(this IServiceCollection services, TenantProvider.Implementations.TenantProvider tenantProvider)
+        {
+            services.AddSingleton<Abstractions.ITenantProvider>(tenantProvider);
+        }
     }
 }
