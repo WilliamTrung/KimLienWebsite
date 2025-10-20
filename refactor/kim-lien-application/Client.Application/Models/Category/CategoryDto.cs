@@ -1,4 +1,5 @@
 using Common.Kernel.Extensions;
+using Common.Kernel.Models.Implementations;
 
 namespace Client.Application.Models.Category
 {
@@ -13,5 +14,6 @@ namespace Client.Application.Models.Category
         [System.Text.Json.Serialization.JsonIgnore]
         public long Slug { get; set; }
         public string SlugUrl => $"{Name.Replace(" ", "-").RemoveAccent().ToLower()}_{Slug}";
+        public List<AssetDto> Images { get; set; } = new List<AssetDto>();
     }
 }

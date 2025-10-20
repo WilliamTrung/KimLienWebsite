@@ -115,6 +115,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Infrastructure.Inter
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Kernel.TenantProvider", "Common.Kernel.TenantProvider\Common.Kernel.TenantProvider.csproj", "{4B453E30-6E33-494A-B0BB-F2FD8265B51B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MigrateData", "MigrateData", "{BBC444CD-26FB-4D7F-869A-EF5A9758AF2A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -332,6 +334,7 @@ Global
 		{CF382E7B-00B7-41ED-9DB3-A8CB9DB9B750} = {B2029657-4BC2-406E-9712-908A41B92516}
 		{41169A3E-45C8-445D-8C01-CFE45749168C} = {B2029657-4BC2-406E-9712-908A41B92516}
 		{4B453E30-6E33-494A-B0BB-F2FD8265B51B} = {E4916F6E-55D5-4D4C-ACE3-D301FBFDEE85}
+		{BBC444CD-26FB-4D7F-869A-EF5A9758AF2A} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {38DBB258-A888-46B9-A8EB-CEC7B2D25BBB}
