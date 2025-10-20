@@ -1,9 +1,12 @@
-﻿using Common.Infrastructure.Interceptor.TenantQuery.Model;
+﻿using Common.Extension;
+using Common.Infrastructure.Interceptor.TenantQuery.Model;
 using Common.Kernel.Models.Abstractions;
 using Common.Kernel.Models.Implementations;
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
 
 namespace Common.Domain.Entities
 {
@@ -27,6 +30,34 @@ namespace Common.Domain.Entities
         public bool IsDeleted { get; set; }
         public string BareName { get; set; } = null!;
         public string TenantId { get; set; } = null!;
+        public JsonDocument? Pictures { get; set; }
+        [NotMapped]
+        private List<AssetDto>? _assets;
+        [NotMapped]
+        public List<AssetDto> PictureAssets
+        {
+            get
+            {
+                if (_assets is null)
+                {
+                    if (Pictures is null)
+                    {
+                        _assets = new List<AssetDto>();
+                    }
+                    else
+                    {
+                        _assets = JsonConvert.DeserializeObject<List<AssetDto>>(Pictures.RootElement.GetRawText()) ?? new List<AssetDto>();
+                    }
+                }
+                return _assets;
+            }
+            set
+            {
+                Pictures = value.ToDocument();
+                _assets = value;
+            }
+        }
+        public JsonDocument? Payload { get; set; }
     }
     public static class CategoryExtension
     {

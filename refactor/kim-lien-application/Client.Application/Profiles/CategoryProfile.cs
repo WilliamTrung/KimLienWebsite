@@ -9,6 +9,7 @@ namespace Client.Application.Profiles
         public CategoryProfile()
         {
             CreateMap<Category, CategoryDto>()
+                .ForMember(d => d.Images, opt => opt.MapFrom(s => s.PictureAssets))
                 ;
         }
     }

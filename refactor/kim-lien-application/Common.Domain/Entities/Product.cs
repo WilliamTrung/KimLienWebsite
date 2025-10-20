@@ -57,8 +57,9 @@ namespace Common.Domain.Entities
                 _assets = value;
             }
         }
-
         public string TenantId { get; set; } = null!;
+
+        public JsonDocument? Payload { get; set; }
     }
     public static class ProductExtension
     {

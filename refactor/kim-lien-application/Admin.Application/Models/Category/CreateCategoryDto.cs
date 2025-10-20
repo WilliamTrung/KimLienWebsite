@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Common.Kernel.Models.Implementations;
 
 namespace Admin.Application.Models.Category
 {
@@ -7,5 +8,6 @@ namespace Admin.Application.Models.Category
         [Required]
         public string Name { get; set; } = null!;
         public Guid? ParentId { get; set; }
+        public List<AssetDto>? Pictures { get; set; }
     }
 }

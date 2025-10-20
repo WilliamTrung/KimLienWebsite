@@ -15,6 +15,7 @@ namespace Admin.Application.Profiles
             CreateMap<CreateCategoryCommand, Category>()
                 ;
             CreateMap<Category, CategoryDto>()
+                .ForMember(d => d.Images, opt => opt.MapFrom(s => s.PictureAssets))
                 ;
         }
     }
