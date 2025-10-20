@@ -10,12 +10,8 @@ namespace Common.Kernel.TenantProvider
             var tenantId = cfg.GetRequiredSection("TenantProvider:TenantId").Value;
             var tenantProvider = new TenantProvider.Implementations.TenantProvider();
             tenantProvider.SetTenantId(tenantId);
-            services.AddSingleton<Abstractions.ITenantProvider>(tenantProvider);
-        }
-
-        public static void RegisterTenantProvider(this IServiceCollection services, TenantProvider.Implementations.TenantProvider tenantProvider)
-        {
-            services.AddSingleton<Abstractions.ITenantProvider>(tenantProvider);
+            Implementations.TenantProvider.Instance = tenantProvider;
+            services.AddSingleton(tenantProvider);
         }
     }
 }

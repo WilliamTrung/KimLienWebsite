@@ -1,9 +1,8 @@
-﻿using Common.Kernel.TenantProvider.Abstractions;
-
-namespace Common.Kernel.TenantProvider.Implementations
+﻿namespace Common.Kernel.TenantProvider.Implementations
 {
-    public class TenantProvider : ITenantProvider
+    public class TenantProvider
     {
+        public static TenantProvider Instance { get; set; } = null!;
         private string? _tenantId { get; set; }
         public string TenantId => _tenantId ?? string.Empty;
 

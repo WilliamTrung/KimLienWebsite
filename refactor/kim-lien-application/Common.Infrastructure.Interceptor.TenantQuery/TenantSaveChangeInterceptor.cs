@@ -1,5 +1,5 @@
 ﻿using Common.Infrastructure.Interceptor.TenantQuery.Model;
-using Common.Kernel.TenantProvider.Abstractions;
+using Common.Kernel.TenantProvider.Implementations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
@@ -7,9 +7,9 @@ namespace Common.Infrastructure.Interceptor.TenantQuery
 {
     public class TenantSaveChangeInterceptor : SaveChangesInterceptor
     {
-        private readonly ITenantProvider _tenant;
+        private readonly TenantProvider _tenant;
 
-        public TenantSaveChangeInterceptor(ITenantProvider tenant)
+        public TenantSaveChangeInterceptor(TenantProvider tenant)
             => _tenant = tenant;
 
         public override InterceptionResult<int> SavingChanges(DbContextEventData eventData,

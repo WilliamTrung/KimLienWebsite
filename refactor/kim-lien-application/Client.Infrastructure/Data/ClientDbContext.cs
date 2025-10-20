@@ -1,16 +1,16 @@
 ﻿using Common.Domain.Entities;
 using Common.Infrastructure.Interceptor.TenantQuery.Model;
-using Common.Kernel.TenantProvider.Abstractions;
+using Common.Kernel.TenantProvider.Implementations;
 using Microsoft.EntityFrameworkCore;
 
 namespace Client.Infrastructure.Data
 {
-    public class ClientDbContext(ITenantProvider tenantProvider) : DbContext
+    public class ClientDbContext : DbContext
     {
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ProductCategory>().HasKey(x => new { x.ProductId, x.CategoryId });
-            modelBuilder.Entity<ITenantEntity>().HasQueryFilter(x => x.TenantId == tenantProvider.TenantId);
+            modelBuilder.Entity<ITenantEntity>().HasQueryFilter(x => x.TenantId == TenantProvider.Instance.TenantId);
             base.OnModelCreating(modelBuilder);
         }
         public virtual DbSet<Product> Products { get; set; }

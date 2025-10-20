@@ -1,5 +1,4 @@
 using Common.Infrastructure.Interceptor;
-using Common.Infrastructure.Interceptor.TenantQuery;
 using Common.Kernel.TenantProvider;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
