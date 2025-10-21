@@ -60,8 +60,13 @@ namespace Admin.Infrastructure.Services
                     throw new CException($"Product not found for id: {id}");
                 }
                 _mapper.Map(request, product);
+                #region Resolve product categories
                 dbContext.Update(product);
-                var toAdd = request.CategoryIds.Except(product.ProductCategories.Select(x => x.CategoryId)).ToList();
+                var category = await dbContext.Categories.Where(x => request.CategoryIds.Contains(x.Id))
+                                                         .Include(x => x.Parent)
+                                                         .ToListAsync();
+                var requestAddCategories = category.SelectMany(x => x.Families().Select(c => c.Id));
+                var toAdd = requestAddCategories.Except(product.ProductCategories.Select(x => x.CategoryId)).ToList();
                 var toRemove = product.ProductCategories.ExceptBy(request.CategoryIds, x => x.CategoryId).Select(x => x.CategoryId).ToList();
                 if (toRemove.Count > 0)
                 {
@@ -78,7 +83,8 @@ namespace Admin.Infrastructure.Services
                         CategoryId = id
                     });
                     dbContext.AddRange(links);
-                }
+                } 
+                #endregion
                 await dbContext.SaveChangesAsync(ct);
             }
             else
@@ -89,8 +95,7 @@ namespace Admin.Infrastructure.Services
         private void ApplyInclude()
         {
             Query = Query.Include(x => x.ProductCategories)
-                            .ThenInclude(x => x.Category)
-                            .ThenInclude(x => x.Parent);
+                            .ThenInclude(x => x.Category);
         }
         private IQueryable<Product> QueryRequest(PaginationRequest<ProductFilterModel> request)
         {

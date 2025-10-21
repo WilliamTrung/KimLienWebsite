@@ -38,7 +38,7 @@ namespace Admin.Application.Profiles
                 })
                 ;
             CreateMap<Product, ProductDto>()
-                .ForMember(d => d.Categories, opt => opt.MapFrom(s => s.Categories()))
+                .ForMember(d => d.Categories, opt => opt.MapFrom(s => s.ProductCategories.Select(x => x.Category)))
                 .ForMember(d => d.Images, opt => opt.MapFrom(s => s.PictureAssets))
                 ;
             CreateMap<Category, ProductCategoryDto>()

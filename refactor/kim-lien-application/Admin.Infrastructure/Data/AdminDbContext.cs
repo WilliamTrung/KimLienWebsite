@@ -1,4 +1,5 @@
 using Common.Domain.Entities;
+using Common.Infrastructure.Interceptor.TenantQuery;
 using Common.Infrastructure.Interceptor.TenantQuery.Model;
 using Common.Kernel.TenantProvider.Implementations;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +11,7 @@ namespace Admin.Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ProductCategory>().HasKey(x => new { x.ProductId, x.CategoryId });
-            modelBuilder.Entity<ITenantEntity>().HasQueryFilter(e => e.TenantId == TenantProvider.Instance.TenantId);
+            modelBuilder.ApplyTenantQueryFilter();
             base.OnModelCreating(modelBuilder);
         }
         public virtual DbSet<Product> Products { get; set; }

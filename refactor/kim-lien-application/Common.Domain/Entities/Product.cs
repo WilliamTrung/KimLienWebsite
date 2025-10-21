@@ -70,17 +70,8 @@ namespace Common.Domain.Entities
             }
             else
             {
-                return product.ProductCategories.SelectMany(pc => GetCategories(pc.Category)).Distinct().ToList();
+                return product.ProductCategories.SelectMany(pc => pc.Category.Families()).ToList();
             }
-        }
-        private static List<Category> GetCategories(Category category)
-        {
-            var categories = new List<Category> { category };
-            if (category.Parent != null)
-            {
-                categories.AddRange(GetCategories(category.Parent));
-            }
-            return categories;
         }
         public static List<ProductViewCredential> ProductViewCredentials(this Product product) => product.ProductViews?.SelectMany(pc => pc.ProductViewCredentials).ToList() ?? new List<ProductViewCredential>();
     }

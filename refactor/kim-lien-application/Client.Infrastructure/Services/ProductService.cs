@@ -37,8 +37,7 @@ namespace Client.Infrastructure.Services
         private void ApplyInclude()
         {
             Query = Query.Include(x => x.ProductCategories)
-                            .ThenInclude(x => x.Category)
-                            .ThenInclude(x => x.Parent);
+                            .ThenInclude(x => x.Category);
         }
         private IQueryable<Product> QueryRequest(PaginationRequest<ProductFilterModel> request)
         {
