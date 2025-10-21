@@ -2,6 +2,7 @@
 using Client.Application.Abstractions;
 using Client.Application.Models.Product;
 using Client.Infrastructure.Data;
+using Common.Application.ProductViewService.Commands;
 using Common.Domain.Entities;
 using Common.Infrastructure;
 using Common.Infrastructure.Pagination;
@@ -9,6 +10,9 @@ using Common.Kernel.Dependencies;
 using Common.Kernel.Extensions;
 using Common.Kernel.Request.Pagination;
 using Common.Kernel.Response.Pagination;
+using Common.RequestContext.Abstractions;
+using Common.TaskHolder.Abstractions;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Client.Infrastructure.Services
@@ -16,8 +20,20 @@ namespace Client.Infrastructure.Services
     public class ProductService : PaginationServiceBase<Product, PaginationRequest<ProductFilterModel>, ProductDto>
         , IProductService, IScoped
     {
-        public ProductService(IMapper mapper, ClientDbContext dbContext) : base(mapper, dbContext)
+        private readonly IRequestContext _requestContext;
+        private readonly ClientDbContext _dbContext;
+        private readonly ISender _sender;
+        private readonly ITaskHolder _taskHolder;
+        public ProductService(ISender sender, 
+            IRequestContext requestContext, 
+            IMapper mapper,
+            ITaskHolder taskHolder,
+            ClientDbContext dbContext) : base(mapper, dbContext)
         {
+            _requestContext = requestContext;
+            _dbContext = dbContext;
+            _sender = sender;
+            _taskHolder = taskHolder;
         }
 
         public async Task<ProductDto> GetDetail(GetDetailProductRequest request, CancellationToken ct)
@@ -25,6 +41,21 @@ namespace Client.Infrastructure.Services
             ApplyInclude();
             Query = Query.QuerySlug<Product, Guid>(request.Value, QueryName);
             var product = await Query.FirstOrDefaultAsync();
+            if (product is not null)
+            {
+                Guid? userId = null;
+                if (!string.IsNullOrWhiteSpace(_requestContext.Data.UserId) && Guid.TryParse(Guid.Parse(_requestContext.Data.UserId).ToString(), out var guid))
+                {
+                    userId = guid;
+                }
+                var setViewCommand = new SetProductViewCommand
+                {
+                    ProductId = product.Id,
+                    UserId = userId,
+                    DbContext = _dbContext,
+                };
+                _taskHolder.AddTask(_sender.Send(setViewCommand, ct));
+            }
             var response = _mapper.Map<ProductDto>(product);
             return response;
         }

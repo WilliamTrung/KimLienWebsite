@@ -1,12 +1,11 @@
-﻿using Common.Domain.Entities;
+﻿using Common.Application.ProductViewService.Abstractions;
+using Common.Domain.Entities;
 using Common.Infrastructure.Interceptor.TenantQuery;
-using Common.Infrastructure.Interceptor.TenantQuery.Model;
-using Common.Kernel.TenantProvider.Implementations;
 using Microsoft.EntityFrameworkCore;
 
 namespace Client.Infrastructure.Data
 {
-    public class ClientDbContext : DbContext
+    public class ClientDbContext : DbContext, IProductViewDbContext
     {
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

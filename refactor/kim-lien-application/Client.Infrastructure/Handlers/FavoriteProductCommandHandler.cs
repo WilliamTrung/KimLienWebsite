@@ -12,7 +12,7 @@ namespace Client.Infrastructure.Handlers
     {
         public async Task Handle(FavoriteProductCommand request, CancellationToken cancellationToken)
         {
-            if (Guid.TryParse(request.ProductId, out var productId))
+             if (Guid.TryParse(request.ProductId, out var productId))
             {
                 var product = await dbContext.Products.AsQueryable().Where(x => x.Id == productId)
                                                 .Include(x => x.ProductFavors).FirstOrDefaultAsync();
@@ -28,6 +28,7 @@ namespace Client.Infrastructure.Handlers
                     {
                         ProductId = productId,
                         UserId = userId,
+                        Email = requestContext.Data.Email!,
                     });
                 }
                 else

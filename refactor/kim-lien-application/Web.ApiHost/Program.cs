@@ -1,15 +1,17 @@
 using Common.Api;
 using Common.DomainException.Middleware;
 using Common.Extension.Jwt;
+using Common.Infrastructure.ProductViewService;
+using Common.Infrastructure.Storage.Azure;
 using Common.Logging.Middleware;
 using Common.RequestContext;
 using Common.RequestContext.Abstractions;
 using Common.RequestContext.Middleware;
-using Microsoft.Extensions.DependencyInjection;
+using Common.TaskHolder.Abstractions;
+using Common.TaskHolder.Middleware;
+using Common.TaskHolder.Models;
 using Microsoft.Extensions.FileProviders;
 using Serilog;
-using System.Reflection;
-using Common.Infrastructure.Storage.Azure;
 using Web.ApiHost;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -50,6 +52,9 @@ builder.Services.AddScoped<IRequestContext, RequestContext>();
 builder.Services.AddScoped<RequestContextMiddleware>();
 builder.Services.AddScoped<RequestLoggingMiddleware>();
 builder.Services.AddScoped<DomainExceptionMiddleware>();
+builder.Services.AddScoped<TaskHolderMiddleware>();
+builder.Services.AddScoped<ITaskHolder, TaskHolder>();
+builder.Services.RegisterProductViewService(builder.Configuration);
 builder.Services.AddAzureBlobStorage(builder.Configuration);
 //Add configuration as IOptions here
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
@@ -97,6 +102,7 @@ if (app.Environment.IsDevelopment())
 // Custom middlewares AFTER Swagger so they don't swallow swagger assets
 app.UseMiddleware<RequestContextMiddleware>();
 app.UseMiddleware<RequestLoggingMiddleware>();
+app.UseMiddleware<TaskHolderMiddleware>();
 app.UseMiddleware<DomainExceptionMiddleware>();
 
 app.MapControllers();

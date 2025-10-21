@@ -18,8 +18,8 @@ namespace Common.RequestContext.Middleware
             var user = context.User;
             var data = new RequestContextData
             {
-                UserId = user?.FindFirst(JwtRegisteredClaimNames.NameId)?.Value,
-                Email = user?.FindFirst(JwtRegisteredClaimNames.Email)?.Value,
+                UserId = user?.FindFirst(ClaimTypes.NameIdentifier)?.Value,
+                Email = user?.FindFirst(ClaimTypes.Email)?.Value,
                 IpAddress = GetClientIp(context),
                 RequestId = context.Request.Headers["request-id"],
                 UserAgent = context.Request.Headers["user-agent"],

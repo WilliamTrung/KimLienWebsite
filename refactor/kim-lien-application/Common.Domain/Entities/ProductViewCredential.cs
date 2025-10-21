@@ -13,6 +13,7 @@ namespace Common.Domain.Entities
         public Guid? UserId { get; set; }
         public string? Username { get; set; }
         public string? Email { get; set; }
+        public string IpAddress { get; set; } = null!;
         [ForeignKey(nameof(ProductViewId))]
         public ProductView ProductView { get; set; } = null!;
         [ForeignKey(nameof(UserId))]

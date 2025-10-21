@@ -7,7 +7,6 @@ namespace Common.Domain.Entities
     {
         public int ViewCount { get; set; }
         public Guid ProductId { get; set; }
-        public string IpAddress { get; set; } = null!;
         [ForeignKey(nameof(ProductId))]
         public Product Product { get; set; } = null!;
         public virtual ICollection<ProductViewCredential> ProductViewCredentials { get; set; } = new List<ProductViewCredential>();
