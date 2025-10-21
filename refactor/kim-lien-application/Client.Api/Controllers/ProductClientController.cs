@@ -1,6 +1,7 @@
 ﻿using Client.Application.Commands.Product;
 using Common.Api;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Client.Api.Controllers
@@ -26,6 +27,14 @@ namespace Client.Api.Controllers
             };
             var result = await sender.Send(command, ct);
             return this.CreateOk(result);
+        }
+        [HttpPost]
+        [Route("favorite-toggle")]
+        [Authorize]
+        public async Task<IActionResult> FavoriteToggle([FromBody] FavoriteProductCommand command, CancellationToken ct)
+        {
+            await sender.Send(command, ct);
+            return this.CreateOk();
         }
     }
 }

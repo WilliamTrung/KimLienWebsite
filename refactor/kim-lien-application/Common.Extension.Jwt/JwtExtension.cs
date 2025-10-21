@@ -19,7 +19,6 @@ namespace Common.Extension.Jwt
         {
             new(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
             new(JwtRegisteredClaimNames.Email, user.Email ?? string.Empty),
-            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
         };
             claims.AddRange(roles.Select(r => new Claim(ClaimTypes.Role, r)));
 

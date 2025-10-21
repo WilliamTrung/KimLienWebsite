@@ -5,5 +5,6 @@
         Ok = 0,
         System = 1,
         NotFound = 2,
+        Invalid = 3,
     }
 }

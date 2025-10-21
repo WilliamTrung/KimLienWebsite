@@ -1,5 +1,6 @@
 using Common.RequestContext.Abstractions;
 using Microsoft.AspNetCore.Http;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace Common.RequestContext.Middleware
@@ -17,11 +18,12 @@ namespace Common.RequestContext.Middleware
             var user = context.User;
             var data = new RequestContextData
             {
-                UserId = user?.FindFirst(ClaimTypes.Name)?.Value ?? user?.FindFirst(ClaimTypes.NameIdentifier)?.Value,
-                Email = user?.FindFirst(ClaimTypes.Email)?.Value,
+                UserId = user?.FindFirst(JwtRegisteredClaimNames.NameId)?.Value,
+                Email = user?.FindFirst(JwtRegisteredClaimNames.Email)?.Value,
                 IpAddress = GetClientIp(context),
                 RequestId = context.Request.Headers["request-id"],
                 UserAgent = context.Request.Headers["user-agent"],
+                Roles = user?.FindAll(ClaimTypes.Role).Select(r => r.Value).ToList()
             };
             _requestContext.Set(data);                             // store in scoped holder
             await next.Invoke(context);
