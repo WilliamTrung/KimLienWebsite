@@ -37,9 +37,9 @@ namespace Common.Infrastructure.ProductViewService.Handlers
                     //handle authorized view count
                     var credential = productView.ProductViewCredentials
                                         .FirstOrDefault(x => x.UserId == request.UserId);
-                    if (credential is not null && credential.CreatedDate.Date != DateTime.UtcNow.Date)
+                    if (credential is not null)
                     {
-                        if (credential.ModifiedDate is null || credential.ModifiedDate?.Date < DateTime.UtcNow.Date)
+                        if (credential.CreatedDate.Date != DateTime.UtcNow.Date && (credential.ModifiedDate is null || credential.ModifiedDate?.Date < DateTime.UtcNow.Date))
                         {
                             credential.ViewCount += 1;
                             productView.ViewCount += 1;

@@ -95,7 +95,10 @@ namespace Admin.Infrastructure.Services
         private void ApplyInclude()
         {
             Query = Query.Include(x => x.ProductCategories)
-                            .ThenInclude(x => x.Category);
+                            .ThenInclude(x => x.Category)
+                         .Include(x => x.ProductFavors)
+                         .Include(x => x.ProductViews)
+                         ;
         }
         private IQueryable<Product> QueryRequest(PaginationRequest<ProductFilterModel> request)
         {

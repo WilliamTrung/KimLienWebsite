@@ -12,6 +12,8 @@ namespace Client.Application.Profiles
             CreateMap<Product, ProductDto>()
                 .ForMember(d => d.Categories, opt => opt.MapFrom(s => s.ProductCategories.Select(x => x.Category)))
                 .ForMember(d => d.Images, opt => opt.MapFrom(s => s.PictureAssets))
+                .ForMember(d => d.ViewCount, opt => opt.MapFrom(s => s.ProductViews.Sum(x => x.ViewCount)))
+                .ForMember(d => d.FavoriteCount, opt => opt.MapFrom(s => s.ProductFavors.Count))
                 ;
             CreateMap<Category, ProductCategoryDto>()
                 .ForMember(d => d.CategoryName, opt => opt.MapFrom(s => s.Name))

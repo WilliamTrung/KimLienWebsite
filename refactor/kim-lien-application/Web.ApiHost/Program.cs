@@ -100,10 +100,10 @@ if (app.Environment.IsDevelopment())
 }
 
 // Custom middlewares AFTER Swagger so they don't swallow swagger assets
+app.UseMiddleware<DomainExceptionMiddleware>();
 app.UseMiddleware<RequestContextMiddleware>();
 app.UseMiddleware<RequestLoggingMiddleware>();
 app.UseMiddleware<TaskHolderMiddleware>();
-app.UseMiddleware<DomainExceptionMiddleware>();
 
 app.MapControllers();
 app.MapHealthChecks("/health");

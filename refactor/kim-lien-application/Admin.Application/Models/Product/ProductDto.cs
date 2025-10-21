@@ -14,5 +14,7 @@ namespace Admin.Application.Models.Product
         [System.Text.Json.Serialization.JsonIgnore]
         public long Slug { get; set; }
         public string SlugUrl => $"{Name.RemoveAccent().Replace(" ", "-").ToLower()}_{Slug}";
+        public int ViewCount { get; set; }
+        public int Favorites { get; set; }
     }
 }
