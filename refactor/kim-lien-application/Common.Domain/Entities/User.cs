@@ -10,5 +10,6 @@ namespace Common.Domain.Entities
         public string? DisplayName { get; set; }
         public string Region { get; set; } = null!;
         public JsonDocument? Asset { get; set; }
+        public UserMetadata? UserMetadata { get; set; }
     }
 }
