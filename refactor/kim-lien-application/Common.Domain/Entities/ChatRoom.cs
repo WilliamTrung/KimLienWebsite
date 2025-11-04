@@ -13,6 +13,7 @@ namespace Common.Domain.Entities
         public Guid? ModifiedBy { get; set; }
         public Guid CreatedBy { get; set; }
         public bool IsActive { get; set; } = true;
+        public bool IsPersonal { get; set; }
         public virtual ICollection<ChatSession> ChatSessions { get; set; } = new List<ChatSession>();
         public virtual ICollection<ChatMessage> ChatMessages { get; set; } = new List<ChatMessage>();
     }

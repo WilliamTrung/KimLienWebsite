@@ -59,5 +59,9 @@ namespace Chat.Api.Hubs
                     Timestamp = DateTime.UtcNow
                 });
         }
+        public async Task SendToSpecificUsers(IList<string> userIds, string message)
+        {
+            await Clients.Users(userIds).SendAsync("ReceiveNotification", message);
+        }
     }
 }

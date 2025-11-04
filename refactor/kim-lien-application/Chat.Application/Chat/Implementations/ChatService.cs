@@ -1,17 +1,34 @@
 ﻿using Chat.Application.Chat.Abstractions;
+using Chat.Application.Chat.Models;
+using Chat.Infrastructure.Data;
+using Common.Domain.Entities;
+using Common.DomainException.Abstractions;
+using Common.Extension;
+using Common.RequestContext.Abstractions;
+using Microsoft.Extensions.Logging;
 
 namespace Chat.Application.Chat.Implementations
 {
-    public class ChatService : IChatService
+    public class ChatService(IRequestContext requestContext
+        , ChatContext chatContext
+        , ILogger<ChatService> logger)
+        : IChatService
     {
-        public Task OnConnected(string userId, string connectionId)
+        public async Task SendMessage(MessageDto messageDto)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task SendMessage(string userId, string content, object? payload)
-        {
-            throw new NotImplementedException();
+            var userId = requestContext.Data.UserId!;
+            // Here you would implement the logic to send the message,
+            // for example, saving it to a database or sending it through a messaging system.
+            var message = new ChatMessage
+            {
+                RoomId = Guid.Parse(messageDto.RoomId),
+                SenderId = Guid.Parse(userId),
+                Message = messageDto.Message,
+                Metadata = messageDto.Metadata?.ToDocument(),
+                IpAddress = requestContext.Data.IpAddress ?? throw new CException("IpAddress is null", System.Net.HttpStatusCode.BadRequest)
+            };
+            chatContext.Add(message);
+            await chatContext.SaveChangesAsync();
         }
     }
 }
