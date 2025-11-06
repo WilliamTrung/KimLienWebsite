@@ -1,6 +1,6 @@
-﻿using Chat.Application.Common.Abstractions;
+﻿using Chat.Infrastructure.Abstractions;
 
-namespace Chat.Application.Common.Implementations
+namespace Chat.Infrastructure.Implementations
 {
     public class BaseConnectionPoolProvider : IBaseConnectionPoolProvider
     {
@@ -22,6 +22,23 @@ namespace Chat.Application.Common.Implementations
             return _connections[key];
         }
 
+        public List<string>? GetConnection(List<string> keys)
+        {
+            var allConnections = new List<string>();
+
+            if (keys == null || keys.Count == 0)
+                return allConnections;
+
+            foreach (var key in keys)
+            {
+                if (_connections.TryGetValue(key, out var connections) && connections is { Count: > 0 })
+                {
+                    allConnections.AddRange(connections);
+                }
+            }
+
+            return allConnections;
+        }
         public void RemoveConnection(string key)
         {
             _connections.Remove(key);

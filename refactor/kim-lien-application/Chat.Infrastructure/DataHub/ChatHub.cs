@@ -1,10 +1,10 @@
-﻿using Chat.Application.Common.Abstractions;
-using Chat.Application.Common.Models;
+﻿using Chat.Infrastructure.Abstractions;
+using Chat.Infrastructure.Models;
 using MediatR;
 using Microsoft.AspNet.SignalR;
 using System.Security.Claims;
 
-namespace Chat.Api.Hubs
+namespace Chat.Infrastructure.DataHub
 {
     public class ChatHub(ISender sender, IConnectionPoolProvider connectionPool) : Hub
     {
@@ -59,9 +59,9 @@ namespace Chat.Api.Hubs
                     Timestamp = DateTime.UtcNow
                 });
         }
-        public async Task SendToSpecificUsers(IList<string> userIds, string message)
+        public async Task OnSendMessage(IList<string> userIds, string message)
         {
-            await Clients.Users(userIds).SendAsync("ReceiveNotification", message);
+            await Clients.Users(userIds).SendAsync("ReceiveMessage", message);
         }
     }
 }

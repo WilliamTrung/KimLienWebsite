@@ -1,4 +1,4 @@
-﻿namespace Chat.Application.Common.Models
+﻿namespace Chat.Infrastructure.Models
 {
     public class CurrentUser
     {

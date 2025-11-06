@@ -5,6 +5,7 @@ using Common.Domain.Entities;
 using Common.DomainException.Abstractions;
 using Common.Extension;
 using Common.RequestContext.Abstractions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Chat.Application.Chat.Implementations
@@ -29,6 +30,15 @@ namespace Chat.Application.Chat.Implementations
             };
             chatContext.Add(message);
             await chatContext.SaveChangesAsync();
+        }
+        public async Task<List<Guid>> GetUserInRoom(string roomId)
+        {
+            if (Guid.TryParse(roomId, out var roomGuid))
+            {
+                var sessions = await chatContext.ChatSessions.Where(x => x.RoomId == roomGuid && x.UserId.HasValue).ToListAsync(); 
+                return sessions.Select(x => x.UserId!.Value).ToList();
+            }
+            return new List<Guid>();
         }
     }
 }

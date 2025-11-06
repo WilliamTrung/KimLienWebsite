@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.5.0" />
+    <PackageReference Include="Microsoft.AspNet.SignalR.Core" Version="2.4.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Chat.Domain\Chat.Domain.csproj" />
     <ProjectReference Include="..\Common.Infrastructure.Interceptor.TenantQuery\Common.Infrastructure.Interceptor.TenantQuery.csproj" />
     <ProjectReference Include="..\Common.Infrastructure.Interceptor\Common.Infrastructure.Interceptor.csproj" />
