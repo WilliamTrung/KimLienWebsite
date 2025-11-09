@@ -1,4 +1,4 @@
-﻿using Chat.Infrastructure.Abstractions;
+﻿using Chat.Application.Common.Abstractions;
 
 namespace Chat.Infrastructure.Implementations
 {

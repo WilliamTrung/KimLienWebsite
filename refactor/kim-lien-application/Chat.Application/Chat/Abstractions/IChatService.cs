@@ -5,6 +5,6 @@ namespace Chat.Application.Chat.Abstractions
     public interface IChatService
     {
         Task SendMessage(MessageDto messageDto);
-        Task<List<Guid>> GetUserInRoom(string roomId);
+        Task<List<Guid>> GetRoomIdsByUser(string userId);
     }
 }

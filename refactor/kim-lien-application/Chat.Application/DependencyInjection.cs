@@ -1,5 +1,4 @@
-﻿using Chat.Application.Common.Implementations;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace Chat.Application
 {
@@ -8,8 +7,6 @@ namespace Chat.Application
         public static void AddApplicationServices(this IServiceCollection services)
         {
             // Register application services here
-            services.AddSingleton<Common.Abstractions.IConnectionPoolProvider, ConnectionPoolProvider>();
-            services.AddSingleton<Common.Abstractions.IAnonymousConnectionPoolProvider, AnonymousConnectionPoolProvider>();
         }
     }
 }

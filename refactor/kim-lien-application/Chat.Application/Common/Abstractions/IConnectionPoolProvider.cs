@@ -1,4 +1,4 @@
-﻿namespace Chat.Infrastructure.Abstractions
+namespace Chat.Application.Common.Abstractions
 {
     public interface IBaseConnectionPoolProvider
     {

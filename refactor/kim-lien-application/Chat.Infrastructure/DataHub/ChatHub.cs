@@ -1,12 +1,13 @@
-﻿using Chat.Infrastructure.Abstractions;
+﻿using Chat.Application.Chat.Commands.GetRoomsByUserQuery;
+using Chat.Infrastructure.Implementations;
 using Chat.Infrastructure.Models;
 using MediatR;
-using Microsoft.AspNet.SignalR;
+using Microsoft.AspNetCore.SignalR;
 using System.Security.Claims;
 
 namespace Chat.Infrastructure.DataHub
 {
-    public class ChatHub(ISender sender, IConnectionPoolProvider connectionPool) : Hub
+    public class ChatHub(ISender sender, ConnectionPoolProvider connectionPool) : Hub
     {
         private ClaimsPrincipal ContextUser => (ClaimsPrincipal)Context.User;
         private CurrentUser? _currUser { get; set; }
@@ -18,50 +19,57 @@ namespace Chat.Infrastructure.DataHub
                 {
                     _currUser = new()
                     {
-                        UserId = ContextUser.FindFirst(ClaimTypes.NameIdentifier)?.Value
-                                 ?? throw new InvalidOperationException("User is not authenticated."),
+                        UserId = Context.UserIdentifier,
                         ConnectionId = Context.ConnectionId
                     };
                 }
                 return _currUser;
             }
         }
-        public override Task OnConnected()
+        public override async Task OnConnectedAsync()
         {
             connectionPool.AddConnection(CurrentUser.UserId, CurrentUser.ConnectionId);
-            return base.OnConnected();
+            await AddUserRoomGroup();
         }
-        public override Task OnDisconnected(bool stopCalled)
+        public override Task OnDisconnectedAsync(Exception exception)
         {
             connectionPool.RemoveConnection(CurrentUser.UserId);
-            return base.OnDisconnected(stopCalled);
+            return base.OnDisconnectedAsync(exception);
         }
-
         // Typing indicator
         public async Task Typing(string roomId)
         {
-            await Clients.Group(roomId, Context.ConnectionId)
-                .SendAsync("UserTyping", new
-                {
-                    RoomId = roomId,
-                    UserId = CurrentUser.UserId,
-                    Timestamp = DateTime.UtcNow
-                });
+            await Clients.OthersInGroup(roomId).SendAsync("UserTyping", new
+            {
+                RoomId = roomId,
+                CurrentUser.UserId,
+                Timestamp = DateTime.UtcNow
+            });
         }
 
         public async Task StopTyping(string roomId)
         {
-            await Clients.Group(roomId, Context.ConnectionId)
+            await Clients.OthersInGroup(roomId)
                 .SendAsync("UserStoppedTyping", new
                 {
                     RoomId = roomId,
-                    UserId = CurrentUser.UserId,
+                    CurrentUser.UserId,
                     Timestamp = DateTime.UtcNow
                 });
         }
-        public async Task OnSendMessage(IList<string> userIds, string message)
+        private async Task AddUserRoomGroup()
         {
-            await Clients.Users(userIds).SendAsync("ReceiveMessage", message);
+            var roomIds = await sender.Send(new GetRoomsByUserQuery
+            {
+                UserId = Guid.Parse(CurrentUser.UserId),
+            });
+            if (roomIds is not null)
+            {
+                foreach (var roomId in roomIds)
+                {
+                    await Groups.AddToGroupAsync(Context.ConnectionId, roomId.ToString());
+                } 
+            }
         }
     }
 }
