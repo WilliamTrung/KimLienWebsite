@@ -1,30 +1,47 @@
-# See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
-
-# This stage is used when running from VS in fast mode (Default for Debug configuration)
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-USER $APP_UID
-WORKDIR /app
-EXPOSE 8080
-EXPOSE 8081
-
-
-# This stage is used to build the service project
+# =============================
+#       BUILD IMAGE
+# =============================
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["Web.ApiHost/Web.ApiHost.csproj", "Web.ApiHost/"]
-RUN dotnet restore "./Web.ApiHost/Web.ApiHost.csproj"
-COPY . .
-WORKDIR "/src/Web.ApiHost"
-RUN dotnet build "./Web.ApiHost.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
-# This stage is used to publish the service project to be copied to the final stage
-FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./Web.ApiHost.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+# Copy solution file
+COPY refactor/kim-lien-application/kim-lien-application.sln ./
 
-# This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
-FROM base AS final
+# Copy all project files (.csproj) in subfolders
+# This keeps Docker cache efficient for large solutions
+COPY refactor/kim-lien-application/**/*.csproj ./restore/
+
+# Recreate folder structure inside /src for restore
+RUN for file in restore/*.csproj; do \
+        projectPath=$(dirname "$file" | sed "s#restore/#/#"); \
+        mkdir -p "./$projectPath"; \
+        cp "$file" "./$projectPath/"; \
+    done
+
+# Restore dependencies (fast!)
+RUN dotnet restore
+
+# =============================
+#    COPY FULL SOURCE + BUILD
+# =============================
+COPY refactor/kim-lien-application/ .
+
+RUN dotnet publish Web.ApiHost/Web.ApiHost.csproj -c Release -o /app/publish /p:UseAppHost=false
+
+# =============================
+#       RUNTIME IMAGE
+# =============================
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
-COPY --from=publish /app/publish .
+
+EXPOSE 8080
+
+# Copy published output
+COPY --from=build /app/publish .
+
+# Healthcheck without endpoint (checks Kestrel port)
+HEALTHCHECK --interval=10s --timeout=3s --start-period=5s --retries=3 \
+  CMD [ "bash", "-c", "netstat -tln | grep 8080" ]
+
+# Actual entrypoint
 ENTRYPOINT ["dotnet", "Web.ApiHost.dll"]
