@@ -7,26 +7,38 @@ WORKDIR /src
 # Copy solution file
 COPY refactor/kim-lien-application/kim-lien-application.sln ./
 
-# Copy all project files (.csproj) in subfolders
-# This keeps Docker cache efficient for large solutions
-COPY refactor/kim-lien-application/**/*.csproj ./restore/
 
-# Recreate folder structure inside /src for restore
-RUN for file in restore/*.csproj; do \
-        projectPath=$(dirname "$file" | sed "s#restore/#/#"); \
-        mkdir -p "./$projectPath"; \
-        cp "$file" "./$projectPath/"; \
-    done
+# ------------------------------------------------------------
+# COPY ALL .csproj FILES WHILE PRESERVING FOLDER STRUCTURE
+# ------------------------------------------------------------
 
-# Restore dependencies (fast!)
-RUN dotnet restore
+# Create a temp directory for structure
+RUN mkdir /projectfiles
 
-# =============================
-#    COPY FULL SOURCE + BUILD
-# =============================
-COPY refactor/kim-lien-application/ .
+# Copy only folder structure and csproj files
+# This preserves EXACT folder layout
+COPY refactor/kim-lien-application /projectfiles
+
+# Remove all non-.csproj files to keep caching efficient
+RUN find /projectfiles -type f ! -name '*.csproj' -delete
+
+# Copy preserved csproj structure into build WORKDIR
+COPY /projectfiles/. ./
+
+
+# ------------------------------------------------------------
+# RESTORE ALL DEPENDENCIES
+# ------------------------------------------------------------
+RUN dotnet restore Web.ApiHost/Web.ApiHost.csproj
+
+
+# ------------------------------------------------------------
+# COPY FULL SOURCE AND BUILD
+# ------------------------------------------------------------
+COPY refactor/kim-lien-application/. .
 
 RUN dotnet publish Web.ApiHost/Web.ApiHost.csproj -c Release -o /app/publish /p:UseAppHost=false
+
 
 # =============================
 #       RUNTIME IMAGE
@@ -36,12 +48,9 @@ WORKDIR /app
 
 EXPOSE 8080
 
-# Copy published output
 COPY --from=build /app/publish .
 
-# Healthcheck without endpoint (checks Kestrel port)
 HEALTHCHECK --interval=10s --timeout=3s --start-period=5s --retries=3 \
-  CMD [ "bash", "-c", "netstat -tln | grep 8080" ]
+  CMD ["bash", "-c", "netstat -tln | grep 8080"]
 
-# Actual entrypoint
 ENTRYPOINT ["dotnet", "Web.ApiHost.dll"]
