@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+
+  backend:
+    build:
+      context: .
+      dockerfile: refactor/kim-lien-application/Web.ApiHost/Dockerfile
+    container_name: kimlien-backend
+    ports:
+      - "8080:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+    restart: always
+    depends_on:
+      - nginx   # nginx can start early, but backend must start before proxy works
+
+  nginx:
+    build:
+      context: nginx
+      dockerfile: Dockerfile
+    container_name: kimlien-nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: always
