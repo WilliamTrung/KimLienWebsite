@@ -12,8 +12,6 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Production
     restart: always
-    depends_on:
-      - nginx   # nginx can start early, but backend must start before proxy works
 
   nginx:
     build:
