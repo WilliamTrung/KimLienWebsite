@@ -1,0 +1,62 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches: ["master"]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Deploy over SSH
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_KEY }}
+        port: ${{ secrets.SSH_PORT }}
+        script: |
+          cd /root/apps/api-application
+
+          echo "🐳 Building new images..."
+          docker compose build
+          BUILD_STATUS=$?
+
+          if [ $BUILD_STATUS -ne 0 ]; then
+            echo "Build failed. Keeping old containers running."
+            exit 1
+          fi
+
+          echo "Starting new test containers..."
+          docker compose -p test up -d
+          TEST_STATUS=$?
+
+          if [ $TEST_STATUS -ne 0 ]; then
+            echo "Test containers failed to start. Rolling back..."
+            docker compose -p test down
+            exit 1
+          fi
+
+          echo "Waiting 10 seconds for containers to stabilize..."
+          sleep 10
+
+          UNHEALTHY=$(docker ps --filter "name=test" --filter "health=unhealthy" -q)
+
+          if [ ! -z "$UNHEALTHY" ]; then
+            echo "A test container is unhealthy! Rolling back..."
+            docker compose -p test down
+            exit 1
+          fi
+
+          echo "Test containers healthy. Deploying to production..."
+          docker compose down
+          docker compose up -d
+
+          echo "Cleaning up test containers..."
+          docker compose -p test down
+
+          echo "Deployment completed!"
