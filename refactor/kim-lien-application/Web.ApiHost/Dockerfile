@@ -1,55 +1,54 @@
-# =============================
-#       BUILD IMAGE
-# =============================
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+# ==========================================
+# RESTORE STAGE (copy only .csproj files)
+# ==========================================
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS restore
 WORKDIR /src
 
 # Copy solution file
 COPY refactor/kim-lien-application/kim-lien-application.sln ./
 
 
-# ------------------------------------------------------------
-# COPY ALL .csproj FILES WHILE PRESERVING FOLDER STRUCTURE
-# ------------------------------------------------------------
+# Copy all folders but only *.csproj files to keep caching efficient
+COPY refactor/kim-lien-application ./tmp
 
-# Create a temp directory for structure
-RUN mkdir /projectfiles
+# Delete everything except *.csproj
+RUN find ./tmp -type f ! -name '*.csproj' -delete
 
-# Copy only folder structure and csproj files
-# This preserves EXACT folder layout
-COPY refactor/kim-lien-application /projectfiles
+# Recreate folder structure in /src
+RUN mkdir /src/projects && cp -R tmp/* /src/projects
 
-# Remove all non-.csproj files to keep caching efficient
-RUN find /projectfiles -type f ! -name '*.csproj' -delete
-
-# Copy preserved csproj structure into build WORKDIR
-COPY /projectfiles/. ./
+# Restore using preserved structure
+RUN dotnet restore /src/projects/Web.ApiHost/Web.ApiHost.csproj
 
 
-# ------------------------------------------------------------
-# RESTORE ALL DEPENDENCIES
-# ------------------------------------------------------------
-RUN dotnet restore Web.ApiHost/Web.ApiHost.csproj
+# ==========================================
+# BUILD STAGE (copy full source + publish)
+# ==========================================
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /src
 
+# Copy full source now
+COPY refactor/kim-lien-application/ .
 
-# ------------------------------------------------------------
-# COPY FULL SOURCE AND BUILD
-# ------------------------------------------------------------
-COPY refactor/kim-lien-application/. .
+# Copy restored artifacts to speed up build
+COPY --from=restore /root/.nuget/packages /root/.nuget/packages
 
+# Publish
 RUN dotnet publish Web.ApiHost/Web.ApiHost.csproj -c Release -o /app/publish /p:UseAppHost=false
 
 
-# =============================
-#       RUNTIME IMAGE
-# =============================
+# ==========================================
+# RUNTIME STAGE
+# ==========================================
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
 
 EXPOSE 8080
 
+# Copy published output
 COPY --from=build /app/publish .
 
+# Health check without endpoint
 HEALTHCHECK --interval=10s --timeout=3s --start-period=5s --retries=3 \
   CMD ["bash", "-c", "netstat -tln | grep 8080"]
 
