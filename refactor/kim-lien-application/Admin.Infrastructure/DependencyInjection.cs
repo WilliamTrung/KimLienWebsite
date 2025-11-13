@@ -1,4 +1,5 @@
 using Common.Infrastructure.Interceptor;
+using Common.Infrastructure.Interceptor.TenantQuery;
 using Common.Kernel.TenantProvider;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
@@ -12,6 +13,7 @@ namespace Admin.Infrastructure
         {
             services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
             services.AddScoped<ISaveChangesInterceptor, QueryEntityInterceptor>();
+            services.AddScoped<ISaveChangesInterceptor, TenantSaveChangeInterceptor>();
             services.RegisterTenantProvider(cfg ?? services.BuildServiceProvider().GetRequiredService<IConfiguration>());
         }
     }
