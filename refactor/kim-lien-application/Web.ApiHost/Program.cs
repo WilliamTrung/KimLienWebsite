@@ -106,6 +106,7 @@ app.UseAuthorization();
         c.RoutePrefix = "swagger";
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
     });
+app.MapSwagger();
 //}
 
 // Custom middlewares AFTER Swagger so they don't swallow swagger assets
