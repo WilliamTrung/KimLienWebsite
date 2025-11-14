@@ -35,7 +35,15 @@ if (string.IsNullOrWhiteSpace(appSetting))
 builder.Configuration.Sources.Clear();
 
 // Point to new appsetting folder
-var provider = new PhysicalFileProvider(basePath);
+PhysicalFileProvider provider;
+try
+{
+    provider = new PhysicalFileProvider(basePath);
+}
+catch (Exception ex)
+{
+    throw new InvalidOperationException($"{ex.Message}: Path={basePath};Setting={appSetting}");
+}
 var env = builder.Environment;
 builder.Configuration
     .AddJsonFile(provider, appSetting, optional: false, reloadOnChange: true)
