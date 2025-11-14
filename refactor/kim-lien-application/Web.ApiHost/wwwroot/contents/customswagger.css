@@ -1,0 +1,32 @@
+﻿#api_info {
+    position: sticky;
+    z-index: 1000;
+    top: 0px;
+    background-color: white;
+    padding-top: 10px;
+    padding-bottom: 20px;
+}
+
+.operation-params input, .operation-params select, .operation-params textarea {
+    border-radius: 4px;
+}
+
+.operation-params input, .operation-params select {
+    height: 30px;
+    padding: 3px 6px 3px 6px;
+}
+
+input.submit {
+    display: block;
+    clear: none;
+    float: left;
+    padding: 10px 8px !important;
+    background-color: #10a54a;
+    border: 1px solid #10a54a;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    width: 100px;
+}
+.information-container.wrapper{display: none;}
+
