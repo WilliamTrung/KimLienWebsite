@@ -13,7 +13,7 @@ using Common.TaskHolder.Models;
 using Microsoft.Extensions.FileProviders;
 using Serilog;
 using Web.ApiHost;
-
+using Web.ApiHost.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 // I. Configs builder
 // 1. Set base configuration path
@@ -73,6 +73,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAuthorization();
 var app = builder.Build();
+app.ApplyApplicationExtensions();
 app.EnsureDatabaseMigrated();
 // IMPORTANT: order
 app.UseHttpsRedirection();

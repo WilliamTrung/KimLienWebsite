@@ -1,7 +1,6 @@
+using System.Security.Claims;
 using Common.RequestContext.Abstractions;
 using Microsoft.AspNetCore.Http;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 
 namespace Common.RequestContext.Middleware
 {
@@ -29,11 +28,17 @@ namespace Common.RequestContext.Middleware
             await next.Invoke(context);
         }
         private static string? GetClientIp(HttpContext http)
-        {
-            var ip = http.Connection.RemoteIpAddress;
-            if (ip is null) return null;
-            if (ip.IsIPv4MappedToIPv6) ip = ip.MapToIPv4();
-            return ip.ToString();
+        { 
+            // Cloudflare header first
+            if (http.Request.Headers.TryGetValue("CF-Connecting-IP", out var cfIp))
+                return cfIp.ToString();
+
+            // then X-Forwarded-For
+            if (http.Request.Headers.TryGetValue("X-Forwarded-For", out var xff))
+                return xff.ToString().Split(',')[0];
+
+            // fallback
+            return http.Connection.RemoteIpAddress?.ToString() ?? "unknown";
         }
     }
 }
