@@ -12,6 +12,7 @@ using Common.TaskHolder.Middleware;
 using Common.TaskHolder.Models;
 using Microsoft.Extensions.FileProviders;
 using Serilog;
+using System.Reflection;
 using Web.ApiHost;
 using Web.ApiHost.Extensions;
 var builder = WebApplication.CreateBuilder(args);
@@ -87,7 +88,6 @@ app.EnsureDatabaseMigrated();
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
-app.UseFileServer();
 app.UseRouting();
 
 // CORS should be after routing, before auth/authorization
@@ -102,9 +102,18 @@ app.UseAuthorization();
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        // Keep it under /swagger/ (avoid conflicting with root)
-        c.RoutePrefix = "swagger";
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+        var assembly = Assembly.GetEntryAssembly();
+        var version = assembly.GetCustomAttribute<AssemblyFileVersionAttribute>().Version;
+        var date = File.GetLastWriteTimeUtc(assembly.Location);
+
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", $"API - Version: {version} - Date: {date}");
+        c.RoutePrefix = string.Empty;
+        c.InjectStylesheet("/contents/bootstrap.min.css");
+        c.InjectStylesheet("/contents/customswagger.css");
+        c.InjectJavascript("/contents/jquery-1.10.2.min.js");
+        c.InjectJavascript("/contents/bootstrap.min.js");
+        c.InjectJavascript("/contents/CustomSwagger.js");
+        c.DocumentTitle = assembly.GetName().Name;
     });
 app.MapSwagger();
 //}
