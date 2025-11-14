@@ -87,7 +87,7 @@ app.EnsureDatabaseMigrated();
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
-
+app.UseFileServer();
 app.UseRouting();
 
 // CORS should be after routing, before auth/authorization
