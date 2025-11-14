@@ -33,9 +33,4 @@
     <ProjectReference Include="..\Common.RequestContext.Middleware\Common.RequestContext.Middleware.csproj" />
     <ProjectReference Include="..\Common.TaskHolder.Middleware\Common.TaskHolder.Middleware.csproj" />
   </ItemGroup>
-  <ItemGroup>
-  	<Content Include="wwwroot\**\*" CopyToOutputDirectory="Always" />
-  </ItemGroup>
-
-
 </Project>
