@@ -10,7 +10,7 @@ services:
     container_name: kimlien-backend
     environment:
       ASPNETCORE_ENVIRONMENT: "Production"
-      BASE_PATH: "/app/publish"
+      BASE_PATH: "/app"
       APP_SETTING: "appsettings.json"
     expose:
       - "8080"     # internal only
