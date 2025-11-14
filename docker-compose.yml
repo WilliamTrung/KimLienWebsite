@@ -12,6 +12,7 @@ services:
       ASPNETCORE_ENVIRONMENT: "Production"
       BASE_PATH: "/app"
       APP_SETTING: "appsettings.json"
+      ASPNETCORE_URLS: "http://0.0.0.0:8080"
     expose:
       - "8080"     # internal only
     restart: always
