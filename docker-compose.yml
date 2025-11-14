@@ -12,6 +12,8 @@ services:
       - "8080:8080"
     environment:
       ASPNETCORE_ENVIRONMENT: Production
+      BASE_PATH: "/api"
+      APP_SETTING: "appsettings.json"
     restart: always
 
   nginx:
