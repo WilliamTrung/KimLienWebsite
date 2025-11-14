@@ -97,8 +97,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 // Put Swagger before custom middlewares to avoid them intercepting UI/static files.
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
@@ -106,7 +106,7 @@ if (app.Environment.IsDevelopment())
         c.RoutePrefix = "swagger";
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
     });
-}
+//}
 
 // Custom middlewares AFTER Swagger so they don't swallow swagger assets
 app.UseMiddleware<DomainExceptionMiddleware>();
