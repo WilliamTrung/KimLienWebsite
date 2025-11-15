@@ -6,13 +6,15 @@ WORKDIR /src
 
 # Copy solution file
 COPY kim-lien-application.sln ./
+COPY . .
 
-
-# Copy all folders but only *.csproj files to keep caching efficient
 COPY refactor/kim-lien-application ./tmp
 
-# Delete everything except *.csproj
-RUN find ./tmp -type f ! -name '*.csproj' -delete
+# Create isolated folder for csproj-only restore
+RUN mkdir /src/csproj && cp -R tmp/* /src/csproj
+
+# Delete everything except .csproj inside the temporary restore folder
+RUN find /src/csproj -type f ! -name '*.csproj' -delete
 
 # Recreate folder structure in /src
 RUN mkdir /src/projects && cp -R tmp/* /src/projects
@@ -28,7 +30,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
 # Copy full source now
-COPY ../.. .
+COPY . .
 
 # Copy restored artifacts to speed up build
 COPY --from=restore /root/.nuget/packages /root/.nuget/packages
