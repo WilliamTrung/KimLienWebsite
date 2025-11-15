@@ -96,27 +96,13 @@ app.UseCors("CorsPolicy");
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Put Swagger before custom middlewares to avoid them intercepting UI/static files.
-//if (app.Environment.IsDevelopment())
-//{
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        var assembly = Assembly.GetEntryAssembly();
-        var version = assembly.GetCustomAttribute<AssemblyFileVersionAttribute>().Version;
-        var date = File.GetLastWriteTimeUtc(assembly.Location);
-
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", $"API - Version: {version} - Date: {date}");
-        c.RoutePrefix = string.Empty;
-        c.InjectStylesheet("/contents/bootstrap.min.css");
-        c.InjectStylesheet("/contents/customswagger.css");
-        c.InjectJavascript("/contents/jquery-1.10.2.min.js");
-        c.InjectJavascript("/contents/bootstrap.min.js");
-        c.InjectJavascript("/contents/CustomSwagger.js");
-        c.DocumentTitle = assembly.GetName().Name;
-    });
-app.MapSwagger();
-//}
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    // Keep it under /swagger/ (avoid conflicting with root)
+    c.RoutePrefix = "swagger";
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+});
 
 // Custom middlewares AFTER Swagger so they don't swallow swagger assets
 app.UseMiddleware<DomainExceptionMiddleware>();
