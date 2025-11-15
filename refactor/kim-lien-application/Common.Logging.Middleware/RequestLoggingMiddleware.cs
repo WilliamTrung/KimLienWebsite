@@ -56,9 +56,12 @@ namespace Common.Logging.Middleware
                     }
 
                     // Log response details
-                    _logger.LogDataInformation($"RequestId End: {_requestContext.Data.RequestId} " +
-                        $"| Uri: {context.Request.GetEncodedUrl()} " +
-                        $"| StatusCode:{context.Response.StatusCode} " +
+                    var requestId = _requestContext.Data.RequestId;
+                    var url = context.Request.GetEncodedUrl();
+                    var statusCode = context.Response.StatusCode;
+                    _logger.LogDataInformation($"RequestId End: {requestId} " +
+                        $"| Uri: {url} " +
+                        $"| StatusCode:{statusCode} " +
                         $"| Response: {responseBodyText} " +
                         $"| Duration: {stopwatch.ElapsedMilliseconds}");
 
