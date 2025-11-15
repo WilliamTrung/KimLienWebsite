@@ -5,7 +5,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS restore
 WORKDIR /src
 
 # Copy solution file
-COPY refactor/kim-lien-application/kim-lien-application.sln ./
+COPY kim-lien-application.sln ./
 
 
 # Copy all folders but only *.csproj files to keep caching efficient
