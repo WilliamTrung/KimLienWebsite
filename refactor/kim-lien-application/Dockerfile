@@ -4,9 +4,6 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS restore
 WORKDIR /src
 
-ENV BASE_PATH=/app
-ENV APP_SETTING=appsettings.json
-
 # Copy solution file
 COPY kim-lien-application.sln ./
 COPY . .
@@ -32,6 +29,8 @@ RUN dotnet restore /src/projects/Web.ApiHost/Web.ApiHost.csproj
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
+ENV BASE_PATH=/app
+ENV APP_SETTING=appsettings.json
 # Copy full source now
 COPY . .
 
