@@ -29,8 +29,6 @@ RUN dotnet restore /src/projects/Web.ApiHost/Web.ApiHost.csproj
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-ENV BASE_PATH=/app
-ENV APP_SETTING=appsettings.json
 # Copy full source now
 COPY . .
 
@@ -47,7 +45,10 @@ RUN dotnet publish Web.ApiHost/Web.ApiHost.csproj -c Release -o /app/publish /p:
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
 
-EXPOSE 8080
+ENV BASE_PATH=/app
+ENV APP_SETTING=appsettings.json
+
+EXPOSE 5000
 
 # Copy published output
 COPY --from=build /app/publish .
