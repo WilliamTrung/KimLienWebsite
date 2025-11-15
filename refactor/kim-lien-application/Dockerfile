@@ -4,6 +4,9 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS restore
 WORKDIR /src
 
+ENV BASE_PATH=/app
+ENV APP_SETTING=appsettings.json
+
 # Copy solution file
 COPY kim-lien-application.sln ./
 COPY . .
