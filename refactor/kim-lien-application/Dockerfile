@@ -50,8 +50,4 @@ EXPOSE 8080
 # Copy published output
 COPY --from=build /app/publish .
 
-# Health check without endpoint
-HEALTHCHECK --interval=10s --timeout=3s --start-period=5s --retries=3 \
-  CMD ["bash", "-c", "netstat -tln | grep 8080"]
-
 ENTRYPOINT ["dotnet", "Web.ApiHost.dll"]
