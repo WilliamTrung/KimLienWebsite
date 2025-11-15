@@ -5,7 +5,7 @@ services:
   backend:
     image: kimlien-backend:latest
     build:
-      context: .
+      context: ./refactor/kim-lien-application
       dockerfile: refactor/kim-lien-application/Dockerfile
     container_name: kimlien-backend
     environment:
