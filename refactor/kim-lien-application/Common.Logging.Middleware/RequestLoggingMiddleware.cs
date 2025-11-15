@@ -27,10 +27,12 @@ namespace Common.Logging.Middleware
             // Enable buffering to read the request body multiple times
             context.Request.EnableBuffering();
             var requestBody = await ReadRequestBody(context.Request); // Read the request body
-
+            var responseBodyText = string.Empty;
+            var url = context.Request.GetDisplayUrl();
+            var requestId = _requestContext.Data.RequestId;
             // Log request details
             _logger.LogDataInformation($"RequestId Start: {_requestContext.Data.RequestId} " +
-                $"| Uri: {context.Request.GetDisplayUrl()} " +
+                $"| Uri: {url} " +
                 $"| Token: {(context.Request.Headers.TryGetValue("authorization", out var token) ? token : string.Empty)} " +
                 $"| Request: {requestBody} ");
 
@@ -47,7 +49,6 @@ namespace Common.Logging.Middleware
                     stopwatch.Stop(); // Stop the stopwatch
 
                     //// Read the response body from the memory stream
-                    string? responseBodyText = null;
                     if (context.Response.Body.CanSeek)
                     {
                         context.Response.Body.Seek(0, SeekOrigin.Begin); // Rewind the response stream
@@ -55,18 +56,6 @@ namespace Common.Logging.Middleware
                         context.Response.Body.Seek(0, SeekOrigin.Begin); // Rewind the response stream again 
                     }
 
-                    // Log response details
-                    var requestId = _requestContext.Data.RequestId;
-                    _logger.LogDataInformation(requestId);
-                    var url = context.Request.GetEncodedUrl();
-                    _logger.LogDataInformation(url);
-                    var statusCode = context.Response.StatusCode;
-                    _logger.LogDataInformation(statusCode.ToString());
-                    _logger.LogDataInformation($"RequestId End: {requestId} " +
-                        $"| Uri: {url} " +
-                        $"| StatusCode:{statusCode} " +
-                        $"| Response: {responseBodyText} " +
-                        $"| Duration: {stopwatch.ElapsedMilliseconds}");
 
                     // Copy the response body back to the original stream
                     await responseBodyStream.CopyToAsync(originalBodyStream);
@@ -74,6 +63,12 @@ namespace Common.Logging.Middleware
             }
             finally
             {
+                // Log response details
+                _logger.LogDataInformation($"RequestId End: {requestId} " +
+                    $"| Uri: {url} " +
+                    $"| StatusCode:{context.Response.StatusCode} " +
+                    $"| Response: {responseBodyText} " +
+                    $"| Duration: {stopwatch.ElapsedMilliseconds}");
                 context.Response.Body = originalBodyStream;
             }
         }

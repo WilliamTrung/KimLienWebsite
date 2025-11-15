@@ -20,7 +20,7 @@ namespace Common.RequestContext.Middleware
                 UserId = user?.FindFirst(ClaimTypes.NameIdentifier)?.Value,
                 Email = user?.FindFirst(ClaimTypes.Email)?.Value,
                 IpAddress = GetClientIp(context),
-                RequestId = context.Request.Headers["request-id"],
+                RequestId = context.Request.Headers["request-id"].FirstOrDefault() ?? Guid.NewGuid().ToString(),
                 UserAgent = context.Request.Headers["user-agent"],
                 Roles = user?.FindAll(ClaimTypes.Role).Select(r => r.Value).ToList()
             };
