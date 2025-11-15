@@ -6,7 +6,7 @@ services:
     image: kimlien-backend:latest
     build:
       context: .
-      dockerfile: refactor/kim-lien-application/Web.ApiHost/Dockerfile
+      dockerfile: refactor/kim-lien-application/Dockerfile
     container_name: kimlien-backend
     environment:
       ASPNETCORE_ENVIRONMENT: "Production"
