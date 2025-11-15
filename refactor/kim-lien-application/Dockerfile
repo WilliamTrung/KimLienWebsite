@@ -8,7 +8,7 @@ WORKDIR /src
 COPY kim-lien-application.sln ./
 COPY . .
 
-COPY refactor/kim-lien-application ./tmp
+COPY . ./tmp
 
 # Create isolated folder for csproj-only restore
 RUN mkdir /src/csproj && cp -R tmp/* /src/csproj
