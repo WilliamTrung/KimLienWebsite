@@ -28,7 +28,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
 # Copy full source now
-COPY refactor/kim-lien-application/ .
+COPY ../.. .
 
 # Copy restored artifacts to speed up build
 COPY --from=restore /root/.nuget/packages /root/.nuget/packages
