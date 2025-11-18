@@ -1,5 +1,6 @@
 using Admin.Application.Commands.Product;
 using Admin.Application.Models.Product;
+using Admin.Contract.Commands;
 using AutoMapper;
 using Common.Domain.Entities;
 using Common.Kernel.Constants;
@@ -47,6 +48,7 @@ namespace Admin.Application.Profiles
                 .ForMember(d => d.CategoryName, opt => opt.MapFrom(s => s.Name))
                 .ForMember(d => d.CategoryId, opt => opt.MapFrom(s => s.Id))
                 ;
+            CreateMap<CreateProductContractCommand, CreateProductCommand>();
         }
     }
 }
