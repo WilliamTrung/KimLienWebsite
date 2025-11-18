@@ -9,11 +9,8 @@ using System.Text.Json;
 
 namespace Common.Domain.Entities
 {
-    public class Product : BaseEntity<Guid>, IAuditEntity, IDeleteEntity, IQueryEntity, ITenantEntity
+    public class Product : BaseSlugEntity<Guid>, IAuditEntity, IDeleteEntity, IQueryEntity, ITenantEntity
     {
-        public string BareName { get; set; } = null!;
-        [Required]
-        public string Name { get; set; } = null!;
         [Required]
         public string Description { get; set; } = null!;
 

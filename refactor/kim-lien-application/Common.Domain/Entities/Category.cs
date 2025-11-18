@@ -1,19 +1,16 @@
-﻿using Common.Extension;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using Common.Extension;
 using Common.Infrastructure.Interceptor.TenantQuery.Model;
 using Common.Kernel.Models.Abstractions;
 using Common.Kernel.Models.Implementations;
 using Newtonsoft.Json;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Diagnostics.CodeAnalysis;
-using System.Text.Json;
 
 namespace Common.Domain.Entities
 {
-    public class Category : BaseEntity<Guid>, IAuditEntity, IDeleteEntity, IQueryEntity, ITenantEntity
+    public class Category : BaseSlugEntity<Guid>, IAuditEntity, IDeleteEntity, IQueryEntity, ITenantEntity
     {
-        [Required]
-        public string Name { get; set; } = null!;
         [AllowNull]
         public Guid? ParentId { get; set; }
         [ForeignKey(nameof(ParentId))]
@@ -28,7 +25,6 @@ namespace Common.Domain.Entities
         [ForeignKey(nameof(ModifiedBy))]
         public User? Modifier { get; set; }
         public bool IsDeleted { get; set; }
-        public string BareName { get; set; } = null!;
         public string TenantId { get; set; } = null!;
         public JsonDocument? Pictures { get; set; }
         [NotMapped]

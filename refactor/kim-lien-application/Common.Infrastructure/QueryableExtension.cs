@@ -17,7 +17,7 @@ namespace Common.Infrastructure
             this IQueryable<TEntity> query,
             List<string>? input,
             Func<IQueryable<TEntity>, string, IQueryable<TEntity>> nameFilter)
-            where TEntity : BaseEntity<TKey>
+            where TEntity : BaseSlugEntity<TKey>
             where TKey : IParsable<TKey>
         {
             if (!(input?.Any() ?? false))
@@ -44,7 +44,7 @@ namespace Common.Infrastructure
             this IQueryable<TEntity> query,
             string? input,
             Func<IQueryable<TEntity>, string, IQueryable<TEntity>> nameFilter)
-            where TEntity : BaseEntity<TKey>
+            where TEntity : BaseSlugEntity<TKey>
             where TKey : IParsable<TKey>
         {
             if (string.IsNullOrWhiteSpace(input))
@@ -83,7 +83,7 @@ namespace Common.Infrastructure
         public static Expression<Func<TEntity, bool>> BuildSlugQuery<TEntity, TKey>(
             string? input,
             Func<string, Expression<Func<TEntity, bool>>> namePredicateFactory)
-            where TEntity : BaseEntity<TKey>
+            where TEntity : BaseSlugEntity<TKey>
             where TKey : IParsable<TKey>
         {
             // default: no filter
@@ -107,7 +107,7 @@ namespace Common.Infrastructure
             {
                 //hence TEntity always has a property long Slug
                 //Expression here should be x => x.Slug == num
-                return SlugEquals<TEntity>(num, nameof(BaseEntity<TKey>.Slug));
+                return SlugEquals<TEntity>(num, nameof(BaseSlugEntity<TKey>.Slug));
             }
 
             // 2b) otherwise use the name predicate produced by the factory
@@ -117,7 +117,7 @@ namespace Common.Infrastructure
         public static Expression<Func<TEntity, bool>> BuildSlugQuery<TEntity, TKey>(
             List<string>? input,
             Func<string, Expression<Func<TEntity, bool>>> namePredicateFactory)
-          where TEntity : BaseEntity<TKey>
+          where TEntity : BaseSlugEntity<TKey>
           where TKey : IParsable<TKey>
         {
             var init = PredicateBuilder.New<TEntity>(_ => true);
