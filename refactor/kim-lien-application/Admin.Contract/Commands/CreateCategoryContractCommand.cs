@@ -5,6 +5,7 @@ namespace Admin.Contract.Commands
 {
     public class CreateCategoryContractCommand : IRequest
     {
+        public Guid Id { get; set; }
         public string Name { get; set; } = null!;
         public Guid? ParentId { get; set; }
         public List<AssetDto>? Pictures { get; set; }
