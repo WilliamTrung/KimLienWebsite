@@ -7,16 +7,12 @@ using KimLienAdministrator;
 using KimLienAdministrator.Helper.Azure.Blob;
 using KimLienAdministrator.Helper.Azure.IBlob;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddRazorPages(x =>
-{
-    x.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute());
-});
+builder.Services.AddRazorPages();
 var configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory()) // This is the line you would change if your configuration files were somewhere else
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
@@ -42,6 +38,7 @@ services.AddScoped<IProductBlob, ProductBlob>();
 services.AddTransient<PictureBlob>();
 services.AddSession(option => option.IdleTimeout = TimeSpan.FromMinutes(30));
 services.AddTransient<IAuthService, AuthService>();
+
 var blobStorage = configuration.GetSection("BlobStorage");
 var connection = blobStorage["AzureWebJobsStorage"];
 
