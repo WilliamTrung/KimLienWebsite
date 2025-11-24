@@ -6,6 +6,7 @@ using AppService.UnitOfWork;
 using KimLienAdministrator;
 using KimLienAdministrator.Helper.Azure.Blob;
 using KimLienAdministrator.Helper.Azure.IBlob;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -42,7 +43,7 @@ var blobStorage = configuration.GetSection("BlobStorage");
 var connection = blobStorage["AzureWebJobsStorage"];
 
 var app = builder.Build();
-
+app.UsePathBase("/administrator");
 Startup.CreateDBAsync(app).Wait();
 
 // Configure the HTTP request pipeline.
