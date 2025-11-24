@@ -19,7 +19,7 @@ services.AddControllers().AddNewtonsoftJson
                (
                    x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
                );
-services.AddDbContext<SqlContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+services.AddDbContext<SqlContext>(option => option.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 services.AddAutoMapper(typeof(Mapping));
 services.AddScoped<IUnitOfWork, UnitOfWork>();
 
