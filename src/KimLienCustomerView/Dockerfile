@@ -8,6 +8,8 @@ RUN apt-get update \
        iputils-ping \
        dnsutils \
        iproute2 \
+       telnet \
+       netcat-openbsd \
     && rm -rf /var/lib/apt/lists/*
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
