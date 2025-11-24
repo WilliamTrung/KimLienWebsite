@@ -21,7 +21,11 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
+          script_stop: true   # ⚡ Ensures GitHub Action fails on any SSH error
           script: |
+            # Exit on ANY error inside the script
+            set -euo pipefail
+
             echo "🚀 Starting LEGACY deploy..."
 
             # Directory from secret
