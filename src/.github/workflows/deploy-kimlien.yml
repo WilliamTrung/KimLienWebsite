@@ -1,9 +1,9 @@
-name: Deploy KimLien Web
+name: Deploy KimLien Web (Legacy)
 
 on:
   push:
     branches:
-      - main  # or master
+      - legacy
   workflow_dispatch: {}
 
 jobs:
@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout repo (not used for deploy, but required for actions)
         uses: actions/checkout@v4
 
       - name: Deploy to server over SSH
@@ -21,20 +21,43 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-            echo "🚀 Starting deploy..."
+            echo "🚀 Starting LEGACY deploy..."
 
-            APP_DIR="/root/apps/kim-lien-web-legacy"   # 🔧 CHANGE THIS TO YOUR SERVER PATH
+            # Load APP_DIR from secret
+            APP_DIR="${{ secrets.LEGACY_APP_DIR }}"
+            REPO_URL="${{ secrets.REPOSITORY_URL }}"    # optional: set in secrets
 
-            echo "📂 Switching to project directory..."
+            echo "📂 Target directory: $APP_DIR"
+
+            # 1. Create directory if missing
+            if [ ! -d "$APP_DIR" ]; then
+              echo "📁 Directory not found, creating..."
+              mkdir -p "$APP_DIR"
+            fi
+
             cd $APP_DIR
 
-            echo "📥 Fetching latest code..."
-            git fetch --all --prune
-            git reset --hard origin/legacy
-            git pull
+            # 2. Clone repo if missing
+            if [ ! -d ".git" ]; then
+              echo "🔄 No git repo found, cloning..."
+              
+              # If REPOSITORY_URL secret not provided, fallback to GitHub remote URL
+              if [ -z "$REPO_URL" ]; then
+                REPO_URL="https://github.com/${{ github.repository }}.git"
+              fi
 
-            echo "🐳 Building and updating containers..."
+              git clone "$REPO_URL" .
+            fi
+
+            echo "🔧 Ensuring correct branch (legacy)..."
+            git fetch --all --prune
+            git checkout legacy
+            git reset --hard origin/legacy
+
+            echo "🐳 Building services..."
             docker compose build --pull
+
+            echo "🚀 Deploying services (zero downtime)..."
             docker compose up -d --remove-orphans
 
             echo "🧪 Checking containers..."
@@ -43,4 +66,4 @@ jobs:
             echo "🧹 Cleaning up old images..."
             docker image prune -f
 
-            echo "🎉 Deploy completed successfully!"
+            echo "🎉 Legacy deploy completed successfully!"
