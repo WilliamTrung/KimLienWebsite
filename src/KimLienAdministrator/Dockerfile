@@ -5,18 +5,26 @@ EXPOSE 8080
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 
-COPY *.sln .
-COPY KimLienAdministrator/*.csproj KimLienAdministrator/
-COPY AppCore/*.csproj AppCore/
-COPY AppService/*.csproj AppService/
-COPY AppRepository/*.csproj AppRepository/
+# Copy solution
+COPY src/*.sln .
 
+# Copy project files
+COPY src/KimLienAdministrator/*.csproj KimLienAdministrator/
+COPY src/AppCore/*.csproj AppCore/
+COPY src/AppService/*.csproj AppService/
+COPY src/AppRepository/*.csproj AppRepository/
+
+# Restore dependencies
 RUN dotnet restore
 
-COPY . .
+# Copy everything
+COPY src/ .
+
+# Publish the Admin app
 WORKDIR /src/KimLienAdministrator
 RUN dotnet publish -c Release -o /app/publish
 
+# Final runtime image
 FROM base AS final
 WORKDIR /app
 COPY --from=build /app/publish .

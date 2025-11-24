@@ -5,15 +5,22 @@ EXPOSE 8080
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 
-COPY *.sln .
-COPY KimLienCustomerView/*.csproj KimLienCustomerView/
-COPY AppCore/*.csproj AppCore/
-COPY AppService/*.csproj AppService/
-COPY AppRepository/*.csproj AppRepository/
+# Copy solution file
+COPY src/*.sln .
 
+# Copy csproj files for all required projects
+COPY src/KimLienCustomerView/*.csproj KimLienCustomerView/
+COPY src/AppCore/*.csproj AppCore/
+COPY src/AppService/*.csproj AppService/
+COPY src/AppRepository/*.csproj AppRepository/
+
+# Restore only what we copied
 RUN dotnet restore
 
-COPY . .
+# Copy everything under src/
+COPY src/ .
+
+# Publish project
 WORKDIR /src/KimLienCustomerView
 RUN dotnet publish -c Release -o /app/publish
 

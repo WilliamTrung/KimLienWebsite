@@ -4,7 +4,7 @@ services:
   customer:
     build:
       context: .
-      dockerfile: KimLienCustomerView/Dockerfile
+      dockerfile: src/KimLienCustomerView/Dockerfile
     container_name: kimlien-customer
     environment:
       ASPNETCORE_URLS: "http://0.0.0.0:8080"
@@ -16,7 +16,7 @@ services:
   administrator:
     build:
       context: .
-      dockerfile: KimLienAdministrator/Dockerfile
+      dockerfile: src/KimLienAdministrator/Dockerfile
     container_name: kimlien-admin
     environment:
       ASPNETCORE_URLS: "http://0.0.0.0:8080"
