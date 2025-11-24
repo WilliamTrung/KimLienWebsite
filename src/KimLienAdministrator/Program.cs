@@ -43,7 +43,6 @@ var connection = blobStorage["AzureWebJobsStorage"];
 
 var app = builder.Build();
 
-app.UsePathBase("/administrator");
 Startup.CreateDBAsync(app).Wait();
 
 // Configure the HTTP request pipeline.
