@@ -27,6 +27,7 @@ namespace Common.Infrastructure.Interceptor
             foreach (var entry in context.ChangeTracker.Entries<IQueryEntity>())
             {
                 entry.Entity.BareName = entry.Entity.Name.RemoveAccent().RemoveSpace().ToLower();
+                entry.Entity.SlugName = entry.Entity.Name.GetSlug();
             }
         }
     }

@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Admin.Contract\Admin.Contract.csproj" />
     <ProjectReference Include="..\Admin.Domain\Admin.Domain.csproj" />
     <ProjectReference Include="..\Common.Application.Notification\Common.Application.Notification.csproj" />
     <ProjectReference Include="..\Common.Application.Storage\Common.Application.Storage.csproj" />

@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common.Api\Common.Api.csproj" />
+    <ProjectReference Include="..\Legacy.Application\Legacy.Application.csproj" />
+    <ProjectReference Include="..\Legacy.Contract\Legacy.Contract.csproj" />
+    <ProjectReference Include="..\Legacy.Domain\Legacy.Domain.csproj" />
+    <ProjectReference Include="..\Legacy.Infrastructure\Legacy.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using Admin.Application.Abstractions;
 using Admin.Application.Models.Category;
 using Admin.Infrastructure.Data;
@@ -12,10 +13,8 @@ using Common.Kernel.Extensions;
 using Common.Kernel.Request.Pagination;
 using Common.Kernel.Response.Pagination;
 using LinqKit;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System.Linq.Expressions;
 
 namespace Admin.Infrastructure.Services
 {

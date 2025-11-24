@@ -4,5 +4,6 @@
     {
         public string Name { get; set; }
         public string BareName { get; set; }
+        public string SlugName { get; set; }
     }
 }

@@ -48,12 +48,6 @@ namespace CentralData.MigrateDbContext.Migrations
                     b.Property<DateTime?>("RevokedUtc")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<long>("Slug")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Slug"));
-
                     b.Property<string>("TokenHash")
                         .IsRequired()
                         .HasMaxLength(256)
@@ -119,6 +113,10 @@ namespace CentralData.MigrateDbContext.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Slug"));
 
+                    b.Property<string>("SlugName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("TenantId")
                         .IsRequired()
                         .HasColumnType("text");
@@ -178,6 +176,10 @@ namespace CentralData.MigrateDbContext.Migrations
                         .HasColumnType("bigint");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Slug"));
+
+                    b.Property<string>("SlugName")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -242,12 +244,6 @@ namespace CentralData.MigrateDbContext.Migrations
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uuid");
 
-                    b.Property<long>("Slug")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Slug"));
-
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
@@ -268,12 +264,6 @@ namespace CentralData.MigrateDbContext.Migrations
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uuid");
-
-                    b.Property<long>("Slug")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Slug"));
 
                     b.Property<int>("ViewCount")
                         .HasColumnType("integer");
@@ -312,12 +302,6 @@ namespace CentralData.MigrateDbContext.Migrations
 
                     b.Property<Guid>("ProductViewId")
                         .HasColumnType("uuid");
-
-                    b.Property<long>("Slug")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Slug"));
 
                     b.Property<Guid?>("UserId")
                         .HasColumnType("uuid");
@@ -440,6 +424,22 @@ namespace CentralData.MigrateDbContext.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("Common.Domain.Entities.UserMetadata", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsOnline")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("LastActiveAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("UserMetadata");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -662,6 +662,17 @@ namespace CentralData.MigrateDbContext.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Common.Domain.Entities.UserMetadata", b =>
+                {
+                    b.HasOne("Common.Domain.Entities.User", "User")
+                        .WithOne("UserMetadata")
+                        .HasForeignKey("Common.Domain.Entities.UserMetadata", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("Common.Domain.Entities.Role", null)
@@ -730,6 +741,11 @@ namespace CentralData.MigrateDbContext.Migrations
             modelBuilder.Entity("Common.Domain.Entities.ProductView", b =>
                 {
                     b.Navigation("ProductViewCredentials");
+                });
+
+            modelBuilder.Entity("Common.Domain.Entities.User", b =>
+                {
+                    b.Navigation("UserMetadata");
                 });
 #pragma warning restore 612, 618
         }
