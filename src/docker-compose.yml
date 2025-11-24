@@ -1,50 +1,35 @@
 version: "3.9"
 
 services:
-  customer:
-    build:
-      context: .
-      dockerfile: KimLienCustomerView/Dockerfile
-    container_name: kimlien-customer
-    environment:
-      ASPNETCORE_URLS: "http://0.0.0.0:8080"
-    volumes:
-      - /root/config/kimlien/KimLienCustomerView/appsettings.json:/app/appsettings.json:ro
-    expose:
-      - "8080"
 
-  administrator:
+  backend:
+    image: kimlien-backend:latest
     build:
-      context: .
-      dockerfile: KimLienAdministrator/Dockerfile
-    container_name: kimlien-admin
+      context: ./kim-lien-application
+      dockerfile: Dockerfile
+    networks:
+      - appnet
+    container_name: kimlien-backend
     environment:
+      ASPNETCORE_ENVIRONMENT: "Production"
+      BASE_PATH: "/app"
+      APP_SETTING: "appsettings.json"
       ASPNETCORE_URLS: "http://0.0.0.0:8080"
-    volumes:
-      - /root/config/kimlien/KimLienAdministrator/appsettings.json:/app/appsettings.json:ro
     expose:
-      - "8080"
-
-  api:
-    build:
-      context: .
-      dockerfile: KimLienAPI/Dockerfile
-    container_name: kimlien-api
-    environment:
-      ASPNETCORE_URLS: "http://0.0.0.0:8080"
-    volumes:
-      - /root/config/kimlien/KimLienAPI/appsettings.json:/app/appsettings.json:ro
-    expose:
-      - "8080"
+      - "8080"     # internal only
+    restart: always
 
   nginx:
     image: nginx:stable-alpine
     container_name: kimlien-nginx
     ports:
-      - "80:80"
+      - "80:80"    # ONLY public-facing port
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
-      - customer
-      - administrator
-      - api
+      - backend
+    networks:
+      - appnet
+    restart: always
+networks:
+  appnet:
