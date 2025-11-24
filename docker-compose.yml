@@ -12,6 +12,8 @@ services:
       - /root/config/kimlien/KimLienCustomerView/appsettings.json:/app/appsettings.json:ro
     expose:
       - "8080"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   administrator:
     build:
@@ -24,6 +26,8 @@ services:
       - /root/config/kimlien/KimLienAdministrator/appsettings.json:/app/appsettings.json:ro
     expose:
       - "8080"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   nginx:
     image: nginx:stable-alpine
