@@ -60,8 +60,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
-
-app.MapRazorPages();
 //add session
 app.UseSession();
+app.MapRazorPages();
 app.Run();
