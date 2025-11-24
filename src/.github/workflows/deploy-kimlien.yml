@@ -11,59 +11,60 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo (not used for deploy, but required for actions)
+      - name: Checkout repo (required for actions)
         uses: actions/checkout@v4
 
       - name: Deploy to server over SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
           script: |
             echo "🚀 Starting LEGACY deploy..."
 
-            # Load APP_DIR from secret
+            # Directory from secret
             APP_DIR="${{ secrets.LEGACY_APP_DIR }}"
-            REPO_URL="${{ secrets.REPOSITORY_URL }}"    # optional: set in secrets
+
+            # Optional: repository URL (fallback to GitHub repo)
+            REPO_URL="${{ secrets.REPOSITORY_URL }}"
+            if [ -z "$REPO_URL" ]; then
+              REPO_URL="https://github.com/${{ github.repository }}.git"
+            fi
 
             echo "📂 Target directory: $APP_DIR"
 
-            # 1. Create directory if missing
+            # 1. Ensure directory exists
             if [ ! -d "$APP_DIR" ]; then
-              echo "📁 Directory not found, creating..."
+              echo "📁 Directory does not exist. Creating..."
               mkdir -p "$APP_DIR"
             fi
 
-            cd $APP_DIR
+            cd "$APP_DIR"
 
-            # 2. Clone repo if missing
+            # 2. Check if git repo exists
             if [ ! -d ".git" ]; then
-              echo "🔄 No git repo found, cloning..."
-              
-              # If REPOSITORY_URL secret not provided, fallback to GitHub remote URL
-              if [ -z "$REPO_URL" ]; then
-                REPO_URL="https://github.com/${{ github.repository }}.git"
-              fi
-
+              echo "🔄 No git repo found. Cloning..."
               git clone "$REPO_URL" .
             fi
 
-            echo "🔧 Ensuring correct branch (legacy)..."
+            # 3. Ensure correct branch
+            echo "🔧 Checking out legacy branch..."
             git fetch --all --prune
             git checkout legacy
             git reset --hard origin/legacy
 
-            echo "🐳 Building services..."
+            echo "🐳 Building Docker services..."
             docker compose build --pull
 
-            echo "🚀 Deploying services (zero downtime)..."
+            echo "🚀 Deploying with zero downtime..."
             docker compose up -d --remove-orphans
 
-            echo "🧪 Checking containers..."
+            echo "🧪 Reporting container status..."
             docker compose ps
 
-            echo "🧹 Cleaning up old images..."
+            echo "🧹 Pruning old images..."
             docker image prune -f
 
             echo "🎉 Legacy deploy completed successfully!"
