@@ -25,18 +25,6 @@ services:
     expose:
       - "8080"
 
-  api:
-    build:
-      context: .
-      dockerfile: KimLienAPI/Dockerfile
-    container_name: kimlien-api
-    environment:
-      ASPNETCORE_URLS: "http://0.0.0.0:8080"
-    volumes:
-      - /root/config/kimlien/KimLienAPI/appsettings.json:/app/appsettings.json:ro
-    expose:
-      - "8080"
-
   nginx:
     image: nginx:stable-alpine
     container_name: kimlien-nginx
