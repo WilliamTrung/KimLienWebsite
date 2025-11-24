@@ -21,17 +21,16 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          script_stop: true   # ⚡ Ensures GitHub Action fails on any SSH error
+          script_stop: true
           script: |
-            # Exit on ANY error inside the script
+            # Fail immediately on ANY error
             set -euo pipefail
 
             echo "🚀 Starting LEGACY deploy..."
 
-            # Directory from secret
             APP_DIR="${{ secrets.LEGACY_APP_DIR }}"
 
-            # Optional: repository URL (fallback to GitHub repo)
+            # Optional custom repository URL
             REPO_URL="${{ secrets.REPOSITORY_URL }}"
             if [ -z "$REPO_URL" ]; then
               REPO_URL="https://github.com/${{ github.repository }}.git"
@@ -39,7 +38,7 @@ jobs:
 
             echo "📂 Target directory: $APP_DIR"
 
-            # 1. Ensure directory exists
+            # Ensure project directory exists
             if [ ! -d "$APP_DIR" ]; then
               echo "📁 Directory does not exist. Creating..."
               mkdir -p "$APP_DIR"
@@ -47,28 +46,30 @@ jobs:
 
             cd "$APP_DIR"
 
-            # 2. Check if git repo exists
+            # Clone repository if missing
             if [ ! -d ".git" ]; then
               echo "🔄 No git repo found. Cloning..."
               git clone "$REPO_URL" .
             fi
 
-            # 3. Ensure correct branch
-            echo "🔧 Checking out legacy branch..."
+            echo "🔧 Syncing legacy branch..."
             git fetch --all --prune
             git checkout legacy
             git reset --hard origin/legacy
+            git pull 
+            echo "Sync successfully..."
 
             echo "🐳 Building Docker services..."
+            # ⚡ If this fails, the script stops immediately (old containers remain)
             docker compose build --pull
 
-            echo "🚀 Deploying with zero downtime..."
+            echo "🚀 Build succeeded. Deploying new containers..."
             docker compose up -d --remove-orphans
 
-            echo "🧪 Reporting container status..."
+            echo "🧪 Container status:"
             docker compose ps
 
-            echo "🧹 Pruning old images..."
+            echo "🧹 Cleaning up unused images..."
             docker image prune -f
 
             echo "🎉 Legacy deploy completed successfully!"
