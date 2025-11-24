@@ -9,6 +9,7 @@ WORKDIR /src
 COPY src/*.sln .
 
 # Copy csproj files for all required projects
+COPY src/KimLienAdministrator/*.csproj KimLienAdministrator/
 COPY src/KimLienCustomerView/*.csproj KimLienCustomerView/
 COPY src/AppCore/*.csproj AppCore/
 COPY src/AppService/*.csproj AppService/

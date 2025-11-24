@@ -10,6 +10,7 @@ COPY src/*.sln .
 
 # Copy project files
 COPY src/KimLienAdministrator/*.csproj KimLienAdministrator/
+COPY src/KimLienCustomerView/*.csproj KimLienCustomerView/
 COPY src/AppCore/*.csproj AppCore/
 COPY src/AppService/*.csproj AppService/
 COPY src/AppRepository/*.csproj AppRepository/
