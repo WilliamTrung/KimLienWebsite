@@ -88,7 +88,11 @@ namespace Common.Kernel.RedisService.Implementations
         public async Task<bool> SetAsync(string key, object value, TimeSpan? expiry = null)
         {
             var json = value.TrySerializeObject();
-            var created = await _database.StringSetAsync(key, json, expiry);
+            if (expiry is null)
+            {
+                expiry = TimeSpan.FromMinutes(60);
+            }
+            var created = await _database.StringSetAsync(key, json, expiry.Value);
             return created;
         }
 
@@ -123,10 +127,10 @@ namespace Common.Kernel.RedisService.Implementations
                 cts.CancelAfter(TimeSpan.FromSeconds(3)); // tune theo workload/DB
                 var data = await factory().WaitAsync(TimeSpan.FromSeconds(3), cts.Token);
 
-                TimeSpan? ResolveExpiry(TimeSpan? requested, TimeSpan? fallback)
+                TimeSpan ResolveExpiry(TimeSpan? requested, TimeSpan? fallback)
                 {
-                    if (requested == Timeout.InfiniteTimeSpan) return null;   // No TTL
-                    return requested ?? fallback;
+                    if (requested == Timeout.InfiniteTimeSpan) return TimeSpan.FromMinutes(60);   // No TTL
+                    return requested ?? fallback ?? TimeSpan.FromMinutes(60);
                 }
 
                 if (data == null)

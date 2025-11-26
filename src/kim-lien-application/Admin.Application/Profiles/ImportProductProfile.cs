@@ -1,13 +1,7 @@
-﻿using Admin.Application.Models.Import;
-using Admin.Contract.Commands;
+﻿using Admin.Contract.Commands;
 using AutoMapper;
 using Common.Domain.Entities;
 using Common.Kernel.Constants;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Admin.Application.Profiles
 {

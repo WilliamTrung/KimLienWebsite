@@ -45,8 +45,8 @@ namespace Admin.Api.Controllers
             return this.CreateOk(result);
         }
         [HttpDelete]
-        [Route("delete")]
-        public async Task<IActionResult> Delete([FromBody] DeleteCategoryCommand request, CancellationToken ct)
+        [Route("delete/{id}")]
+        public async Task<IActionResult> Delete([FromRoute] DeleteCategoryCommand request, CancellationToken ct)
         {
             await sender.Send(request, ct);
             return this.CreateOk();

@@ -1,5 +1,4 @@
-﻿using Admin.Application.Models.Import;
-using Admin.Contract.Commands;
+﻿using Admin.Contract.Commands;
 using AutoMapper;
 using Common.Domain.Entities;
 
