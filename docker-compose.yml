@@ -10,6 +10,8 @@ services:
     networks:
       - appnet
     container_name: kimlien-central-api
+    volumes:
+      - /root/config/kimlien/KimLienAPI:/config/kimlien/KimLienAPI:ro
     environment:
       ASPNETCORE_ENVIRONMENT: "Production"
       BASE_PATH: "/config/kimlien/KimLienAPI"
