@@ -3,27 +3,27 @@ version: "3.9"
 services:
 
   backend:
-    image: kimlien-backend:latest
+    image: kimlien-central-api:latest
     build:
-      context: ./kim-lien-application
+      context: ./src
       dockerfile: Dockerfile
     networks:
       - appnet
-    container_name: kimlien-backend
+    container_name: kimlien-central-api
     environment:
       ASPNETCORE_ENVIRONMENT: "Production"
-      BASE_PATH: "/app"
+      BASE_PATH: "/config/kimlien/KimLienAPI"
       APP_SETTING: "appsettings.json"
       ASPNETCORE_URLS: "http://0.0.0.0:8080"
     expose:
-      - "8080"     # internal only
+      - "8080"
     restart: always
 
   nginx:
     image: nginx:stable-alpine
-    container_name: kimlien-nginx
+    container_name: kimlien-nginx-refactor
     ports:
-      - "80:80"    # ONLY public-facing port
+      - "81:80"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
@@ -31,5 +31,6 @@ services:
     networks:
       - appnet
     restart: always
+
 networks:
   appnet:

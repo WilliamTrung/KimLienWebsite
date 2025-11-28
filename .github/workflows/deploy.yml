@@ -1,0 +1,78 @@
+name: Deploy KimLien Web (Refactor)
+
+on:
+  push:
+    branches:
+      - refactor/2.0
+  workflow_dispatch: {}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo (required for actions)
+        uses: actions/checkout@v4
+
+      - name: Deploy to server over SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script_stop: true
+          script: |
+            # Fail immediately on ANY error
+            set -euo pipefail
+
+            echo "🚀 Starting REFACTOR deploy..."
+
+            APP_DIR="${{ secrets.REFACTOR_APP_DIR }}"
+
+            # Optional custom repository URL
+            REPO_URL="${{ secrets.REPOSITORY_URL }}"
+            if [ -z "$REPO_URL" ]; then
+              REPO_URL="https://github.com/${{ github.repository }}.git"
+            fi
+
+            echo "📂 Target directory: $APP_DIR"
+
+            # Ensure project directory exists
+            if [ ! -d "$APP_DIR" ]; then
+              echo "📁 Directory does not exist. Creating..."
+              mkdir -p "$APP_DIR"
+            fi
+
+            cd "$APP_DIR"
+
+            # Clone repository if missing
+            if [ ! -d ".git" ]; then
+              echo "🔄 No git repo found. Cloning..."
+              git clone "$REPO_URL" .
+            fi
+
+            echo "🔧 Syncing REFACTOR branch..."
+            git fetch --all --prune
+            git checkout refactor/2.0
+            git reset --hard origin/refactor/2.0
+            git pull 
+            echo "Sync successfully..."
+
+            echo "🐳 Building Docker services..."
+            # ⚡ If this fails, the script stops immediately (old containers remain)
+            docker compose build --pull
+
+            echo "🚀 Build succeeded. Deploying new containers..."
+            docker compose up -d --remove-orphans
+
+            echo "🔁 Reloading Nginx..."
+            docker compose exec nginx nginx -s reload || docker restart kimlien-nginx
+
+            echo "🧪 Container status:"
+            docker compose ps
+
+            echo "🧹 Cleaning up unused images..."
+            docker image prune -f
+
+            echo "🎉 REFACTOR deploy completed successfully!"
