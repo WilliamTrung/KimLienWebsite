@@ -1,7 +1,7 @@
 # ==========================================
 # RESTORE STAGE (copy only .csproj files)
 # ==========================================
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS restore
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS restore
 WORKDIR /src
 
 # Copy solution file
@@ -26,7 +26,7 @@ RUN dotnet restore /src/projects/Web.ApiHost/Web.ApiHost.csproj
 # ==========================================
 # BUILD STAGE (copy full source + publish)
 # ==========================================
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 
 # Copy full source now
@@ -42,7 +42,7 @@ RUN dotnet publish Web.ApiHost/Web.ApiHost.csproj -c Release -o /app/publish /p:
 # ==========================================
 # RUNTIME STAGE
 # ==========================================
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
 WORKDIR /app
 
 ENV BASE_PATH=/app
