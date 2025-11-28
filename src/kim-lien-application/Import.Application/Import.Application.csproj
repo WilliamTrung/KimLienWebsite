@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Admin.Contract\Admin.Contract.csproj" />
+    <ProjectReference Include="..\Admin.Domain\Admin.Domain.csproj" />
+    <ProjectReference Include="..\Import.Domain\Import.Domain.csproj" />
     <ProjectReference Include="..\Legacy\Legacy.Contract\Legacy.Contract.csproj" />
   </ItemGroup>
 

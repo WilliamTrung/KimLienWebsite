@@ -9,7 +9,9 @@ namespace Common.Api
             "Admin.Api",
             "Authen.Api",
             "CentralData.MigrateDbContext",
-            "Client.Api"
+            "Client.Api",
+            "Import.Api",
+            "Legacy.Module"
             ];
 
         /// <summary>

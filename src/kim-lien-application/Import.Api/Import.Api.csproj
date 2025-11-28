@@ -6,4 +6,11 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Common.Api\Common.Api.csproj" />
+    <ProjectReference Include="..\Import.Application\Import.Application.csproj" />
+    <ProjectReference Include="..\Import.Domain\Import.Domain.csproj" />
+    <ProjectReference Include="..\Import.Infrastructure\Import.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
