@@ -8,7 +8,8 @@ namespace Legacy.Infrastructure
     {
         public static void AddInfrastructureServices(this IServiceCollection services, IConfiguration config, string connectionString = "Legacy")
         {
-            services.AddDbContext<DatabaseContext.SqlContext>(x => x.UseSqlServer(config.GetConnectionString(connectionString)));
+            var connection = config.GetConnectionString(connectionString);
+            services.AddDbContext<DatabaseContext.SqlContext>(x => x.UseNpgsql(connection));
         }
     }
 }

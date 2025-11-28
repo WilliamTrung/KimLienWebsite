@@ -1,14 +1,14 @@
-﻿using Admin.Application.Commands.Product;
-using Admin.Infrastructure.Data;
+﻿using Admin.Application.Abstractions;
+using Admin.Application.Commands.Product;
 using Common.DomainException.Abstractions;
 using Common.Kernel.Constants;
 using Common.Kernel.Extensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Admin.Infrastructure.Handlers.Product
+namespace Admin.Application.Handlers.Product
 {
-    public class UpdateProductStatusCommandHandler(AdminDbContext dbContext) : IRequestHandler<UpdateProductStatusCommand>
+    public class UpdateProductStatusCommandHandler(IAdminDbContext dbContext) : IRequestHandler<UpdateProductStatusCommand>
     {
         public async Task Handle(UpdateProductStatusCommand request, CancellationToken cancellationToken)
         {

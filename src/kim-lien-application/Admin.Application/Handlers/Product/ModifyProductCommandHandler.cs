@@ -2,7 +2,7 @@ using Admin.Application.Abstractions;
 using Admin.Application.Commands.Product;
 using MediatR;
 
-namespace Admin.Infrastructure.Handlers.Product
+namespace Admin.Application.Handlers.Product
 {
     public class ModifyProductCommandHandler(IProductService productService) : IRequestHandler<ModifyProductCommand>
     {

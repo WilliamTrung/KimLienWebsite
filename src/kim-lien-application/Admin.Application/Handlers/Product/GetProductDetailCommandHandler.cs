@@ -3,7 +3,7 @@ using Admin.Application.Commands.Product;
 using Admin.Application.Models.Product;
 using MediatR;
 
-namespace Admin.Infrastructure.Handlers.Product
+namespace Admin.Application.Handlers.Product
 {
     public class GetProductDetailCommandHandler(IProductService productService) : IRequestHandler<GetProductDetailCommand, ProductDto>
     {

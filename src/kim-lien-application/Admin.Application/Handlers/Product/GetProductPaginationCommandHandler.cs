@@ -4,7 +4,7 @@ using Admin.Application.Models.Product;
 using Common.Kernel.Response.Pagination;
 using MediatR;
 
-namespace Admin.Infrastructure.Handlers.Product
+namespace Admin.Application.Handlers.Product
 {
     public class GetProductPaginationCommandHandler(IProductService productService) : IRequestHandler<GetProductPaginationCommand, PaginationResponse<ProductDto>>
     {

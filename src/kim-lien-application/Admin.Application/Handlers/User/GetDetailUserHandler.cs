@@ -3,7 +3,7 @@ using Admin.Application.Commands.User;
 using Admin.Application.Models.User;
 using MediatR;
 
-namespace Admin.Infrastructure.Handlers.User
+namespace Admin.Application.Handlers.User
 {
     public class GetDetailUserHandler(IUserService userService) : IRequestHandler<GetDetailUserCommand, UserDto>
     {

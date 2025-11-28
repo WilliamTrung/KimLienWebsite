@@ -1,3 +1,4 @@
+using Admin.Application.Abstractions;
 using Admin.Infrastructure;
 using Admin.Infrastructure.Data;
 using Common.Api;
@@ -16,9 +17,11 @@ namespace Admin.Api
         {
             services.RegisterInterceptors();
             AddDbContext<AdminDbContext>(services, configuration);
+            services.AddScoped<IAdminDbContext>(provider => provider.GetRequiredService<AdminDbContext>());
             services.AddAutoMapper(typeof(Application.Marker).Assembly);
             services.AddValidatorsFromAssembly(typeof(Application.Marker).Assembly);
             services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(Infrastructure.Marker).Assembly));
+            services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(Application.Marker).Assembly));
 
             // 2. Bulk conventions via Scrutor
             services.AddMarkedServices(

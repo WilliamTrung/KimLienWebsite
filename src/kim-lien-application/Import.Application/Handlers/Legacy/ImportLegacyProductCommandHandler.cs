@@ -12,7 +12,7 @@ namespace Import.Application.Handlers.Legacy
             var data = await sender.Send(fetchCommand, cancellationToken);
             foreach (var item in data)
             {
-                var images = item.Pictures?.Split(",").ToList();
+                var images = item.Pictures?.Split(",").Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
                 var assets = images?.Select(url =>
                 {
                     var cleanUrl = url.Split('?')[0]; // remove query params if exist

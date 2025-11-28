@@ -2,7 +2,7 @@
 using Admin.Application.Commands.User;
 using MediatR;
 
-namespace Admin.Infrastructure.Handlers.User
+namespace Admin.Application.Handlers.User
 {
     public class CreateUserHandler(IUserService userService) : IRequestHandler<CreateUserCommand>
     {

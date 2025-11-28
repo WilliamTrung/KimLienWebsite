@@ -3,7 +3,7 @@ using Admin.Application.Commands.Category;
 using Admin.Application.Models.Category;
 using MediatR;
 
-namespace Admin.Infrastructure.Handlers.Category
+namespace Admin.Application.Handlers.Category
 {
     public class GetCategoryDetailCommandHandler(ICategoryService categoryService) : IRequestHandler<GetCategoryDetailCommand, CategoryDto>
     {

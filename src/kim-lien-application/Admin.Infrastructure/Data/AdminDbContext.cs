@@ -1,3 +1,4 @@
+using Admin.Application.Abstractions;
 using Common.Domain.Entities;
 using Common.Infrastructure.Interceptor.TenantQuery;
 using Common.Infrastructure.Interceptor.TenantQuery.Model;
@@ -6,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Admin.Infrastructure.Data
 {
-    public class AdminDbContext : DbContext
+    public class AdminDbContext : DbContext, IAdminDbContext
     {
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

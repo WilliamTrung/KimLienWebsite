@@ -4,7 +4,7 @@ using Admin.Application.Models.Category;
 using Common.Kernel.Response.Pagination;
 using MediatR;
 
-namespace Admin.Infrastructure.Handlers.Category
+namespace Admin.Application.Handlers.Category
 {
     public class GetCategoryPaginationCommandHandler(ICategoryService categoryService) : IRequestHandler<GetCategoryPaginationCommand, PaginationResponse<CategoryDto>>
     {

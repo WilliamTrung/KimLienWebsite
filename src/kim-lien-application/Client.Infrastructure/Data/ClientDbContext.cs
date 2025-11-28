@@ -22,7 +22,6 @@ namespace Client.Infrastructure.Data
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
 
-
         public ClientDbContext(DbContextOptions<ClientDbContext> options) : base(options)
         {
         }

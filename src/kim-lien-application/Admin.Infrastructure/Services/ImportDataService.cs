@@ -2,7 +2,9 @@
 using Admin.Contract.Commands;
 using Admin.Infrastructure.Data;
 using AutoMapper;
+using Common.Domain.Entities;
 using Common.Kernel.Dependencies;
+using Microsoft.EntityFrameworkCore;
 
 namespace Admin.Infrastructure.Services
 {
@@ -24,7 +26,11 @@ namespace Admin.Infrastructure.Services
 
         public async Task ImportProductCategories(InsertProductCategoryContractCommand command, CancellationToken ct)
         {
-            var productCategories = command.CategoryIds.Select(categoryId => new Common.Domain.Entities.ProductCategory
+            var category = await dbContext.Categories.Where(x => command.CategoryIds.Contains(x.Id))
+                                                     .Include(x => x.Parent)
+                                                     .ToListAsync();
+            var requestAddCategories = category.SelectMany(x => x.Families().Select(c => c.Id)).Distinct();
+            var productCategories = requestAddCategories.Select(categoryId => new Common.Domain.Entities.ProductCategory
             {
                 ProductId = command.ProductId,
                 CategoryId = categoryId,

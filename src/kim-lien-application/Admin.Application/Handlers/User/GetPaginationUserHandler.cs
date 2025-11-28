@@ -4,7 +4,7 @@ using Admin.Application.Models.User;
 using Common.Kernel.Response.Pagination;
 using MediatR;
 
-namespace Admin.Infrastructure.Handlers.User
+namespace Admin.Application.Handlers.User
 {
     public class GetPaginationUserHandler(IUserService userService) : IRequestHandler<QueryUserCommand, PaginationResponse<UserDto>>
     {
