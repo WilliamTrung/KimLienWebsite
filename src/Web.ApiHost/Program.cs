@@ -95,7 +95,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 // CORS should be after routing, before auth/authorization
-app.UseCors("CorsPolicy");
+app.UseCors("AllowFrontend");
 
 app.UseAuthentication();
 app.UseAuthorization();
