@@ -83,6 +83,7 @@ builder.Services.AddModuleDI(builder.Configuration, moduleAssemblies);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.ApplyCors();
 builder.Services.AddAuthorization();
 var app = builder.Build();
 app.ApplyApplicationExtensions();
