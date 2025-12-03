@@ -14,14 +14,12 @@ namespace Admin.Api.Controllers
     public class ProductController(ISender sender) : ControllerBase
     {
         [HttpPost]
-        [Route("create")]
         public async Task<IActionResult> Create([FromBody] CreateProductCommand request, CancellationToken ct)
         {
             var result = await sender.Send(request, ct);
             return this.CreateOk(result);
         }
         [HttpPut]
-        [Route("modify")]
         public async Task<IActionResult> Modify([FromBody] ModifyProductCommand request, CancellationToken ct)
         {
             await sender.Send(request, ct);
@@ -46,14 +44,14 @@ namespace Admin.Api.Controllers
             return this.CreateOk(result);
         }
         [HttpDelete]
-        [Route("delete/{id}")]
+        [Route("{id}")]
         public async Task<IActionResult> Delete([FromRoute] DeleteProductCommand request, CancellationToken ct)
         {
             await sender.Send(request, ct);
             return this.CreateOk();
         }
         [HttpPatch]
-        [Route("update-status/{id}")]
+        [Route("status/{id}")]
         public async Task<IActionResult> UpdateStatus([FromRoute]string id ,[FromBody] UpdateProductStatusRequest request, CancellationToken ct)
         {
             var updateStatusCommand = new UpdateProductStatusCommand

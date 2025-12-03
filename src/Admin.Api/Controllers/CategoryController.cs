@@ -13,14 +13,12 @@ namespace Admin.Api.Controllers
     public class CategoryController(ISender sender) : ControllerBase
     {
         [HttpPost]
-        [Route("create")]
         public async Task<IActionResult> Create([FromBody] CreateCategoryCommand request, CancellationToken ct)
         {
             var result = await sender.Send(request, ct);
             return this.CreateOk(result);
         }
         [HttpPut]
-        [Route("modify")]
         public async Task<IActionResult> Modify([FromBody] ModifyCategoryCommand request, CancellationToken ct)
         {
             await sender.Send(request, ct);
@@ -45,7 +43,7 @@ namespace Admin.Api.Controllers
             return this.CreateOk(result);
         }
         [HttpDelete]
-        [Route("delete/{id}")]
+        [Route("{id}")]
         public async Task<IActionResult> Delete([FromRoute] DeleteCategoryCommand request, CancellationToken ct)
         {
             await sender.Send(request, ct);
