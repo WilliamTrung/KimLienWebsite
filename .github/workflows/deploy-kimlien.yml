@@ -84,8 +84,13 @@ jobs:
             echo "🚀 Build succeeded. Deploying new containers..."
             docker compose up -d --remove-orphans
 
-            echo "🔁 Reloading Nginx..."
-            docker compose exec nginx nginx -s reload || docker restart kimlien-nginx
+            echo "🔁 Reload Nginx if running..."
+            if docker compose exec nginx nginx -s reload 2>/dev/null; then
+              echo "Nginx reloaded"
+            else
+              echo "Restarting nginx container"
+              docker compose up -d nginx
+            fi
 
             echo "🧪 Container status:"
             docker compose ps
