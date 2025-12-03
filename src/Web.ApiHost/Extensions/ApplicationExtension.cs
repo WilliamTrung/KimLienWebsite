@@ -23,9 +23,9 @@ namespace Web.ApiHost.Extensions
                 return next();
             });
         }
-        public static void ApplyCors(this IApplicationBuilder builder)
+        public static void ApplyCors(this IServiceCollection service)
         {
-            builder.Services.AddCors(options =>
+            service.AddCors(options =>
             {
                 options.AddPolicy("AllowFrontend", policy =>
                 {
