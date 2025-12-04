@@ -54,7 +54,7 @@ namespace Common.Infrastructure.Pagination
                 {
                     var property = currentType.GetProperty(prop, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
                     if (property == null)
-                        throw new ArgumentException($"Property '{prop}' not found on type '{currentType.Name}'");
+                        continue;
 
                     propertyAccess = Expression.Property(propertyAccess, property);
                     currentType = property.PropertyType;
