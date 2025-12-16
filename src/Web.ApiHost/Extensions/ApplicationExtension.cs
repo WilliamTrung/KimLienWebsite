@@ -32,6 +32,9 @@ namespace Web.ApiHost.Extensions
                     policy.WithOrigins("http://localhost:5173")
                           .AllowAnyHeader()
                           .AllowAnyMethod();
+                    policy.WithOrigins("http://localhost:3000")
+                          .AllowAnyHeader()
+                          .AllowAnyMethod();
                 });
             });
         }
