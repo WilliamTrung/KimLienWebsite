@@ -38,8 +38,9 @@ namespace Common.Extension.Logging
             }
 
             var logMessage = string.Join(", ", logInfo);
+            logMessage = string.Join("|", logMessage, data?.TrySerializeObject());
 #if !DEBUG
-            logger.Log(logLevel, logMessage, data?.TrySerializeObject());
+            logger.Log(logLevel, logMessage);
 #else
             Debug.WriteLine(logMessage);
 #endif
