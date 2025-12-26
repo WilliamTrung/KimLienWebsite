@@ -37,6 +37,38 @@ namespace Client.Infrastructure.Services
             return await ToPaginationResponse(request, QueryRequest);
         }
 
+        public async Task<List<CategoryTreeDto>> GetTree(CancellationToken ct)
+        {
+            // Fetch all categories with their parent relationships
+            var categories = await Query
+                .Include(x => x.Parent)
+                .OrderBy(x => x.Name)
+                .ToListAsync(ct);
+
+            // Map to DTOs
+            var categoryDtos = _mapper.Map<List<CategoryTreeDto>>(categories);
+
+            // Build tree structure
+            var categoryMap = categoryDtos.ToDictionary(c => c.Id);
+            var rootCategories = new List<CategoryTreeDto>();
+
+            foreach (var category in categoryDtos)
+            {
+                if (category.ParentId.HasValue && categoryMap.ContainsKey(category.ParentId.Value))
+                {
+                    // Add to parent's children
+                    categoryMap[category.ParentId.Value].ChildCategories.Add(category);
+                }
+                else
+                {
+                    // No parent, it's a root category
+                    rootCategories.Add(category);
+                }
+            }
+
+            return rootCategories;
+        }
+
         private void ApplyInclude()
         {
             Query = Query.Include(x => x.Parent);

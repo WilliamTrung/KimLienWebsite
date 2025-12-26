@@ -36,5 +36,29 @@ namespace Client.Api.Controllers
             await sender.Send(command, ct);
             return this.CreateOk();
         }
+
+        /// <summary>
+        /// Get top most viewed products
+        /// </summary>
+        [HttpGet]
+        [Route("most-viewed")]
+        public async Task<IActionResult> GetMostViewed([FromQuery] int limit = 6, CancellationToken ct = default)
+        {
+            var command = new GetMostViewedProductsCommand { Limit = limit };
+            var result = await sender.Send(command, ct);
+            return this.CreateOk(result);
+        }
+
+        /// <summary>
+        /// Get hot/trending products (high views in last 30 days)
+        /// </summary>
+        [HttpGet]
+        [Route("hot")]
+        public async Task<IActionResult> GetHot([FromQuery] int limit = 6, CancellationToken ct = default)
+        {
+            var command = new GetHotProductsCommand { Limit = limit };
+            var result = await sender.Send(command, ct);
+            return this.CreateOk(result);
+        }
     }
 }

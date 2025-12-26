@@ -14,11 +14,13 @@ namespace Client.Application.Profiles
                 .ForMember(d => d.Images, opt => opt.MapFrom(s => s.PictureAssets))
                 .ForMember(d => d.ViewCount, opt => opt.MapFrom(s => s.ProductViews.Sum(x => x.ViewCount)))
                 .ForMember(d => d.FavoriteCount, opt => opt.MapFrom(s => s.ProductFavors.Count))
+                .ForMember(d => d.Pricing, opt => opt.MapFrom(s => s.ActivePricing()))
                 ;
             CreateMap<Category, ProductCategoryDto>()
                 .ForMember(d => d.CategoryName, opt => opt.MapFrom(s => s.Name))
                 .ForMember(d => d.CategoryId, opt => opt.MapFrom(s => s.Id))
                 ;
+            CreateMap<PricingRecord, PricingDto>();
         }
     }
 }

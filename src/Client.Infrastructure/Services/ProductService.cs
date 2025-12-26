@@ -65,12 +65,54 @@ namespace Client.Infrastructure.Services
             var result = await ToPaginationResponse(request, QueryRequest);
             return result;
         }
+
+        /// <summary>
+        /// Gets top viewed products ordered by total view count
+        /// </summary>
+        public async Task<List<ProductDto>> GetMostViewedProducts(int limit, CancellationToken ct)
+        {
+            ApplyInclude();
+
+            // Calculate total view count for each product and order by it
+            var products = await Query
+                .Where(p => p.ProductViews.Any())
+                .OrderByDescending(p => p.ProductViews.Sum(pv => pv.ViewCount))
+                .Take(limit)
+                .ToListAsync(ct);
+
+            return _mapper.Map<List<ProductDto>>(products);
+        }
+
+        /// <summary>
+        /// Gets "hot" products based on high view count in the last 30 days
+        /// Hot criteria: Products with high view activity in recent period
+        /// </summary>
+        public async Task<List<ProductDto>> GetHotProducts(int limit, CancellationToken ct)
+        {
+            ApplyInclude();
+
+            // Get products with high views in last 30 days
+            var thirtyDaysAgo = DateTime.UtcNow.AddDays(-30);
+
+            var products = await Query
+                .Where(p => p.ProductViews.Any(pv =>
+                    pv.ProductViewCredentials.Any(pvc => pvc.CreatedDate >= thirtyDaysAgo)))
+                .OrderByDescending(p => p.ProductViews
+                    .Sum(pv => pv.ProductViewCredentials
+                        .Count(pvc => pvc.CreatedDate >= thirtyDaysAgo)))
+                .Take(limit)
+                .ToListAsync(ct);
+
+            return _mapper.Map<List<ProductDto>>(products);
+        }
+
         private void ApplyInclude()
         {
             Query = Query.Include(x => x.ProductCategories)
                             .ThenInclude(x => x.Category)
                          .Include(x => x.ProductFavors)
-                         .Include(x => x.ProductViews);
+                         .Include(x => x.ProductViews)
+                         .Include(x => x.PricingRecords);
         }
         private IQueryable<Product> QueryRequest(PaginationRequest<ProductFilterModel> request)
         {

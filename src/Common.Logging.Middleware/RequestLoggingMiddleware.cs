@@ -66,7 +66,7 @@ namespace Common.Logging.Middleware
                 // Log response details
                 _logger.LogDataInformation($"RequestId End: {requestId} " +
                     $"| Uri: {url} " +
-                    $"| StatusCode:{context.Response.StatusCode} " +
+                    $"| StatusCode:{context.Response.StatusCode}" +
                     $"| Response: {responseBodyText} " +
                     $"| Duration: {stopwatch.ElapsedMilliseconds}");
                 context.Response.Body = originalBodyStream;

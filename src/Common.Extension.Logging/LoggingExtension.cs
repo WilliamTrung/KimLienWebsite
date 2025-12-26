@@ -22,7 +22,7 @@ namespace Common.Extension.Logging
         {
             var logInfo = new List<string>()
             {
-                $"file: {Path.GetFileNameWithoutExtension(filePath)}",
+                $"file: {filePath}",
                 $"method: {methodName}",
                 $"line: {lineNumber}",
                 $"message: {message}"

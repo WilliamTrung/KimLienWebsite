@@ -16,5 +16,14 @@ namespace Client.Application.Models.Product
         public string SlugRoute => $"{Name.RemoveAccent().ToLower().Replace(" ", "-")}_{Slug}";
         public int ViewCount { get; set; }
         public int FavoriteCount { get; set; }
+        public PricingDto? Pricing { get; set; }
+    }
+
+    public class PricingDto
+    {
+        public string Type { get; set; } = null!; // "fixed", "range", "contact"
+        public decimal? FixedPrice { get; set; }
+        public decimal? MinPrice { get; set; }
+        public decimal? MaxPrice { get; set; }
     }
 }

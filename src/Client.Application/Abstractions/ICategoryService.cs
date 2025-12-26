@@ -8,5 +8,6 @@ namespace Client.Application.Abstractions
     {
         Task<PaginationResponse<CategoryDto>> GetPagination(PaginationRequest<CategoryFilterModel> request, CancellationToken ct);
         Task<CategoryDto> GetDetail(GetDetailCategoryRequest request, CancellationToken ct);
+        Task<List<CategoryTreeDto>> GetTree(CancellationToken ct);
     }
 }

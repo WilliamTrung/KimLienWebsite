@@ -28,6 +28,7 @@ namespace Common.Domain.Entities
         public virtual ICollection<ProductCategory> ProductCategories { get; set; } = new List<ProductCategory>();
         public virtual ICollection<ProductView> ProductViews { get; set; } = new List<ProductView>();
         public virtual ICollection<ProductFavor> ProductFavors { get; set; } = new List<ProductFavor>();
+        public virtual ICollection<PricingRecord> PricingRecords { get; set; } = new List<PricingRecord>();
         [NotMapped]
         private List<AssetDto>? _assets;
         [NotMapped]
@@ -71,5 +72,10 @@ namespace Common.Domain.Entities
             }
         }
         public static List<ProductViewCredential> ProductViewCredentials(this Product product) => product.ProductViews?.SelectMany(pc => pc.ProductViewCredentials).ToList() ?? new List<ProductViewCredential>();
+
+        /// <summary>
+        /// Gets the active pricing record for the product
+        /// </summary>
+        public static PricingRecord? ActivePricing(this Product product) => product.PricingRecords?.FirstOrDefault(pr => pr.IsActive && !pr.IsDeleted);
     }
 }
