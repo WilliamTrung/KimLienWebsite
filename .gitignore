@@ -365,3 +365,113 @@ FodyWeavers.xsd
 # Ignore appsetting
 appsettings.*.json
 appsettings.json
+
+# Ignore AI output
+.ai/
+.claude/
+
+##########################################################
+# Frontend / Next.js (client-src/)
+##########################################################
+
+# Next.js build output
+client-src/.next/
+client-src/out/
+client-src/build/
+client-src/dist/
+
+# Next.js cache
+client-src/.next/cache/
+client-src/.swc/
+
+# Environment files
+client-src/.env
+client-src/.env.local
+client-src/.env.development.local
+client-src/.env.test.local
+client-src/.env.production.local
+client-src/.env*.local
+
+# TypeScript
+client-src/*.tsbuildinfo
+client-src/next-env.d.ts
+
+# Testing
+client-src/coverage/
+client-src/.nyc_output/
+client-src/test-results/
+client-src/playwright-report/
+client-src/playwright/.cache/
+
+# Vercel deployment
+client-src/.vercel
+
+# Turbopack cache
+client-src/.turbo
+
+# Package managers
+client-src/node_modules/
+client-src/.pnp
+client-src/.pnp.js
+client-src/.yarn/cache
+client-src/.yarn/unplugged
+client-src/.yarn/build-state.yml
+client-src/.yarn/install-state.gz
+
+# Lock files (keep only one)
+# Uncomment the lock files you DON'T use:
+# client-src/package-lock.json
+# client-src/yarn.lock
+# client-src/pnpm-lock.yaml
+
+# Debug logs
+client-src/npm-debug.log*
+client-src/yarn-debug.log*
+client-src/yarn-error.log*
+client-src/pnpm-debug.log*
+client-src/lerna-debug.log*
+
+# ESLint cache
+client-src/.eslintcache
+
+# Stylelint cache
+client-src/.stylelintcache
+
+# IDE - VSCode
+client-src/.vscode/*
+!client-src/.vscode/extensions.json
+!client-src/.vscode/settings.json
+
+# IDE - WebStorm/IntelliJ
+client-src/.idea/
+client-src/*.iml
+
+# macOS
+client-src/.DS_Store
+client-src/.AppleDouble
+client-src/.LSOverride
+
+# Storybook
+client-src/storybook-static/
+
+# Temporary files
+client-src/*.tmp
+client-src/*.temp
+client-src/.cache/
+
+##########################################################
+# Global ignore patterns (if not already covered above)
+##########################################################
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# Temporary files
+nul
