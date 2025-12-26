@@ -1,4 +1,5 @@
 using Common.Kernel.Models.Abstractions;
+using Common.Kernel.Models.Implementations;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -8,10 +9,8 @@ namespace Common.Domain.Entities
     /// Pricing record for products - supports fixed price, range, and contact-for-price
     /// Only one pricing record can be active per product at a time
     /// </summary>
-    public class PricingRecord : IAuditEntity, IDeleteEntity
+    public class PricingRecord : BaseEntity<Guid>, IAuditEntity, IDeleteEntity
     {
-        [Key]
-        public Guid Id { get; set; }
 
         [Required]
         public Guid ProductId { get; set; }
