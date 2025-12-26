@@ -30,5 +30,7 @@ namespace CentralData.MigrateDbContext
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<ProductCategory> ProductCategories { get; set; }
         public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
+        public virtual DbSet<PricingRecord> PricingRecords { get; set; }
+        public virtual DbSet<UserMetadata> UserMetadatas { get; set; }
     }
 }
