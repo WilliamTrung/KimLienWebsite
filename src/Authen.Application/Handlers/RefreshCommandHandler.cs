@@ -3,7 +3,7 @@ using Authen.Application.Commands;
 using Authen.Application.Models;
 using MediatR;
 
-namespace Authen.Infrastructure.Handlers
+namespace Authen.Application.Handlers
 {
     public class RefreshCommandHandler(IAuthService authService) : IRequestHandler<RefreshCommand, TokenPair>
     {

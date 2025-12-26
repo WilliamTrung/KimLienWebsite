@@ -2,7 +2,7 @@ using Authen.Application.Abstractions;
 using Authen.Application.Commands;
 using MediatR;
 
-namespace Authen.Infrastructure.Handlers
+namespace Authen.Application.Handlers
 {
     public class RegisterCommandHandler(IAuthService authService) : IRequestHandler<RegisterCommand>
     {

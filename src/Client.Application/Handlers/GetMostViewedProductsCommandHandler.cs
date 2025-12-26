@@ -3,7 +3,7 @@ using Client.Application.Commands.Product;
 using Client.Application.Models.Product;
 using MediatR;
 
-namespace Client.Infrastructure.Handlers
+namespace Client.Application.Handlers
 {
     /// <summary>
     /// Handler for retrieving most viewed products

@@ -3,7 +3,7 @@ using Client.Application.Commands.Category;
 using Client.Application.Models.Category;
 using MediatR;
 
-namespace Client.Infrastructure.Handlers
+namespace Client.Application.Handlers
 {
     public class GetCategoryTreeCommandHandler(ICategoryService categoryService)
         : IRequestHandler<GetCategoryTreeCommand, List<CategoryTreeDto>>
