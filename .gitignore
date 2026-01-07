@@ -369,11 +369,14 @@ appsettings.json
 # Ignore AI output
 .ai/
 .claude/
-
+.bmad-core/
+.cursor/
+docs/
+web-bundles/
 ##########################################################
 # Frontend / Next.js (client-src/)
 ##########################################################
-
+client-src/
 # Next.js build output
 client-src/.next/
 client-src/out/
