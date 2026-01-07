@@ -100,6 +100,8 @@ app.UseCors("AllowFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
 
+// SignalR must be mapped after UseRouting and UseAuthentication/UseAuthorization
+
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
@@ -116,5 +118,8 @@ app.UseMiddleware<TaskHolderMiddleware>();
 
 app.MapControllers();
 app.MapHealthChecks("/health");
+
+// Map SignalR Hub for real-time chat
+app.MapHub<Chat.Infrastructure.DataHub.ChatHub>("/hubs/chat");
 
 app.Run();

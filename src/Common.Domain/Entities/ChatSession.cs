@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Common.Domain.Entities
 {
-    public class ChatSession : BaseEntity<Guid>, IAuditEntity
+    public class ChatSession : BaseEntity<Guid>, IAuditEntity, IDeleteEntity
     {
         public Guid RoomId { get; set; }
         public Guid? UserId { get; set; }
@@ -17,5 +17,6 @@ namespace Common.Domain.Entities
         public ChatRoom Room { get; set; } = null!;
         [ForeignKey(nameof(UserId))]
         public User? User { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

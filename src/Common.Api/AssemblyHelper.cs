@@ -10,8 +10,6 @@ namespace Common.Api
             "Authen.Api",
             "CentralData.MigrateDbContext",
             "Client.Api",
-            "Import.Api",
-            "Legacy.Module"
             ];
 
         /// <summary>
@@ -27,7 +25,7 @@ namespace Common.Api
             // Reuse already-loaded assemblies if present (avoids duplicates)
             var loaded = AppDomain.CurrentDomain
                 .GetAssemblies()
-                .Where(a => a.GetName().Name.EndsWith(".Api"))
+                .Where(a => a.GetName()?.Name?.EndsWith(".Api") ?? false)
                 .ToDictionary(a => a.GetName().Name!, a => a, StringComparer.OrdinalIgnoreCase);
             foreach (var name in _moduleApiNames)
             {

@@ -38,9 +38,9 @@ namespace Common.Extension
         /// <param name="json"></param>
         /// <param name="defaultValue"></param>
         /// <returns></returns>
-        public static TModel TryDeserializeObject<TModel>(this string json, TModel defaultValue = null) where TModel : class
+        public static TModel? TryDeserializeObject<TModel>(this string json, TModel? defaultValue = null) where TModel : class
         {
-            var result = defaultValue;
+            TModel? result = defaultValue;
 
             if (!string.IsNullOrWhiteSpace(json))
             {
@@ -49,16 +49,16 @@ namespace Common.Extension
 
             return result;
         }
-        public static TModel TryDeserializeObject<TModel>(this JsonDocument doc)
+        public static TModel? TryDeserializeObject<TModel>(this JsonDocument doc)
             where TModel : class
         {
-            if (doc is null) return default;
+            if (doc is null) return default(TModel?);
             try
             {
                 var result = doc.RootElement.GetRawText().TryDeserializeObject<TModel>();
                 return result;
             }
-            catch { return default; }
+            catch { return default(TModel?); }
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace Common.Extension
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public static string TrySerializeObjectWithSystemLibrary(this object obj)
+        public static string? TrySerializeObjectWithSystemLibrary(this object? obj)
         {
             if (obj == null)
                 return null;

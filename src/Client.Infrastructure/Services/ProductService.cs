@@ -111,8 +111,7 @@ namespace Client.Infrastructure.Services
             Query = Query.Include(x => x.ProductCategories)
                             .ThenInclude(x => x.Category)
                          .Include(x => x.ProductFavors)
-                         .Include(x => x.ProductViews)
-                         .Include(x => x.PricingRecords);
+                         .Include(x => x.ProductViews);
         }
         private IQueryable<Product> QueryRequest(PaginationRequest<ProductFilterModel> request)
         {

@@ -11,6 +11,9 @@ namespace Import.Infrastructure
     {
         public static void RegisterInterceptors(this IServiceCollection services, IConfiguration? cfg = null)
         {
+            // SoftDeleteEntityInterceptor must run first to change Deleted state to Modified
+            // so that AuditableEntityInterceptor can update audit fields
+            services.AddScoped<ISaveChangesInterceptor, SoftDeleteEntityInterceptor>();
             services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
             services.AddScoped<ISaveChangesInterceptor, QueryEntityInterceptor>();
             services.AddScoped<ISaveChangesInterceptor, TenantSaveChangeInterceptor>();
